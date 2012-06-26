@@ -1,2 +1,73 @@
 \chapter{Introduction}
-Test
+ With data constantly growing, understanding large quantities of text is a
+ difficult challenge in terms of the sheer volume and lack of task-driven visual
+ techniques by which text documents can be effectively summarized \cite{ROH2011a}.
+ People often resort to summarization techniques to extract the main themes in a
+ collection of text. Popular visual summarization techniques such as TagCloud
+ and WordCloud (Cite) render frequently occurring words in an abstract array,
+ often out of context and without considering the underlying semantics of the
+ words, nor the overall subject matter. However, many words in a text have
+ easily discovered relationships. One type of this relation is meronymy or the
+ \emph{part-of} relationship. Using a meronym database, it is possible to
+ construct a part-whole relationship. In this thesis, we focus on the
+ visualization of meronyms that have implicit spatial relationship, that is,
+ they have physical representations in the real world. 
+ 
+ 
+ \section{Motivation and Approach}
+ Illustrations in technical and medical textbooks are typically drawn in a
+ manner that is closely tied to Non-Photorealistic Rendering (NPR). Unbounded by
+ physical constraints, these illustrations takes on a plethora of rendering
+ styles, putting emphasis on different subsections of the rendered scene. Thus,
+ these illustrations are information-rich entities, not only do these
+ subsections \emph{pop-out} to the viewers, they still retain their easily
+ recognizable shape and forms. While NPR techniques are used prominently in the
+ field of Scientific Visualization, we have seen few examples of its usage in
+ Information Visualization, specifically the use of NPR techniques to augment
+ text-analytic tasks.
+ 
+ Here we investigate an integrated approach for analyzing text content. Our
+ system analyzes collections of descriptive text, extracts mentions of parts of
+ physical entities and computes an importance score. We then encode the
+ resulting scores onto a virtual \threed representation of these entities,
+ with the magnitude of the score determining the type of graphical
+ embellishments. Finally, we create interactions to allow people to visually
+ query and filter the data based on their pre-existing spatial awareness and
+ familiarity of the subject.
+ 
+ 
+ To demonstrate our application in a realistic scenario, we applied our methods
+ to analyze a text corpus composed of over 800,000 vehicle complaint reports
+ from the US National Highway Traffic Safety Administration (NHTSA). Our goal is
+ to help consumers make better purchasing decisions. 
+ 
+ > Presenting visualization that promotes more collaboration ? > NPR Rendering techniques
+ 
+ \section{Contribution}
+ This work describes a novel approach for conducting text analytic tasks.
+ Combining together non-photorealistic rendering,\threed rendering and
+ Information Visualization techniques we created a prototype application capable
+ of analyzing thousands of text documents pertaining to physical entities.
+ 
+
+ 
+ \section{Organization}
+ The remainder of the these is organized as follows:
+ 
+ \noindent Chapter 2 discusses related works from research literature. 
+ 
+ \noindent Chapter 3 discusses the problem scenario in depth, it describes how
+ we came up with our goals and requirement for design.
+ 
+ \noindent Chapter 4 presents our visual design and our justifications. 
+ 
+ \noindent Chapter 5 discusses high level interactions, in particular we
+ discuss typical usage scenarios of the visualization system
+ 
+ \noindent Chapter 6 discusses our user study design and study results. 
+ 
+ \noindent Finally, in Chapter 7 we summarize our contributions and discuss
+ avenues for future work. 
+  
+ 
+  

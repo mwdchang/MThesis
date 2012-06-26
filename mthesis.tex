@@ -77,6 +77,7 @@
 \documentclass{ut-thesis}
 
 %% ***   Add \usepackage declarations here.   ***
+\usepackage{color}
 
 
 %% The line spacing of the document should be specified using one of
@@ -113,8 +114,8 @@
 \gradyear{2012}
 %% \author{Fran\c{c}ois Pitt}
 \author{Meng-Wei Chang}
-\title{UT-Thesis Class File Example}
-
+\title{Exploring Entities in Text with Non-Photorealistic Rendering}
+ 
 %% ***   NOTE   ***
 %% Put here all other formatting commands that belong in the preamble.
 
@@ -135,6 +136,12 @@
 %% `\newtheorem's (in other words, all the global definitions that
 %% you will need throughout your thesis) in a separate file and use
 %% "\input{filename}" to input it here.
+\newcommand{\threed}{\textsc{3D} }
+\newcommand{\twod}{\textsc{2D} }
+\newcommand{\etal}{\emph{et~al}.\ }
+\newcommand{\eg}{e.g.}
+\newcommand{\ie}{i.e.} 
+\newcommand{\daniel}[1]{\textcolor{magenta}{[dc] #1}}
 
 
 %% This sets the page style and numbering for preliminary sections.
@@ -197,6 +204,7 @@
 %% ***   Include chapter files here.   ***
 \include{chapter1_introduction}
 \include{chapter2_background}
+\include{chapter3_problem}
 
 %% This adds a line for the Bibliography in the Table of Contents.
 \addcontentsline{toc}{chapter}{Bibliography}
