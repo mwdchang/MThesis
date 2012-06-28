@@ -78,6 +78,8 @@
 
 %% ***   Add \usepackage declarations here.   ***
 \usepackage{color}
+\usepackage{subfigure}
+\usepackage{graphicx} 
 
 
 %% The line spacing of the document should be specified using one of
@@ -143,6 +145,7 @@
 \newcommand{\ie}{i.e.} 
 \newcommand{\daniel}[1]{\textcolor{magenta}{[dc] #1}}
 
+\graphicspath{{./figures/}}
 
 %% This sets the page style and numbering for preliminary sections.
 \begin{preliminary}
@@ -205,6 +208,8 @@
 \include{chapter1_introduction}
 \include{chapter2_background}
 \include{chapter3_problem}
+\include{chapter4_design}
+\include{chapter5_implementation}
 
 %% This adds a line for the Bibliography in the Table of Contents.
 \addcontentsline{toc}{chapter}{Bibliography}
