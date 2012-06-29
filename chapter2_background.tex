@@ -51,7 +51,7 @@ starting point for designing visualization applications.
 data, taking advantage of people’s ability to see colour and proximal objects. We follow 
 Shneiderman’s information seeking mantra in spirit: we have no support for 
 history or extraction functions, though these could be interesting directions 
-for our future work.
+for our future work. 
 
 
 
@@ -179,17 +179,22 @@ to differentiate importance. These type of techniques looks at visibility issues
 to ensure that semantically important objects are easily visible and to provide 
 features to deal with occlusion issues. One prominent research came from an 
 importance-driven function that can be used to determine the visibility of 
-objects [Viola2004]. In this paper the authors assign scores to volumetric 
+objects \cite{Viola2004}. In this paper the authors assign scores to volumetric 
 components such that more important objects are rendered more opaque than objects 
 of lesser importance. The authors also introduce a screen-door transparency 
 technique to ensure overall visibility and context by rendering “holes” into 
 the outer layers. This idea of segmentation and context is taken further in Tietjen’s 
 paper on volumetric medical visualizations where different sub volumes are 
-divided into focus, near-focus and context components [Tietjen2005]. In this scheme, 
-different rendering styles are used for focus, near-focus and context objects to 
+divided into focus, near-focus and context components \cite{Tietjen2005}. In
+this scheme, different rendering styles are used for focus, near-focus and context objects to 
 maximize visibility without losing overall context of what the image is about. 
 In addition, contour lines are introduced to further enhance object recognition 
 abilities. 
+
+\textbf{Summary:} While there are multitude of other NPR related works, we have
+chosen to focus on techniques that accentuate geometric features without 
+sacrificing realism. The advantage of most of these techniques is that they are 
+parameterizable, and can be combined to create composite effects.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \section{Integrated Visualization}
@@ -229,8 +234,8 @@ total immersion environment where the user is in a virtual world. Subject feedba
 from their study suggest a strong desire for integration of \threed
 visualizations.
 
-Summary: We take an approach similar to CarComVis [Seldmair2009], we generated a
-virtual vehicle based on the components mentioned in our dataset. However, rather 
+\textbf{Summary:} We take an approach similar to CarComVis [Seldmair2009], we
+generated a virtual vehicle based on the components mentioned in our dataset. However, rather 
 than using a coordinated views for information seeking, our interactions are more 
 tightly coupled with the \threed visualization. Also, our visualization style is
 based on the context of the dataset, rather than using a fixed visualization.
