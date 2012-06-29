@@ -505,3 +505,112 @@ this will be described in more detail in implementation section.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Interaction}
+Interaction with the 3D model and interactive widgets dynamically update the
+visualization to reflect any changes. The change of visualization state is carried 
+through an animated transition that interpolates the colours and histogram values. 
+In this section we describe the high-level interactions and models that 
+support common tasks.
+
+\subsection{Object Selection and Query Construction}
+The current query criteria determines the visibility of the 3D objects, as well 
+as their selectability. Query is constructed by combining together selected values 
+from widget instances and the selection buffer, which holds the currently selected 
+objects. The system detects any changes to the query criterion and triggers the 
+visualization to reevaluate. 
+
+Object selection can be done in two ways: clicking on the 3D objects themselves, 
+or clicking on their representative heatmaps. In the case where objects occlude 
+each other, selection will return the object that is closest to viewing point. 
+In order to select occluded objects, the 3D model can be rotated to reveal hidden 
+entities. Alternatively, we can use the lens’ depth functionality to cull away 
+occluding geometries, or directly clicking on the heapmap representations which 
+are always available. 
+
+Selection is toggle based, thus clicking on a selected object or heatmap will 
+de-select that item. Clicking on an empty space will trigger a reset and de-select 
+all items. Selected items are accentuated visually with a glowing blue halo, this 
+also applies to corresponding heatmaps which will have their border highlighted. 
+
+Selected objects are added to the selection buffer, which also act as a query filter. 
+When selection buffer is not empty, object scores are calculated in relation to 
+the objects in the buffer, thus forming co-occurrence relations. For example, if 
+we selected the “engine” and “door” objects in the visualization, the rest of the 
+objects are recalculated to see if they co-occurs with both “engine” and “door”. 
+By this convention, the selected objects will always have the maximal score after 
+normalization, and will be coloured with the deepest shade on our colouring scale.
+
+\subsection{Spatial Interaction}
+The lens widget allows people to demand and filter detailed information by means
+of of a visual query, people move the lens to inspect what they perceive to be 
+interesting areas on the visualization. For any spatial or parameter changes in 
+the lens, or changes to the 3D model’s orientation, we update the lens’ effect 
+to reflect these changes to spatial coordinates. Unlike conventional systems 
+where filters are explicitly stated (therefore requiring the users to have some 
+notions of what they are looking for), our spatial interaction allows people to 
+freely roam the visualization without prior knowledge or any explicit goals. Thus, 
+this type of exploration may lead to people to discover things that are unknown to 
+them before. For example, imagine a case where a strange noise is coming from the 
+front of the car, while we do not have a clear idea of what component is causing
+the noise, it is possible to use the lens widget to examine the “front” of the 
+car for similar incident, and use the result to bootstrap our research effort.
+
+\subsection{Surface Based Interaction}
+We intended to have our application running on a walk-up-and-use large displays,
+thus we have build our prototype to take into account keyboard/mouse free interactions. 
+We use the idea of “zones” to process touch point events. Each interactive element 
+has an implicit zone that is calculated when a touch point is detected by the 
+sensor. The zones are either bounding boxes, or polygonal shapes that are detected 
+using native picking support. An overview of different zones are as follows:
+\begin{itemize}
+  \item Visualization Zone: An axis-aligned bounding box that bounds the central
+  visualization
+  \item Time Block Zone: Covers the year/month sliders as well as their markers
+  \item Filter Zone: Covers the accessible hierarchy filters
+  \item Lens Zone: Area covered by the lens circumference
+  \item Text Zone: Covers the document widget
+  \item Empty Zone: An empty zone is none of the above.
+\end{itemize}
+
+Each touch point is tied to a single zone, and remains so until the touch point 
+is removed. Thus, if we put our finger down at zone-A, and then we drag the finger 
+to zone-B, the touch point is still registered with zone-A. This creates a 
+continuous interaction and avoid distracting the users by sudden transition of different zones.
+We designed the following gestures as our fundamental building blocks
+\begin{itemize}
+  \item Tap Gesture: Tap and lift finger.
+  \item Hold: Tap and hold for at least X milliseconds
+  \item Drag: Tap followed by move
+  \item Flick: Tap followed by rapid move, the primary difference between a
+  flick and a drag gestures is that we expect the velocity to be much greater with the flick gesture.
+\end{itemize}
+Higher level gestures are built by compositing together lower level gestures
+\begin{itemize}
+  \item Spread/Pinch: Dragging two touch point away or closer to each other, the
+  two touch points need to start off in the same zone.
+  \item 2-Finger Drag: Two point drags in the same direction. Where the two
+  touch points are in the same zone and are close to each other.
+  \item Hover: Hold followed by drag.
+  \item 2-Tap: Two tap gestures in the same zone. We additionally differentiate
+  whether the taps are close or far apart and allow different types to take on different semantics.
+\end{itemize}
+Our interactions with the system can be summarized by the table below: <Table>
+
+
+\subsection{Visual Feedback}
+When using the keyboard, mouse and other hardware peripherals, actions are
+rewarded with some type of haptic feedback, for example we know when a key on a 
+keyboard is pressed of depressed. This behaviour allows people to be more keenly 
+aware of their current state. This is not true with touch interfaces, with touch 
+sensing technology, it is possible for touch points to become lost during a gesture, 
+this is due to the users accidentally lifting their fingers. When this happens people 
+can get confused because they may be not be aware that their touch points are lost 
+since their fingers are still contacting the table, there are no feedback system 
+to alert the actual touch point had disappeared. To accommodate the lack of haptics, 
+we implemented a visual feedback system. Whenever a touch point is registered, 
+we render a gradient circle at the XY coordinates, the radius of the circle is 
+adjusted such that it is large enough to be seen and not hidden under the fingertip. 
+The circle is updated real with with respect to updates to the touch point, and 
+is removed when the touch point is deregistered. Further, we also keep track up 
+to the last 10 most recent updates of any active touch points and render them as 
+breadcrumb trails. The trail gives additional visual clues to the type of 
+gestures being performed.
