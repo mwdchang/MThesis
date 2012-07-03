@@ -411,42 +411,11 @@ a highlight on the cell border, as well the same cell on all visible heatmap wid
 are highlighted as a brush+link effect, this supports comparison across different 
 object components.
 
-The heatmap’s data, in essence, is a time series data. There are multiple ways
-we can view this time series to derive interesting patterns and trends. For this 
-prototype we want to concentrate on comparability across different components.
-We have provided the following heatmap perspectives:
-\begin{itemize}
-  \item Month-Max: A monthly perspective where the importance score of each
-  month is divided by the maximum monthly importance score over all components
-  in the selected time block.
-  \item Component-Max: An object component perspective where the importance
-  score of each month is divided by the maximum component score over the selected time.
-  \item Global-Max: A global perspective where the month score is divided by the
-  maximum score of all components over the selected time. 
-\end{itemize}
-Each of the perspectives above answers different questions and has its own
-advantages and disadvantages. The month-max perspective allows us to compare 
-component-to-component by month, but comparison against adjacent cells are 
-meaningless because each cell use a different maxima. The component-max 
-perspective is the opposite, it allows us to see trends with a single object 
-component, but it does not allow comparison across components. Lastly, the 
-global-max perspective is good at showing the outliers and supports both 
-month-to-month and component-to-component comparisons, but it can be difficult to 
-see any trends in the non-outlier data because they are pushed into the bottom 
-bins on the colour scale. To put the different modes in better context, we list 
-sample questions that can be answered with these different perspective views:
-\begin{itemize}
-  \item Month-Max: In month X, which vehicle component had the most complaints?
-  \item Component-Max: Are there more braking problems in the summer months or
-  the winter month?
-  \item Global-Max: What are the most unreliable vehicle components?
-\end{itemize}
 The widget label, from left-to-right, shows the component name, the current
 importance score, and the score if nothing is selected (The maximum score it 
 can have). Since each component can correspond to multiple names, we label the 
 component with the first name which appears in our vocabulary.
 
-\subsection{Heatmap Layout}
 We have considered two types of labeling layout for our lens widget: A
 flush-left/flush-right layout that places the heatmaps on either left or right 
 side of the lens, and a radial layout where each heatmap is placed around the 
@@ -614,3 +583,103 @@ is removed when the touch point is deregistered. Further, we also keep track up
 to the last 10 most recent updates of any active touch points and render them as 
 breadcrumb trails. The trail gives additional visual clues to the type of 
 gestures being performed.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Viewing Modes}
+A comprehensive analytic system requires a variety of ways to manipulate and
+looking at data. In this section we describe our solutions for trend detection,
+making comparisons and high level overview.
+
+\subsection{Heatmap Perspective}
+The heatmap’s data, in essence, is a time series data. There are multiple ways
+we can view this time series to derive interesting patterns and trends. For this 
+prototype we want to concentrate on comparability across different components.
+We have provided the following heatmap perspectives:
+\begin{itemize}
+  \item Month-Max: A monthly perspective where the importance score of each
+  month is divided by the maximum monthly importance score over all components
+  in the selected time block.
+  \item Component-Max: An object component perspective where the importance
+  score of each month is divided by the maximum component score over the selected time.
+  \item Global-Max: A global perspective where the month score is divided by the
+  maximum score of all components over the selected time. 
+\end{itemize}
+Each of the perspectives above answers different questions and has its own
+advantages and disadvantages. The month-max perspective allows us to compare 
+component-to-component by month, but comparison against adjacent cells are 
+meaningless because each cell use a different maxima. The component-max 
+perspective is the opposite, it allows us to see trends with a single object 
+component, but it does not allow comparison across components. Lastly, the 
+global-max perspective is good at showing the outliers and supports both 
+month-to-month and component-to-component comparisons, but it can be difficult to 
+see any trends in the non-outlier data because they are pushed into the bottom 
+bins on the colour scale. To put the different modes in better context, we list 
+sample questions that can be answered with these different perspective views:
+\begin{itemize}
+  \item Month-Max: In month X, which vehicle component had the most complaints?
+  \item Component-Max: Are there more braking problems in the summer months or
+  the winter month?
+  \item Global-Max: What are the most unreliable vehicle components?
+\end{itemize}
+The perspective mode is changed via the dropdown list located at the bottom of
+the user interface.
+
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{heatmap.png}
+ \caption{Showing the different heatmap perspectives. Left displays the monthly
+ perspective, centre displays the component perspective, and right displays the
+ global perspective}
+ \label{figure:heatmap}
+\end{figure}
+
+\subsection{Comparison}
+Comparison mode allows people to compare two different types of the same
+physical product, for example: two different models of cars or two different 
+manufacturers. Comparison are at the object level. Two different measures are 
+used, the contribution sum and the contribution difference. The contribution sum 
+is the aggregated score, it reflects the overall importance of the component with 
+relations to other objects. The difference is the score of object one minus the 
+score of object two, the sign, and the magnitude reflects which side has the 
+stronger influence.
+
+We encode the sum as object colour, based on the default colour scale. For the 
+difference, we render the measure as an outline around the object. The sign of the 
+difference is encoded as one of two diverging colours, one for positive and one 
+for negative values. The magnitude of the difference is encoded as the transparency 
+of the outline, larger magnitude have more distinct, solid outlines compared to 
+smaller values. Thus, a highly problematic object from both side will have a 
+strong presence overall but with a faint outline, while a lopsided but infrequent 
+problem will have strong outline but barely visible interior colour.
+
+The of the limitation in the current prototype is that we do not have any
+normalization of comparative scores, thus it only makes sense comparing two 
+different types of products with similar volumes.
+
+\subsection{Aggregation}
+By default, the system treats each object individually rather than object
+groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all scored
+separately, even though they are logically under the group ``seat''. This
+setting allows people to isolate and identify unique problems accurately. There
+are times, however, when this level of information is unnecessarily detailed and
+a higher level overview is desirable.
+
+Aggregation mode mimics the type of high level rating system found on consumers
+reivew websites. When aggregation mode is enabled, individual objects, and their
+scores are aggregated up to the first level entities. In our specific case, the 
+first level are the major sub-systems in a vehicle. The visualization responds
+by making all child objects referencing the aggregated score of their parent
+subsystem. 
+
+Aggregation mode is enabled/disabled by a toggle switch located at the bottom
+left of the user interface.
+
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{aggregation.png}
+ \caption{Top: Aggregation mode disabled. Bottom: Aggregation mode enabled,
+ note that the seat and engine now appears more prominent in the visualization.}
+ \label{figure:heatmap}
+\end{figure}
