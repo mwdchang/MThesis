@@ -1,6 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This chapter covers the design aspects, include design for data processing
 % and the visual design
+%
+% - Add visual encoding nodes from MISC on google docs, probalby in the 3D
+%   visualication subsection
+% - Reference to WordNet
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Design}
 
@@ -24,8 +28,8 @@ relations, such as relation between component and its subcomponents. This
 relation is important because it enables logical groupings of entities.
 
 Our entity extraction process leverages the WordNet database, a lexical English
-database that stores nouns, verbs, adjectives and their relations among each other. 
-In order to get a comprehensive list of physical entities, we use the meronym 
+database that stores nouns, verbs, adjectives and their relations among each
+other \cite{WORDNET}. In order to get a comprehensive list of physical entities, we use the meronym 
 relation in WordNet. A meronym describes a ``part-of'' relationship between two 
 nouns, for example, a brake is a part of a wheel, and a wheel is a part of the 
 automotive vehicle. All together, the meroynomy relationship forms a hierarchical 
@@ -259,8 +263,8 @@ values. The transparency value of each object is proportional to the object’s sc
 such that the higher scored objects appear more opaque, while the lower scored 
 components appear more transparent. The maximum and minimum transparency values 
 are capped at both ends such that no objects are completely opaque or completely 
-transparent. One caveat of rendering translucent geometries in 3D space is that 
-ordering of geometries becomes important for blending to work correctly, 
+transparent. One caveat of rendering translucent geometries in \threed space is
+that ordering of geometries becomes important for blending to work correctly, 
 out-of-sequence geometries appear to lose their depth cues when blended together. 
 We will discuss this effect, and solutions in further detail in the 
 implementation section. 
@@ -275,11 +279,11 @@ provide context without distractions \cite{BAR2007a}. It is important to note
 that zero objects are purely graphical artifacts and they do not partake in any 
 user initiated interactions.
 
-Since we are dealing with 3D geometry, it can be tempting to apply other types
-of techniques. For example we attempted to encode the importance and other 
+Since we are dealing with \threed geometry, it can be tempting to apply other
+types of techniques. For example we attempted to encode the importance and other 
 numerical semantics into the geometrical distortion that can be applied directly 
-onto a 3D mesh. In practice, this does not work well for visual evaluation: in 
-general, objects are of different shapes and sizes, applying a small distortion 
+onto a \threed mesh. In practice, this does not work well for visual evaluation:
+in general, objects are of different shapes and sizes, applying a small distortion 
 is not entirely obvious while a large distortion can destroy the familiarity of 
 the form. Yet another problem is that it is not possible to order or quantify by 
 shape (Bertin), which makes the distortion a qualitative measure instead of a 
@@ -474,25 +478,25 @@ this will be described in more detail in implementation section.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Interaction}
-Interaction with the 3D model and interactive widgets dynamically update the
-visualization to reflect any changes. The change of visualization state is carried 
+Interaction with the \threed model and interactive widgets dynamically update
+the visualization to reflect any changes. The change of visualization state is carried 
 through an animated transition that interpolates the colours and histogram values. 
 In this section we describe the high-level interactions and models that 
 support common tasks.
 
 \subsection{Object Selection and Query Construction}
-The current query criteria determines the visibility of the 3D objects, as well 
-as their selectability. Query is constructed by combining together selected values 
+The current query criteria determines the visibility of the \threed objects, as
+well as their selectability. Query is constructed by combining together selected values 
 from widget instances and the selection buffer, which holds the currently selected 
 objects. The system detects any changes to the query criterion and triggers the 
 visualization to reevaluate. 
 
-Object selection can be done in two ways: clicking on the 3D objects themselves, 
-or clicking on their representative heatmaps. In the case where objects occlude 
+Object selection can be done in two ways: clicking on the \threed objects
+themselves, or clicking on their representative heatmaps. In the case where objects occlude 
 each other, selection will return the object that is closest to viewing point. 
-In order to select occluded objects, the 3D model can be rotated to reveal hidden 
-entities. Alternatively, we can use the lens’ depth functionality to cull away 
-occluding geometries, or directly clicking on the heapmap representations which 
+In order to select occluded objects, the \threed model can be rotated to reveal
+hidden entities. Alternatively, we can use the lens’ depth functionality to cull away 
+occluding geometries, or directly clicking on the heatmap representations which 
 are always available. 
 
 Selection is toggle based, thus clicking on a selected object or heatmap will 
@@ -512,8 +516,8 @@ normalization, and will be coloured with the deepest shade on our colouring scal
 The lens widget allows people to demand and filter detailed information by means
 of of a visual query, people move the lens to inspect what they perceive to be 
 interesting areas on the visualization. For any spatial or parameter changes in 
-the lens, or changes to the 3D model’s orientation, we update the lens’ effect 
-to reflect these changes to spatial coordinates. Unlike conventional systems 
+the lens, or changes to the \threed model’s orientation, we update the lens’
+effect to reflect these changes to spatial coordinates. Unlike conventional systems 
 where filters are explicitly stated (therefore requiring the users to have some 
 notions of what they are looking for), our spatial interaction allows people to 
 freely roam the visualization without prior knowledge or any explicit goals. Thus, 
