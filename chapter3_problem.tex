@@ -2,60 +2,80 @@
 % This covers the problem analysis portion of the thesis
 %
 % TODO:
-% - Should probably explain more on tasks and requirements, tie back to
-% motivations
+% - Should probably explain more on tasks and requirements, tie back to % motivations
+% - Show actual complaint report to better illustrate the data dimension section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \chapter{Problem and Data Analysis}
 \section{Problem Statement}
-Within any text document which describes physical objects, the words may have 
-two types of context. First, the context of the word in the sentence of the 
-document (i.e., occurrence and co-occurrence relationships). Second, the context 
-of the words in terms of its relation to the physical world, and its spatial 
-relationship among other words in the document that describe physical objects. 
-For example, the sentence ``Automatic door locks when used, will not
-release from any of the four doors when engine is turned off.'' contains a
-co-occurrence relationship among ``door'', ``door-lock'' and ``engine'',
-however the physical context of these components in a real world automobile 
-is quite different.
+For navigating, exploring and querying large bodies of text, traditional
+visualization techniques often approach the problem from an abstract
+perspective. These techniques explores the context of words in the sentence of
+the documents, for example Word Tree \cite{Wattenberg2008} allows people to
+explore the most frequently occurring sentence structures within a document.
+Other types of visualization looks at summarizing the underlying text, popular 
+visualizations on the web today such as tag-clouds and word-cloud emphasize
+the most frequently occurring words or phrases, thus revealing possible themes in
+the text. Still, other techniques looks at the language semantics, for example 
+DocuBurst \cite{COL2009a} spatially organize words based on the ``IS-A'' relationship.
 
-Traditional text visualization approaches such as tag clouds and word clouds falls 
-into the first categorization above, they could be used to summarize text content 
-by itself, or over a period of time through aggregation. However they lack the 
-semantics to handle co-occurrence relations, and certainly the spatial and physical 
-attributes in the text are presented out of context.  Other visualization approaches 
-such as DocuBurst organize words spatially based on semantic of the ``IS-A'' 
-relationship, while structural based visualizations such as WordTree(Suffix Tree) 
-visualizes the most frequently occurring phrases or sentences. Thus far, we are not 
-aware of any visualization which approaches text visualization by visualizing the 
-real-world spatial context of the words in the text documents.
+Looking at the underlying semantics helps us understanding the content and 
+themes in the text documents. However, there is another type of word context 
+that is not fully explored in the visualization community. Within any text 
+document which describes physical objects, each word that describes a 
+tangible object has relation to its physical, real world counterpart. The 
+entities also have relation to each other in terms of their respective 
+spatial positions. For example, the sentence ``Automatic door locks when 
+used, will not release from any of the four doors when engine is turned off.'' 
+contains not only a co-occurrence relationship among the entities ``door'' and 
+``engine'', but also relates to where the doors and engine are located on a 
+real world automobile.
+
+Revealing these spatial relations of common words in text may enable new types of 
+insights and exploration techniques. By mapping physical entities onto virtual 3D 
+representations it is possible to create a visualization environment that
+resembles the real world, the environment can then be explored and queried with relative ease
+due to existing familiarity of how these objects operates in real life.  There are 
+many types of text that carries these sort of physically mappable vocabulary: 
+product reviews, technical manuals, maintenance logs, and our data, vehicle 
+defect reports.
+
+So far, we are not aware of any visualization which approach text visualization 
+by visualizing the real-world spatial context of the words in text. Thus, our 
+works looks at revealing these real world relations in a manner that is useful 
+for conducting text-analytic activities.
+
 
 \section{Data Overview}
-Each year thousands of reports are submitted to the NHTSA database and are made 
-available to the public.  These reports consist of complaints from vehicle owners, 
+Every year thousands of reports are submitted to the NHTSA database and are made 
+available to the public. These reports consist of complaints from vehicle owners, 
 reports from defect investigations and reports relating to manufacturer recalls. 
+In total, our data consist of a collection of over 800K+ time-stamped complaint 
+reports dating from 1995 to present day.
+
 One of the tasks for buying a vehicle is to examine the safety and reliability 
 of the vehicle. The NHTSA database offers a wealth of information to guide 
 purchasing decisions, as well as inform insurance companies and automotive 
 manufacturers about potentially serious safety and reliability concerns as reported 
 through experiences of real drivers in realistic scenarios. However, we have yet 
 to see any sophisticated ways of representing this dataset. Consumers have to
-use conventional search forms that a large number of amounts of textual results; 
-there are no mechanism to support concise overviews or dynamic details on demand. 
+use conventional search forms that returns a large number of amounts of textual
+results; there are no mechanism to support concise overviews or dynamic details on demand. 
 The step-by-step querying process also prevent  consumers from freely exploring 
 the data, they need to have a preconceived notion of what they want to look for, 
 thus likely prevent any type of unexpected discoveries.
 
 On the other end of the spectrum, there exist consumer product website such as 
-Consumer Reports and Edmunds. These website provide reviews and linear scale 
-rating for different types of vehicles, but these ratings seldom provide details 
-and in-depth analysis. In other words, the ratings are too coarsely grained. 
+Consumer Reports\footnote{http://www.consumerreports.org/} and
+Edmunds\footnote{http://www.Edmunds.com}. These website provide reviews and
+linear scale rating for different types of vehicles, but these ratings seldom provide 
+details and in-depth analysis. In other words, the ratings are too coarsely grained. 
 Yet another issue with these websites is that they are typically targeted at 
 newer vehicle models, as such, it can be difficult to look up and compare 
 ratings between new and old models.
-
+ 
 \section{Tasks}
-Our data consist of a collection of over 800K time-stamped complaint reports 
-from 1995 till present day. While our data is temporal in nature and new 
+While our data is temporal in nature and new 
 reports are constantly being added, our system is not, strictly speaking, a 
 real-time system that consumes streaming text data. Our system consume data in 
 batches, and to our knowledge, there are no known external facing API available 
@@ -65,9 +85,9 @@ concern as real time text streaming applications. Rohrdanz \etal
 including monitoring, decision making, change/trend detection, event tracking, 
 historical retrieval, exploration and situational awareness. 
 
-For the purpose of the vehicle defect reports, and for an audience of prospective 
+For the purpose of analyzing vehicle defect reports, and for an audience of prospective 
 car/used-car buyers, some of the vital tasks are:
-\begin{itemize}
+\begin{itemize}[noitemsep]
   \item Decision Making: ``Which vehicle should I buy?''
   \item Historical Retrieval: ``Are there any major concerns with vehicle X over
   the last 5 years?''
@@ -76,7 +96,7 @@ car/used-car buyers, some of the vital tasks are:
 \end{itemize}
 
 For a quality assurance engineer or investigator, the tasks may be:
-\begin{itemize}
+\begin{itemize}[noitemsep]
   \item Monitoring: ``Are there any new complaints relating to make Y?''
   \item Decision Making: ``Are there enough reports and evidences to warrant a
   full scale investigation or a recall?''
@@ -87,7 +107,7 @@ For a quality assurance engineer or investigator, the tasks may be:
 \end{itemize}
 
 In our design, we aim to create an application which aims to support these users
-and tasks as they analyze these complaint reports. We take the view of the 
+and user tasks as they analyze these complaint reports. We take the view of the 
 consumer as the primary stakeholder. Thus, our goal is to provide text-analytic 
 visualization for helping consumers understand and explore vehicle safety issues, 
 which in turn will affect their purchasing decisions
@@ -97,11 +117,13 @@ To build a useful system, we need to understand the stakeholder’s mindset. We
 start our initial requirement gathering by looking at websites dedicated to 
 vehicle owners and potential car buyers, our sources include expert columns, 
 question and answer forums, car-buying tips and product rating websites such 
-as Consumer Reports and Edmunds. These resources gives us some insights to what 
-the consumers are concerned about as well as deficiencies in the current vehicle 
-buying research methods. The user forums give us an idea of what the consumers 
-are concerned about, while the rating site and expert columns gives us some notion 
-of what the consumers should be concerned about. Our findings revealed that, aside 
+as Consumer Reports and Edmunds. These resources give us some insights to what 
+the consumers are concerned about, as well as any deficiencies and usability issues 
+in the current research method. Using both the forums and expert websites give us dual
+perspectives: the forums tell us what the consumers are thinking, while the expert 
+websites tell us what the consumers ought to think.
+
+Our findings revealed that, aside 
 from the price factor, the next item people care about are safety and reliability; 
 this makes sense, purchase of a vehicle is a big investment, the vehicle itself 
 needs to be reliable to be used frequently and ensure the safety of its passengers. 
@@ -112,9 +134,8 @@ for detailed exploration. Car buying guides often advocate conducting thorough
 research on the vehicle and brand history, as well as leverage the experience of 
 other owners. This is particularly important for used vehicles.
 
-Based on these findings, we have four design requirement for our visualization
-system:
-\begin{itemize}
+Based on these findings, we propose the following four design requirements for our visualizaiton prototype:
+\begin{itemize}[noitemsep]
   \item R1: Provide an intuitive representation and make important items clearly
   visible;
   \item R2: Facilitate finding of trends, interesting facts and causal relations
@@ -129,20 +150,9 @@ system:
 A typical complaint report consist of both structured and unstructured fields.
 The structured fields related to the type of vehicle and other explicitly 
 quantifiable variables relating to the incident (\eg, the odometer reading, 
-number of injuries, the geo-location). The unstructured field is a free-form text, 
-typically consist of several sentences describing the circumstances of the 
+number of injuries, the geo-location). The unstructured field is a free-form text field, 
+it typically consist of several sentences describing the circumstances of the 
 incident, as well as the parts that failed. 
-
-\textbf{Hierarchy:} The organizational hierarchy of the vehicle manufacturers
-(Manufacturer, Make, Model, Model Year) is an important aspect when purchasing 
-a vehicle. Consumers not only want to compare model-to-model in terms of 
-reliability and safety, they are also interested in whether the manufacturing 
-companies are producing reliable vehicles in general and how manufacture rank 
-with respect to each other. The organization hierarchy present a natural 
-progression from the most general selection down to specific models, and thus 
-supports successive refinement of queries. Note that the selection of 
-organizational hierarchy as a data dimension is a domain specific decision, 
-it does not generalize to text analytics for other domains.
 
 \textbf{Spatial:} Many texts contain spatial variables that can be mapped to the
 real, physical world. Sometimes these are explicitly stated, such as GPS 
@@ -161,3 +171,25 @@ has many challenges when projected onto a \twod screen space
 \cite{WAR2004b}. However, a carefully designed \threed interface can also create a simple,
 compelling experience for people, particularly if the design goes above and beyond the 
 constraints of normal reality \cite{Shneiderman2003}.
+
+\textbf{Time:} Time is almost omnipresent when dealing with streaming or reporting data, 
+whether it is the creation date or the timestamps within the document itself. 
+For our specific dataset, we suspect that much interesting information can be 
+gained by supporting high level activities such as seeing how a particular 
+object changes over time, and comparing season to season statistics. Being able 
+to search, compare and extrapolate trend information across time is vital for 
+understanding the underlying data, thus making time an obvious choice for our 
+visualization.
+
+\textbf{Hierarchy:} The organizational hierarchy of the vehicle manufacturers
+(Manufacturer, Make, Model, Model Year) is an important aspect when purchasing 
+a vehicle. Consumers not only want to compare model-to-model in terms of 
+reliability and safety, they are also interested in whether the manufacturing 
+companies are producing reliable vehicles in general and how manufacture rank 
+with respect to each other. The organization hierarchy present a natural 
+progression from the most general selection down to specific models, and thus 
+supports successive refinement of queries. Note that the selection of 
+organizational hierarchy as a data dimension is a domain specific decision, 
+it does not generalize to text analytics for other domains.
+
+
