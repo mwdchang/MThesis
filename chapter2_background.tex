@@ -3,6 +3,8 @@
 % - Show a picture of Wordle (A section of the thesis maybe)
 % - Show a picture of WordsEye
 % - Probably want to quote Carpendale's work on Elastic Framework
+% - Cite Gestalt (Probably Ware Book)
+% - Talke briefly about pipeline
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Related Work}
 
@@ -11,124 +13,227 @@
 Visualization revolves around the process of of mapping and representing data or
 concept graphically such that they are visible to the human eye. Visualization, 
 in theory,  takes advantage of the human perceptual system to rapidly understand
-what the data is communicating to the readers. Preattentive processing, 
-for example, deals with the extraction of graphical features without the need to
-consciously focus one’s attention to the details, and it can be achieved extremely 
-fast and in parallel (Ware?), and thus provide an important concept for drawing 
-out the salient features in graphics. To communicate clearly, it is crucial to 
-select the appropriate visual representation, termed visual variables
-\cite{BER1983a}. Visual variables dictates how a graphical mark is drawn and includes the mark’s 
-position, size, shape, value, colour, orientation and texture. Each visual 
-variable can then be evaluated for different characteristics, such as selective, 
-associative, quantitative, order and length. We summarize visual variables 
-in <table> below. With the advent of computer technology, the idea of motion or 
-animation as another visual variable was also proposed. (Carpendale). 
+what the data is communicating to the readers. 
 
-Another important player in how human perceive graphics is based on the field of
-psychology, with the concept of Gestalt Perception. The fundamentals of Gestalt 
-perception deals with the likelihood that human prefers to see things as a whole, 
-rather than individual parts. This in turn influences our comprehension and how 
-we choose to see interesting patterns because of our tendencies to 
-group/differentiate objects by proximity, similarity and closure.
+Foremost we want to recognize that human visual system is quite limited, we
+can only perceive a small fraction of the entire spectrum of light, and of our
+field of vision, only a small area is truly in focus. However, there is a small
+set of visual properties that can be detected extremely rapidly (comparatively
+to other sensory systems) and accurately by low-level perceptual system known as
+pre-attentive processing \cite{WAR2004b}. In theory, this perceptual feature
+deals with the extractions of specific graphical features without the need to 
+consciously focus attention on the details, allowing viewers to spot salient and 
+outlier features in a single glimpse. For example, picking out a red circle 
+out of a group of blue circles is considered instantaneous, barring any visual 
+abnormalities. In terms of design, exploitation of pre-attentive processing can 
+greatly increase the rate of comprehension and ease of use.
 
-In order to be useful, any visualization system should support user tasks that
-allow rich and meaningful exploration of data. Shneiderman’s
-information seeking mantra set the standard for exploratory graphical user interface \cite{Shneiderman1996} . They
-are, in order:
+To establish clear visual communication, it is crucial to have a set of visual
+building blocks that can be grouped and arranged to convey information. Much of
+the initial work came from the field of cartography, particularly with the ideas
+of marks and visual variables from Bertin \cite{BER1983a}. Bertin defined seven
+variables, including position, size, shape, value, colour, orientation and
+texture. Each visual variable can have certain characteristics that can be used
+to determine which of the seven visual variables is most appropriate visual
+representation. These characteristics includes properties such as selective,
+associative, quantitative, order and length. A summary table below outlines the
+relationship between each variable and its attributes.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\hline
+ & Position & Size & Shape & Value & Colour & Orientation & Texture  \\  
+\hline
+\hline 
+Selective &  Yes & Yes & Maybe & Yes & Yes & Yes & Yes \\ 
+\hline
+Associative &  Yes & Yes & Maybe & Yes & Yes & Yes & Yes \\
+\hline
+Quantitative &  Yes & Maybe & No & No & No & No & No \\
+\hline 
+Order &  Yes & Yes & No & Yes & No & No & No \\
+\hline
+Length & Yes & Yes & Maybe & Yes & Yes & Yes & Yes \\
+\hline
+\end{tabular}\caption{List of visual variables and
+their characteristics}\label{table:VisualVariable}
+\end{table}
+
+%With the advent of computer technology, the idea of motion or 
+%animation as another visual variable was also proposed. (Carpendale). 
+
+
+%Another important factor in how human perceive graphics is based on the field
+% of psychology, with the concept of Gestalt Perception. The fundamentals of Gestalt
+%perception deals with the likelihood that human prefers to see things as a whole
+%rather than individual parts \cite{WAR2004b}.
+
+%This in turn influences our
+%comprehension and how we choose to see interesting patterns because of our tendencies to 
+%group/differentiate objects by proximity, similarity and closure.
+
+In terms of building a visualization system, there are several key contributions
+in this area. The visualization pipeline from Card \etal (Card) describes a
+step-by-step process of data manipulation and mapping as follows:
+\begin{itemize}[noitemsep]
+  \item Analysis: Normalization of raw data for visualization
+  \item Filter: Select subsections of data to be visualized
+  \item Mapping: Find the appropriate visual representations
+  \item Rendering: Transform raw data into image data
+\end{itemize}
+For an interactive visualization, these stages are not a linear, one-off
+process. The stages of Filter, Mapping and Renderings form a repetitive loop as
+the users change parameters to explore different parts of the visualization. It
+is often through exploration that enables users to find and extract interesting
+data. The process of facilitating useful graphical-based exploration is
+advocated in Shneiderman's information seeking mantra \cite{Shneiderman1996} and
+can be broken down into these specific tasks:
 \begin{itemize}[noitemsep]
   \item Overview: See and summarize the entire collection
   \item Zoom: Zoom in on items of interest
   \item Filter: Removal of uninteresting items
   \item Detail-on-Demand: Select item/group and get details when needed
   \item Relate: View how an item relates to others
-  \item History: Keep a history of actions to support undos and redos
+  \item History: Keep a history of actions to support undo and redo
   \item Extract: Allow extraction of subsections
 \end{itemize}
-While not all visualizations will support all seven tasks, they provide a good
-starting point for designing visualization applications.
+Each task can then be further broken down by different types of interaction
+techniques. Careful consideration should also go into each task to determine if
+it is actually appropriate for the data and problem at hand.
 
-\textbf{Summary:} In our system, we are mostly concerned with the exploration of
-data, taking advantage of people’s ability to see colour and proximal objects. We follow 
-Shneiderman’s information seeking mantra in spirit: we have no support for 
-history or extraction functions, though these could be interesting directions 
-for our future work. 
+
+
+%\textbf{Summary:} In our system, we are mostly concerned with the exploration
+% of data, taking advantage of people’s ability to see colour and proximal objects. We follow 
+%Shneiderman’s information seeking mantra in spirit: we have no support for 
+%history or extraction functions, though these could be interesting directions 
+%for our future work. 
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Descriptive Rendering}
 Descriptive illustration can be considered to be a sub field of computer
-graphics, which focuses on static illustrations or an animated sequence based on
-text input. It can be used as an analytic tool by literally rendering the text
-or render an interpreted representation of the text. Unlike other text analytics
-tools or text visualizations that presents an abstract visuals, descriptive
-visualization is highly concerned with understanding of natural language to
-render a scene that is a literal representation of the underlying text. 
+graphics, which focuses on static illustrations or an animated sequence of
+images based on text input. It can be considered as a text-analytic tool because
+it renders the text in a literal sense, or through some kind of interpretive
+representation. Systems that attempts to do literal renderings are concerned
+with understanding of natural languages, whereas interpreted rendering systems
+tend to some basis intentions that are user based.
+
 
 Though strictly speaking not a text-to-scene application, the IBIS application
 from Seligmann and Feiner renders a \threed scene based on a set of user
-provided rules (Seligmann1991). These rules specify which object and locations
-in the \threed scene have higher degree of interest. The application itself
+provided rules \cite{Selgmann1991}. These rules specify which
+object and locations in the \threed scene have higher degree of interest. The application itself
 evaluates these rules and determines the optimal viewing perspective, as well
 the application adjust the lighting conditions as a way to draw attention to
-specific details in the scene. 
+specific details in the scene. To our knowledge this is one of the first system
+where a pre-constructed scene can be modified by text input.
 
-One of the most fully-realized text-to-scene generation system is
+One of the most fully-realized text-to-scene generation application is
 WordsEye\cite{Coyne2001}. WordsEye uses a combination of grammatical rules 
 and heuristics to determine subjects and their actions. The subjects are mapped 
 against a large repository of \threed models, and the verb actions are mapped to 
 predefined poses. One of the interesting WordsEye strives for is the preservation 
-of spatial relations among subjects in the text, for example: “The giant orange 
-cat is on the black chair.” will literally rendering a large cat on top of a chair. 
-However, WordsEye is still bound by the inherent ambiguities in written language 
-and the accuracy of its semantic interpretation. As far as the rendering process 
-is concerned, WordEye can only render objects if the model is available in its 
-repository.
+of spatial relations among subjects in the text, for example: ``The giant orange 
+cat is on the black chair.'' will literally rendering a large cat on top of a chair. 
+However, WordsEye is limited by the inherent ambiguities in written language and
+the accuracy of its semantic interpretation. 
 
 Another example of text-to-scene generation is CarSim\cite{Akerberg2003},
 which uses a similar logical processing and rendering process, but is specifically designed
 to deal with the re-creation of car accidents by parsing traffic accident reports. 
 Where CarSim differs is that it tries to generate an animated sequence by 
 inferring the speed and direction of vehicles from the text content, it is less 
-concerned with the literal representation of the car, but the situation 
+concerned with the literal representation of the car, but with the situation 
 surrounding the incident.
 
-Interpretive examples includes Wordle(???) which looks at representing document
-content by counting word occurrences. Unlike those mentioned above, Worlde does 
-not perform any semantic inferences on the text, but rather left the graphic 
-generation up to the users, allowing them tight fit the words into contour shapes, 
-that often represents the underlying themes. For example; a bibliographical text 
-about a person may use that person’s silhouette as the fitting contour. Wordle’s
-layout algorithm disallows overlaps, and allows users to directly interact with
-the text visualization. Another example is calligraphic packing \cite{Xu2007},
-which takes a more artistic approach. This research visualizes single words by 
-distorting individual glyphs to fit into \twod regions. Creative freedom is
-given to the people to choose which image best represents the word. However, due to 
-concentration on artistic style, it is questionable whether individual letters, 
-and the whole word is still recognizable after the transformation.
 
-\textbf{Summary:} Unlike WordsEye and CarSim, we start with a scene that is
-pre-constructed, that is, we know ahead of time the subjects in our text 
-documents and can place them into \threed space. While it is interesting to use 
-grammatical approach to grab context, we found it more generalizable to use a 
-dictionary approach similar to Wordle for parsing text because we iterate 
-over thousands of documents.
+%So far, the discussion have been around examples where the renderings are based
+%on the literal meaning of the text. On the other side are interpretive
+%renderings, where the images produced are not necessarily the ground-truth of
+%the text, but often produced with artistic flares and particular theme in mind.
+
+On the interpretive side, a popular example is the web-based application called
+Wordle(???). Unlike the systems mentioned above, Wordle does not perform any
+semantic inferences on the underlying text, it rather collects frequency
+statistics of each string tokens. Unlike the closely related tagcloud, Wordle
+allows people to fit the most frequently occurring words into arbitrary \twod
+geometric shapes. This give creativity control over to the users, which in
+practice lead to the usage of symbolic shapes that exposes underlying themes in
+the text. For example, a Wordle visualization of a text document about the
+economy will use a dollar-sign shape to instill the idea that the visualization
+is related to monetary issues.
+
+Another example is calligraphic packing \cite{Xu2007}, which takes a more artistic approach. 
+This research visualizes single words by distorting individual glyphs to fit into \twod regions. 
+Creative freedom is given to the people to choose which image best represents
+the word, as well as the amount of acceptable distortion. However, due to
+concentration on artistic style, the legibility of the actual words after the
+distortion transformation is not guaranteed.
+
+%Interpretive examples includes Wordle(???) which looks at representing document
+%content by counting word occurrences. Unlike those mentioned above, Worlde does 
+%not perform any semantic inferences on the text, but rather left the graphic 
+%generation up to the users, allowing them tight fit the words into contour shapes, 
+%that often represents the underlying themes. For example; a bibliographical text 
+%about a person may use that person’s silhouette as the fitting contour. Wordle’s
+%layout algorithm disallows overlaps, and allows users to directly interact with
+%the text visualization. Another example is calligraphic packing \cite{Xu2007},
+%which takes a more artistic approach. This research visualizes single words by 
+%distorting individual glyphs to fit into \twod regions. Creative freedom is
+%given to the people to choose which image best represents the word. However, due to 
+%concentration on artistic style, it is questionable whether individual letters, 
+%and the whole word is still recognizable after the transformation.
+
+%\textbf{Summary:} Unlike WordsEye and CarSim, we start with a scene that is
+%pre-constructed, that is, we know ahead of time the subjects in our text 
+%documents and can place them into \threed space. While it is interesting to use 
+%grammatical approach to grab context, we found it more generalizable to use a 
+%dictionary approach similar to Wordle for parsing text because we iterate 
+%over thousands of documents.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \section{Non-Photorealistic Rendering}
-Non-Photorealistic Rendering can be described as any computer generated images 
-that do not involve the accurate simulation of light. While photorealistic images 
-presents accurate details, often times it is not entirely necessary to present 
-such high degree of accuracy. On the contrary, specular reflections, shadows, 
-occlusions and other natural lighting phenomenons can hinder the ability to view 
-vital details and create ambiguities, which distorts the ability of the viewer 
-to accurately interpret the image.
+Since the infancy of computer graphics, researchers have long been looking at
+ways to render photorealistic renderings, images that are nearly
+indistinguishable than that of a photograph taken by a camera. In recent years,
+however, another area of computer graphics research have been looking in the
+opposite direction: Non-Photorealistic Rendering. Non-Photorealistic Rendering can be 
+described as any computer generated graphics that do not involve the accurate 
+simulation of the behaviour of light. While photorealism has long been the holy
+grail in graphics research, there are compelling reasons for choosing NPR
+representations. First, NPR images are judged based on their ability to
+communicate a specific message to their viewers, thus they are driven to
+emphasize features in a scene or some underlying attributes \cite{Gooch2001}.
+This is in contrast with photorealistic rendering where they are compared
+against a ground-truth image. Second, often times it is undesirable to preserve
+a high degree of accuracy, specular reflections, shadows and other natural
+lighting phenomenons can hinder viewers ability to see vital details and create
+ambiguities. NPR can choose to ignore the natural laws of physics, and instead
+choose to focus on different abstractions such that the illustration can be
+meaningful to people from different fields.
+
+Because there are multitude of possibilities in NYPR, this section solely
+focuses on prior works that related to our work here, or served as our
+inspirations.
+
+
+%Non-Photorealistic Rendering can be described as any computer generated images 
+%that do not involve the accurate simulation of light. While photorealistic images 
+%presents accurate details, often times it is not entirely necessary to present 
+%such high degree of accuracy. On the contrary, specular reflections, shadows, 
+%occlusions and other natural lighting phenomenons can hinder the ability to view 
+%vital details and create ambiguities, which distorts the ability of the viewer 
+%to accurately interpret the image.
 
 This lack of realism allows a greater degree of freedom in how the final rendering 
 can look and what message it conveys, which is often done with an artistic flare, 
 for example, the simulation of blueprints and other hand-drawn artworks. 
-Non-photorealistic lighting from Gooch \etal \cite{Gooch1995}, looks at
+Non-photorealistic lighting from Gooch \etal \cite{Gooch1998}, looks at
 altering traditional Phong-shading equations to resemble technical drawing found in textbooks. 
 Their lighting equation removes the specular component, instead a flat shading 
 style is used to transition between cool-to-warm tones, preserving surface 
@@ -139,7 +244,7 @@ object geometries, taking advantage of visual perception capabilities of seeing
 continuities and surfaces (Site Ware?), we can reduce the visual clutters of an 
 image or a scene without compromising the important details. This is known as 
 feature extraction and can be done in \twod or \threed space. The \twod space
-algorithm looks at discontinuities of a single pixel against its neighbouring pixels [Cite Book]. 
+algorithm looks at discontinuities of a single pixel against its neighbouring pixels (Cite Book). 
 There are various discontinuity measures, for example colour discontinuity, depth 
 discontinuity and normal discontinuity. These are often combined to improve the 
 detection accuracy. If the current pixel value difference is high enough then the 
@@ -191,10 +296,10 @@ maximize visibility without losing overall context of what the image is about.
 In addition, contour lines are introduced to further enhance object recognition 
 abilities. 
 
-\textbf{Summary:} While there are multitude of other NPR related works, we have
-chosen to focus on techniques that accentuate geometric features without 
-sacrificing realism. The advantage of most of these techniques is that they are 
-parameterizable, and can be combined to create composite effects.
+%\textbf{Summary:} While there are multitude of other NPR related works, we have
+%chosen to focus on techniques that accentuate geometric features without 
+%sacrificing realism. The advantage of most of these techniques is that they are 
+%parameterizable, and can be combined to create composite effects.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \section{Integrated Visualization}
@@ -234,11 +339,11 @@ total immersion environment where the user is in a virtual world. Subject feedba
 from their study suggest a strong desire for integration of \threed
 visualizations.
 
-\textbf{Summary:} We take an approach similar to CarComVis [Seldmair2009], we
-generated a virtual vehicle based on the components mentioned in our dataset. However, rather 
-than using a coordinated views for information seeking, our interactions are more 
-tightly coupled with the \threed visualization. Also, our visualization style is
-based on the context of the dataset, rather than using a fixed visualization.
+%\textbf{Summary:} We take an approach similar to CarComVis [Seldmair2009], we
+%generated a virtual vehicle based on the components mentioned in our dataset. However, rather 
+%than using a coordinated views for information seeking, our interactions are more 
+%tightly coupled with the \threed visualization. Also, our visualization style is
+%based on the context of the dataset, rather than using a fixed visualization.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \section{Focus+Context Techniques}
@@ -309,11 +414,11 @@ other volumes away from the center, thus creating more space for labels and anno
 rendering. The path behaves as a visual query, where semantic data of segments  
 near the path are collected and displayed in a separate pop-up panel.
 
-\textbf{Summary:} Our approach to focus+context resembles a combination of
-approaches taken by BrainGazer, NPRLens and Excentric Labels. Like BrainGazer, we allow 
-people to form visual queries via indexing spatial location with different semantics, 
-though we take a proactive approach to highlight and link the text data back to 
-the visualization by combining ideas from NPRLens and Excentric Labels.
+%\textbf{Summary:} Our approach to focus+context resembles a combination of
+%approaches taken by BrainGazer, NPRLens and Excentric Labels. Like BrainGazer, we allow 
+%people to form visual queries via indexing spatial location with different semantics, 
+%though we take a proactive approach to highlight and link the text data back to 
+%the visualization by combining ideas from NPRLens and Excentric Labels.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -332,11 +437,11 @@ scenario \cite{Wobbrock2009}, as well how gestures relate to
 different social context \cite{Hinrichs2011}.
 
 
-\textbf{Summary:} While our primary focus is about the visualization of entities
-in text.
-We imagine a walk-up-and-use scenario where a single person can use the large 
-screen display for impromptu exploration, or to use the display as presentation 
-aid for meetings. Much of our design has been guided by past classifications of 
-gestures like ones mentioned above, as well to keep our interactions quite simple 
-to discourage any complexities that might arise from a social setting \cite{Brignull2003}.
+%\textbf{Summary:} While our primary focus is about the visualization of
+% entities in text.
+%We imagine a walk-up-and-use scenario where a single person can use the large 
+%screen display for impromptu exploration, or to use the display as presentation 
+%aid for meetings. Much of our design has been guided by past classifications of 
+%gestures like ones mentioned above, as well to keep our interactions quite simple 
+%to discourage any complexities that might arise from a social setting \cite{Brignull2003}.
 
