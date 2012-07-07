@@ -174,19 +174,6 @@ the word, as well as the amount of acceptable distortion. However, due to
 concentration on artistic style, the legibility of the actual words after the
 distortion transformation is not guaranteed.
 
-%Interpretive examples includes Wordle(???) which looks at representing document
-%content by counting word occurrences. Unlike those mentioned above, Worlde does 
-%not perform any semantic inferences on the text, but rather left the graphic 
-%generation up to the users, allowing them tight fit the words into contour shapes, 
-%that often represents the underlying themes. For example; a bibliographical text 
-%about a person may use that person’s silhouette as the fitting contour. Wordle’s
-%layout algorithm disallows overlaps, and allows users to directly interact with
-%the text visualization. Another example is calligraphic packing \cite{Xu2007},
-%which takes a more artistic approach. This research visualizes single words by 
-%distorting individual glyphs to fit into \twod regions. Creative freedom is
-%given to the people to choose which image best represents the word. However, due to 
-%concentration on artistic style, it is questionable whether individual letters, 
-%and the whole word is still recognizable after the transformation.
 
 %\textbf{Summary:} Unlike WordsEye and CarSim, we start with a scene that is
 %pre-constructed, that is, we know ahead of time the subjects in our text 
@@ -215,53 +202,63 @@ a high degree of accuracy, specular reflections, shadows and other natural
 lighting phenomenons can hinder viewers ability to see vital details and create
 ambiguities. NPR can choose to ignore the natural laws of physics, and instead
 choose to focus on different abstractions such that the illustration can be
-meaningful to people from different fields.
-
-Because there are multitude of possibilities in NYPR, this section solely
-focuses on prior works that related to our work here, or served as our
-inspirations.
+meaningful to people from different fields. Because there are multitude of
+possibilities in NYPR, this section solely focuses on prior works that related
+to our work here, or served as our inspirations.
 
 
-%Non-Photorealistic Rendering can be described as any computer generated images 
-%that do not involve the accurate simulation of light. While photorealistic images 
-%presents accurate details, often times it is not entirely necessary to present 
-%such high degree of accuracy. On the contrary, specular reflections, shadows, 
-%occlusions and other natural lighting phenomenons can hinder the ability to view 
-%vital details and create ambiguities, which distorts the ability of the viewer 
-%to accurately interpret the image.
+Images found in technically written materials, or that of instructional manuals
+are quite different than those found in photo scrapbooks. The key point, as
+stated above, is that communication is valued above realism. Early works by
+Gooch \etal uncovered common themes in technical illustrations and ways to
+automate some of these properties \cite{Gooch1998}. Gooch \etal modifies the
+conventional shading algorithm to use a two-tone approach that shift from
+warm-colour to cool-colour, in addition, they added edge lines and removed
+shadows. Illustrations created in this fashion have major benefits over
+photography. One, strong lighting effects under conventional shading model are
+reduced, preserving the surface details under the light patches. Two, the
+removal of shadow regions shows the hidden details that were not previous
+visible. Other NPR shading techniques also exist, for example
+cel-shading/toon-shading techniques (???). Generally speaking, cel and toon
+shading map the intensity of light from a continuous function into
+discrete values, creating distinct contours where the values change.
+These type of shading algorithms mimics those illustrations found in
+hand-drawn illustrations such as comics. Other works looks at the simulation of
+physical materials, for example textures as halftones to simulate stylistic
+artistic sketches \cite{Freudenberg2002}. However it is semi-automatic as some
+human input is required for the right combination of textures, normal maps and 
+other special effects.
+ 
 
-This lack of realism allows a greater degree of freedom in how the final rendering 
-can look and what message it conveys, which is often done with an artistic flare, 
-for example, the simulation of blueprints and other hand-drawn artworks. 
-Non-photorealistic lighting from Gooch \etal \cite{Gooch1998}, looks at
-altering traditional Phong-shading equations to resemble technical drawing found in textbooks. 
-Their lighting equation removes the specular component, instead a flat shading 
-style is used to transition between cool-to-warm tones, preserving surface 
-orientation and edge details.
-
-Another major feature of NPR is that we can use it to simplify and accentuate 
-object geometries, taking advantage of visual perception capabilities of seeing 
-continuities and surfaces (Site Ware?), we can reduce the visual clutters of an 
-image or a scene without compromising the important details. This is known as 
-feature extraction and can be done in \twod or \threed space. The \twod space
-algorithm looks at discontinuities of a single pixel against its neighbouring pixels (Cite Book). 
-There are various discontinuity measures, for example colour discontinuity, depth 
-discontinuity and normal discontinuity. These are often combined to improve the 
-detection accuracy. If the current pixel value difference is high enough then the 
-two pixels are considered to be from different objects and the pixel itself is a 
-feature because it marks the object boundary. This algorithm iterates through every 
-pixel in the image and collects all pixels that meet the feature criteria, further 
-processing can then be performed to form line-segments from the selected pixels. 
-In \threed space, the discontinuity takes form of ridges and valleys formed by
-adjacent polygons. Ridges are formed by two front-facing polygons with an acute angles, 
-while valleys are created by obtuse angles. Raskar \cite{Raskar2001} uses
-hardware pipeline to handle the discovery of ridges and valleys, at each rendering frame the front 
-and back facing polygons are are computed and additional quad primitives are extruded 
-for both valleys and ridges. Because these quads are computed and stored, they can 
-take on additional stylistic properties. Hermosilla \cite{Hermosilla2009} took
-this idea further by doing this directly on the hardware pipeline, using hardware’s geometry 
-shader to create primitives instead of doing computation on the CPU. Note because 
-features tend to be view-dependent, most algorithms are recalculated on a per-frame basis.
+Another major benefits of NPR is that it can be used to simplify and
+accentuate object geometries. By taking advantage of visual perception capabilities of
+seeing continuities and surfaces as dictated by Gestalt Principals
+\cite{WAR2004b}, human can see and complete entire shapes rather with just a few
+geometric primitives. Feature extraction is one way to achieve this goal.
+Feature extraction can be done in either \twod or \threed spaces. The \twod
+algorithm is image based, and based upon calculating the a discontinuity valuee
+of a pixel against its neighbouring pixels (Cite Book). The discontinuity can
+take on several types, for example colour, normal and depth. A square matrix,
+called a kernel, is used to evaluate the discontinuity measure and is run
+against every pixel in the image. Any pixels that fell below a specified
+threshold hold are discarded, the remaining pixels are collected and aggregated
+into higher level geometric primitives. In \threed space, features can
+classified as ridges and valleys silhouettes. Ridges are formed by two front
+facing polygons with dihedral angle between 0 to 180, similarly, valleys are
+front facing polygons with dihedral angle between 180 to 360, both of these are
+exclusive, as angle of 0 or 180 results in a flat surface. Lastly silhouette
+edges are formed by the shared edge of front-facing polygon and back-facing
+polygon. Raskar \cite{Raskar2001} computes these \threed features without
+connectivity information by extruding features per polygon, using existing
+geometries to hide the generated features there they are inappropriate. In
+addition, since the features are geometric quads, additional processing can be
+performed so they take on different styles. Hermosilla \cite{Hermosilla2009}
+took this idea further by moving the extrusion process to modern graphic
+pipeline's geometry shader, removing the need to do the computations on the CPU.
+It should be noted that in interactive environment, features are view dependent
+in both  \threed and \twod scenarios, this usually indicates that feature
+extraction operation need to run once per frame.
+ 
 
 When it comes to expressiveness, NPR rendering styles can be used to convey a
 variety of styles. Of particular interest to us is the idea of uncertainty:
@@ -275,26 +272,31 @@ that straight, solid strokes conveys a higher degree of certainty than strokes
 that are drawn faded and sketch like. While this result isn't overly surprising
 (It matches the types of drawings done by artists), together with
 different style of pen-and-ink renderings (Salesin) they created a automated way
-to imitate the type of sketches done by hand.
+to imitate the type of architectural sketches done by hand.
 
 Another branch of non-photorealistic rendering deals with semantic segmentation
 of objects in the scene, such as illustrations found in science and medical 
-literature where different parts are highlighted in different colours in order 
-to differentiate importance. These type of techniques looks at visibility issues, 
-to ensure that semantically important objects are easily visible and to provide 
+literature where different parts are highlighted in different colours. This is
+done in order to differentiate normal and outlier areas. These type of
+techniques look at visibility issues, to ensure that semantically important objects are easily visible and to provide 
 features to deal with occlusion issues. One prominent research came from an 
 importance-driven function that can be used to determine the visibility of 
 objects \cite{Viola2004}. In this paper the authors assign scores to volumetric 
 components such that more important objects are rendered more opaque than objects 
 of lesser importance. The authors also introduce a screen-door transparency 
-technique to ensure overall visibility and context by rendering “holes” into 
-the outer layers. This idea of segmentation and context is taken further in Tietjen’s 
-paper on volumetric medical visualizations where different sub volumes are 
-divided into focus, near-focus and context components \cite{Tietjen2005}. In
-this scheme, different rendering styles are used for focus, near-focus and context objects to 
-maximize visibility without losing overall context of what the image is about. 
-In addition, contour lines are introduced to further enhance object recognition 
-abilities. 
+technique to ensure overall visibility and context by rendering ``holes'' into 
+the outer layers. This idea of segmentation and context is taken further in
+Tietjen \etal described a method for  volumetric medical visualizations
+where different sub volumes are divided to take on different semantics \cite{Tietjen2005}. In summary
+they divided any scene into three categories:
+\begin{itemize}[noitemsep]
+  \item Focus object: Current focus and is emphasized.
+  \item Near focus object: Object for understanding spatial location or
+  interrelations.
+  \item Context Object: All others objects in the scene.
+\end{itemize}
+In action, focus, near-focus and context objects can be interactively changed
+and take on different artistic styles.
 
 %\textbf{Summary:} While there are multitude of other NPR related works, we have
 %chosen to focus on techniques that accentuate geometric features without 
@@ -303,9 +305,10 @@ abilities.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \section{Integrated Visualization}
-Traditionally Information Visualization deals with abstract dataset, such as 
-structural or context visualization of text data. Scientific Visualization, on 
-the other hand, deals with visualization of concrete subjects such as physical 
+Traditionally Information Visualization deals with abstract
+representation of data, such as structural or context visualization of text
+data.
+Scientific Visualization, on the other hand, deals with visualization of concrete subjects such as physical 
 or anatomical objects. However, while these are two distinct communities, the 
 division is not always obvious. Many applications combine elements and techniques 
 from both fields, though the two sides remain separate disciplines. As data 
@@ -319,25 +322,26 @@ multiple coordinated views, and linking and brushing techniques are used to
 further help the exploration process \cite{Doleisch2003}.
 
 In a more hybrid space between InfoVis and SciVis,  Balabanian \etal placed
-hierarchical renderings of human anatomy inside an interactive Balloon Tree? graph. 
-In this scheme, each anatomical object occupies a node, and is arranged by logical
-hierarchy. The colours, size and arrangement of the nodes are dictated by abstract 
+hierarchical renderings of human anatomy inside an interactive balloon-tree graph.
+In this graph, each anatomical object occupies a node, and is arranged by
+logical hierarchy. The colours, size and arrangement of the nodes are dictated by abstract 
 semantics, such as what is currently selected, filtering operations, 
-and relations among the parts. The \threed rendering supports SciVis operations
-such as viewing, slicing and picking objects. Changes are linked and propagated across 
-relevant nodes and volume renders. 
+and relations among the anatomical parts. The \threed rendering supports SciVis
+operations such as viewing, slicing and picking objects. Changes are linked and propagated across 
+relevant nodes and volume renders, integrating the SciVis and InfVis actions. 
 
 In the InfoVis space, researches done by Sedlmair \etal looked at enriching
 InfoVis with \threed model representations \cite{Sedlmair2009}.
-In this work, they presented two applications, CarComVis which looks at intercommunication among vehicle 
-components, and LibVis which explores environment settings in a library. Neither 
-dataset is explicitly about physical objects, but contains inherent spatial 
-information for constructing a \threed representation. (An automobile for
-CarComVis and a virtual library for LIbVis). Sedlmair \etal explores different
-types of integration techniques, including the usage of multiple coordinated views and a 
-total immersion environment where the user is in a virtual world. Subject feedback 
+In this work, they presented two applications, CarComVis which allows users to
+explore intercommunication among vehicle components, and LibVis which explores
+environmental reading in a library setting. Neither one is explicitly about
+physical objects, but contains inherent spatial information for reconstructing a
+\threed representation: An automobile model for CarComVis and a virtual library
+environment for LIbVis. Sedlmair \etal explores different types of integration
+techniques, including the usage of multiple coordinated views and a total immersion 
+environment where the user is in a virtual world. Subject feedback 
 from their study suggest a strong desire for integration of \threed
-visualizations.
+visualizations, reaffirming the need to fuse techniques from SciVis and InfoVis.
 
 %\textbf{Summary:} We take an approach similar to CarComVis [Seldmair2009], we
 %generated a virtual vehicle based on the components mentioned in our dataset. However, rather 
@@ -355,64 +359,77 @@ spatial-location, opacity and other resources are demonstrated. One interesting
 use of the focus+context technique is the idea of using lenses, the lens traces 
 back to a real world metaphor of a magnification lens, where the area directly 
 under the lens are distorted and enlarged by the optics. Translating this into the 
-graphics realm, the lens acts as a specialised user interface widget, where the 
-data graphics under the lens widget undergoes a some type of transformation to 
+computer science field, the lens acts as a specialised user interface widget,
+where the data graphics under the lens widget undergoes a some type of transformation to 
 represent different semantics. 
 
 Fisheye Lens\cite{Sarkar1992} is a well known lens technique for enlarging
 details on a \twod image, for example on digital maps and circuit diagrams. Much
-like its real world counterpart, a fisheye lens technique creates an ultra wide viewing perspective that
+like its real world counterpart, a fisheye lens technique creates an ultra-wide viewing perspective that
 creates a distortion displacement under the lens. The amount of displacement 
 is controlled via a drop-off function that determines the degree of enlargement 
 and shrinkage. For example a Gaussian like function is used to enlarge the 
 center area of the lens while shrinking the area near the lens circumference, 
-drawing readers’ attention to the enlarged portion.
+allowing the readers to see the central portion in greater detail. There are a
+few usability issues with fisheye lens, and the same issue applies to all lens
+that undergoes geometric distortion: it is difficult to tell where the focus is,
+because the lens itself occludes nearby objects that helps the readers to
+understand the overall context.
 
-NPRLens\cite{Neumann2007a} performs image processing on the \twod projections of
-objects in \threed space. Graphical data points are first projected to screen
-space, collected and aggregated into higher level graphical constructs such as line 
+NPRLens\cite{Neumann2007a} allows the user to interactively create images in
+a non-photorealistic style in an object independent manner. NPRLens performs
+image processing on the \twod projections of objects in \threed space. Graphical data points are first projected to screen space, collected and aggregated into higher level graphical constructs such as line 
 segments and curves. These can then be further manipulated such as stretching, 
-shrinking or changing the stroke styles of each line segments. Note performing 
-such actions directly on the \threed objects can create tears in the object
-model meshes.
+shrinking or changing the stroke styles of each line segments. NPRLens supports
+many of the effects discussed in the NPR section above.
 
 MagicLens\cite{Viega1996} is likely the first foray of the lens idea taken into
-3 dimensional space, unlike the previously mentioned work, MagicLens works with 
+3 dimensional space, unlike the previously mentioned works, MagicLens works with 
 viewing volumes rather than \twod image maps. The lens in this scenario slices
 the scene into different frustum volumes, each volume is then rendered separately 
 and then recomposed together to create the final scene. This technique allows 
 people to create interesting effects, for example exposing the skeletal 
 structures of layered objects.
 
-Other than stylization and distortion techniques, the lens lens metaphor can
+Other than stylization and distortion techniques, the same lens metaphor can
 also be used as a way to augment information seeking, in this context the lens 
 is an exploration device that exposes hidden data points, or data points that 
-cannot be displayed in a readable manner. Generally these cases arise because 
-of overlapping points, or too many points on the screen, making labelling of 
-all points impractical. Excentric Labeling \cite{Fekete1999} uses the lens
-metaphor to deal with densely populated data points on a \twod drawing. Data
-points are not labelled, instead, when the lens is over the locations of the data points, 
-line segments are extended from the data points outward towards the circumference 
-of the lens. The actual text labels and descriptions are drawn along the 
-circumference, allowing people to make the connection between graphics and text. 
-The lens itself is movable and allows for exploration of interesting areas. 
+cannot be displayed in a readable manner. Generally these cases arise
+because of overlapping points, or there are too many points on the screen,
+making labelling of all points impractical as they introduce too much visual
+clutter. Excentric Labeling \cite{Fekete1999} uses the lens metaphor to deal
+with densely populated data points on a \twod illustration. Data points are not
+labelled, instead, when the lens is hovered over the locations of the data
+points, line segments are extended from the data points outward towards the
+circumference of the lens. The actual text labels and descriptions are drawn
+along the circumference, allowing viewers to make the connection between
+graphics and text. The lens itself is movable which allows for exploration of interesting areas. 
 Extended Excentric Labeling \cite{Bertini2009} further extends on the idea by
-creating additional interactions with the lens, dynamic overviews are shown inside the lens 
-miniature graphs composed of objects under the lens. The labels are scrollable to 
-allow exploration of dense areas without overcrowding screen space, the labels and 
+creating additional interactions with the lens, dynamic overviews are shown
+inside the lens as miniature graphs summarizing of objects under the lens. The
+labels are scrollable to allow exploration of dense areas without overcrowding screen space, the labels and 
 the extending lines are also altered to minimize crossings which can cause 
-additional visual complexity. As for labelling placement, Ali et. al in their 
-paper described and categorize general layout types \cite{Ali2005}, they
-introduce a way to calculate labels’ end-points in image space using an indexed colouring scheme.
+additional visual complexity. 
+
+% Use this in the visual desin section instead
+%As for labelling placement, Ali \etal in their 
+%paper described and categorized different layout types \cite{Ali2005}, they
+%introduce a way to calculate labels’ end-points in image space using an indexed colouring scheme.
 
 While both Excentric and Extended Excetric Lens operate in \twod space, there
-are some researches with the same idea in \threed space. Sonnet \etal
-\cite{Sonnet2004} created a medical volume rendering system where the lens takes
-the form of a \threed cursor, the cursor creates a spherical volume that pushes
-other volumes away from the center, thus creating more space for labels and annotations. BrainGazer
-\cite{Bruckner2009} allows users to draw path a query onto a segmented volume
-rendering. The path behaves as a visual query, where semantic data of segments  
-near the path are collected and displayed in a separate pop-up panel.
+are some researches with that takes the same ideas into environments that are
+composed of \threed objects. Sonnet \etal \cite{Sonnet2004} created a medical volume rendering system where the lens takes
+the form of a \threed cursor, although the viewers cannot view into the
+cursor itself, the cursor creates a spherical volume that pushes other volumes
+away from the center, thus creating more space for labels and annotations, and
+reduce the occlusion issues that comes naturally with \threed environment.
+BrainGazer \cite{Bruckner2009} is a volumetric visualization application
+that allows users to draw a query path onto a segmented volume data. The
+path behaves as a visual query, that is, a query that can be specified via
+visual inspection, rather than explicitly stating the query parameters. When the
+query is issued/drawn, volume objects near the drawn path are collected, and
+their semantic information are displayed in a user interface panel.
+
 
 %\textbf{Summary:} Our approach to focus+context resembles a combination of
 %approaches taken by BrainGazer, NPRLens and Excentric Labels. Like BrainGazer, we allow 
