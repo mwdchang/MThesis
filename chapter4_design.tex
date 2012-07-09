@@ -682,7 +682,9 @@ are any touch points lost during a gesture, the user gets immediate visual
 feedback that the gesture failed and he needs to repeat the gesture. Furthermore,
 we also keep track up to the last 10 most recent updates of any active touch points and render them as 
 breadcrumb trails. The trail gives additional visual clues to the type of 
-gestures being performed.
+gestures being performed. Visual feed back is disabled when the system is
+running on a desktop setting, the mouse pointer itself provides sufficient
+feedback.
 
 
 
@@ -788,7 +790,8 @@ by making all child objects referencing the aggregated score of their parent
 subsystem. 
 
 Aggregation mode is enabled/disabled by a toggle switch located at the bottom
-left of the user interface.
+left of the user interface. Aggregation mode works in conjunction with
+comparison mode, allow people to make comparison of major systems.
 
 \begin{figure}
  \centering  

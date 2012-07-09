@@ -1,46 +1,68 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Implementation and algorithm details
 %
-% - Might want to rephrase the texturing section, sounds a bit odd, maybe talk
-%   more about texture's role in the applicaiton
 % - If there are enough content, remove the cache section, it isn't vital to 
 %   describe how the cache works.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Implementation}
 In this section we discuss our implementation. We will briefly discuss our
-architectural design, followed interesting problems that we encountered and 
-how we attempted to solve these problems. Finally we will discuss performance 
+system design architecture, followed by our modifications to the normal graphics
+pipeline. Lastly we will discuss interesting problems that we encountered
+and how we attempted to solve these problems. Finally we will discuss performance 
 implications.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Architecture}
+Our prototype implementation is a standard two-tier system: A persistence layer
+and a user interface layer. The persistence layer is in charge of database
+transactions, cached resources and system state. The user interface layer takes
+care of the rendering tasks. 
+
+\begin{figure}
+ \centering  
+% \includegraphics[width=\columnwidth]{Architecture.pdf}
+ \includegraphics[width=2.5in]{Architecture.pdf} 
+ \caption{High level system architecture}
+ \label{figure:arch}
+\end{figure}
+
+The major components of our system, as well as their functionalities are listed
+below: 
+\begin{itemize}[noitemsep]
+  \item Render Task: Each rendering task is responsible for rendering a
+  functional part of the user interface, as well as communicating its states back
+  to the persistence layer.
+  \item State Manager: It keeps track of all data used for rendering and query
+  building.
+  \item Model Manager: Holds and manipulate model geometries.
+  \item Cache Manager: Stores cache and handles database transactions.
+  \item Event Manager: Listens for events, it dispatches changes to the State
+  Manager.
+\end{itemize}
+
+We should highlight that the Event Manager is not tied to the Render Tasks, and
+is only communicating with the State Manager. While this makes dispatching logic
+to the UI much more complicated, a separate event handler is easier to
+transition to different hardware platforms.
+
+
 \section{Environment}
 The implementation of this prototype is done in the Java programming language.
 Graphics are rendered through Java for OpenGL (JOGL) graphics library. A MySQL
 database is used to host the text documents as well as their respective document
-scores.
+scores. Our graphics hardware is a NVIDIA Quadro FX video card. The prototype is
+designed to run on 1680x1050 screen resolution. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Rendering Loop}
-We modify the basic rendering process for a geometric object by inserting two
-additional stages. A geometry stage that enriches mesh data, and a texture stage
-that performs combine and offline effects.
-
-\subsection{Geometry Stage}
-Immediate rendering involves sending the geometries directly into the GPU on a
-per frame basis While this method is straightforward, this is usually 
-insufficient due to the number of vertices in the \threed geometry, which can 
-severely slow down performance. By taking advantage of modern GPU architecture, 
-we cache the geometries and related information (normal, colour, texture) directly 
-onto the GPU as vertex array objects. Shaders are used to partially offload 
-reliance on CPU processing, in particular, shaders have better performance as 
-they are executed in parallel.
-
+\section{Pipeline Modification}
 In order to create our NPR effects and to perform additional semantics on the
 visualization, each mesh group are enriched with these additional attributes:
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
   \item Adjacent Vertices: Each triangle geometry can have 0 to 3 adjacent
   vertices, these came from neighbouring (connected) triangles. We use these to 
   calculate edges and silhouettes. Where there are no adjacent vertices, we 
@@ -51,8 +73,8 @@ visualization, each mesh group are enriched with these additional attributes:
   calculation techniques exists, for example ones that takes vertex density and 
   the overall shape into account which gives a better approximation of the 
   logical centre.
-  \item Bounding Box: A 3D bounding box (non-axis aligned). We use the bounding
-  box to calculate the zone boundaries in screen space.
+  \item Bounding Box: A \threed bounding box (non-axis aligned). We use the
+  bounding box to calculate the zone boundaries in screen space.
 \end{itemize}
 Note we have chosen to use the “triangle soup” approach where each triangle has
 distinct vertices. Other methods such as index tables allows neighbouring 
@@ -61,21 +83,7 @@ footprint, however the cost of this is flexibility and increased complexity for
 handling geometric changes (shared vertices need to be duplicated to avoid 
 affecting unaffected polygons). 
 
-\subsection{Texture Stage}
-We use textures extensively in our rendering process. Textures are used in two
-primary ways:
-\begin{itemize}
-  \item Different types of effects are rendered offline into texture buffers,
-  this allows us to separate our rendering effects into different buffers. The 
-  final image is a composition of different textures, because the combining step 
-  is done separately, it gives us additional opportunities to any post processing
-  steps.
-  \item Textures serve as a temporary cache, it is request the same data to be
-  rendered every single frame. Textures provide a cheap alternative to 
-  store/fetch the ready made image in memory.
-\end{itemize}
-Our texture layers are composed of the following renders, ordered from bottom
-up: Base layer, lens layer, interactive effects layer, UI layer, text layer.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Algorithms}
@@ -90,7 +98,7 @@ We have mentioned briefly that rendering translucent geometries in 3D space can
 create artifacts, here we will describe this in greater detail and outline 
 possible solutions.
 First of all, to create a translucent effect, we need to do two things: 
-\begin{itemize}
+\begin{itemize} [noitemsep]
   \item Enable Blending: This option allows foreground object to blend with
   background objects.
   \item Disable Depth Testing: This option renders all geometries regardless of
@@ -129,7 +137,6 @@ methods exists, we decided that this was the most reasonable approach because
  the required features are available on most hardware at the time of implementation.
 
 
-
 \subsection{Cache and Stabilization}
 Due to the size of our data and the diverse variations of queries on the database, 
 we have encountered situations where our database does not produce a stable 
@@ -165,6 +172,7 @@ so they can be de-serialized on system startup without having to iterate the
 database tables. However, without a customized data container, this in practice turned out 
 to be slower than database lookups and was abandoned.
 
+
 \subsection{Multi-Touch Heuristics}
 We use native TUIO messages for our touch event handling, because we are 
 supporting sensing technology, there are inherent noises that comes from the 
@@ -175,45 +183,60 @@ sinusoidal curves introduced noises because the knuckles of other fingers are
 sensed as new touch points.
 
 To deal with these unintended noises, we developed the following stabilization 
-heuristics, which reduces the “jittering” effects and prevent accidental 
-triggering of unintentional events. Note the while the TUIO message use 
-normalized coordinate space (between 0 and 1) we instead chose to convert it to 
-screen pixel spaces, we reason that saying ``between 5 and 20 pixels'' is much
-more clear way of specifying distance than ``between 0.002 and 0.004''.
+heuristics, which reduces the ``jittering'' effects and prevent accidental 
+triggering of unintentional events.
 
-\begin{itemize}
-  \item Real Update: Ignore minuscule updates.
-  \item Coincidental Points: Reduce the change of a single touch point being
-  recognized as multiple touch points.
-  \item Movement Buffer: Reduce the accidental touch points caused while any
-  gesture is in motion.
-  \item Reinforce Intention: Reduce jitters that are caused by finger
-  depression/deformation when touching the screen surface.
+\begin{itemize} [noitemsep]
+  \item \textbf{Real Update:} When a finger is touching the surface, there might
+  be updates triggering even when the finger is kept still. This is likely due to
+  the sensor device been overly sensitive. To compensate, we only accept an
+  update if it is at least X number of pixels away from the previous update
+  point.
+  \item \textbf{Coincidental Points:} When a touch is initialized on the touch
+  surface, there is a possibility that more than one touch point will get registered, due
+  to the shape and slight movement of the finger. To reduce this scenario from
+  occurring, we store the xy-coordinate and the time the touch point is created.
+  If a touch point is created too close to any other touch point within a time
+  threshold, that point is rejected
+  \item \textbf{Movement Buffer:} When a gesture is in transition, there are
+  cases where other parts of the hand will inadvertently get picked up by the touch sensor.
+  Keeping the fingers perpendicular to the screen helps a lot, but it is not a
+  very natural position. To deal with this case we created a buffer zone around
+  the touch point while it is transition, any touch points introduced into the
+  buffer zone are rejected by the system.
+  \item \textbf{Reinforce Intention:} This heuristic deals with reducing jitters
+  on the initial touch. This is a case when the touch point is initialized, but
+  due to the size/shape of the finger it also triggers an immediate update,
+  where the distance differential is large enough that it cannot be caught by
+  \textit{Real Update} heuristic. The result is that there is a slight jitter
+  every when a touch point is introduced into the system. We remedy this case by
+  enforcing user intentions: the first update must be at least 20 pixel distance
+  away from the initial position, and no update can occur in the first 500
+  milliseconds.
 \end{itemize}
+While we have tuned our heuristics to work specifically with our hardware, we
+believe many of these can be generalized to other type of touch or sensor based
+devices.
 
-Unfortunately these heuristics are hardware dependent. While some of these
-heuristics are platform independent, for example heuristics 2 and 4, they 
-must still be tuned to match specific hardware sensitivity.
 
-
-\subsection{Font Texture}
-We create a texture wrapper to store fonts. Font rendering can be an expensive 
-process in JOGL because the texture object is allocated per frame, this is true 
-even if we render the same text with the same parameters. The simplest, and most
-straightforward choice was to create our own intermediate font buffer, which we
-realize as an OpenGL texture. The texture is stored in memory and can be placed 
-anywhere on the display space as a geometric quad. We support simple insert and 
-delete operations, which corresponds on adding and removing lines of text, a 
-dirty flag determines if the texture need to be refreshed. All font textures are
-one-to-one with screen space to avoid distortions that would alias the font 
-glyphs.
-
-Font textures for the document widget works with slightly different semantics: 
-we use multiple, piecewise textures to store the document text instead of a 
-single texture. This is done for several reasons, one, we want to prefetch 
-database result into a cache, and two, we need multiple textures to get around 
-hardware texture size limitations. The two textures tiled together to create an 
-illusion of a single texture, when we scroll past the first texture we perform a
-swap and fetch the next set of results. Thus, even though we may be fetching 
-from the database, we can scroll through the cached results and therefore 
-create a smooth scrolling mechanism. 
+%\subsection{Font Texture}
+%We create a texture wrapper to store fonts. Font rendering can be an expensive 
+%process in JOGL because the texture object is allocated per frame, this is true 
+%even if we render the same text with the same parameters. The simplest, and most
+%straightforward choice was to create our own intermediate font buffer, which we
+%realize as an OpenGL texture. The texture is stored in memory and can be placed 
+%anywhere on the display space as a geometric quad. We support simple insert and 
+%delete operations, which corresponds on adding and removing lines of text, a 
+%dirty flag determines if the texture need to be refreshed. All font textures are
+%one-to-one with screen space to avoid distortions that would alias the font 
+%glyphs.
+%
+%Font textures for the document widget works with slightly different semantics: 
+%we use multiple, piecewise textures to store the document text instead of a 
+%single texture. This is done for several reasons, one, we want to prefetch 
+%database result into a cache, and two, we need multiple textures to get around 
+%hardware texture size limitations. The two textures tiled together to create an 
+%illusion of a single texture, when we scroll past the first texture we perform a
+%swap and fetch the next set of results. Thus, even though we may be fetching 
+%from the database, we can scroll through the cached results and therefore 
+%create a smooth scrolling mechanism. 
