@@ -83,7 +83,77 @@ panel to read the detailed complaint descriptions.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Study???}
-\subsection{Design}
+\section{Study}
+We created a user study to see how people can use our visualization to solve
+specific problems. In particular we are interested to see how people respond to
+using \threed interface for solving analytical tasks.
+
+\subsection{Data and Task}
+To remove any personal biases against particular makes of vehicles or
+manufacturers. We perform a replacement scheme to remove known and common
+identifiers and replace them with generic placeholders like ``Make1'',
+``Model2'' \ldots etc. We tested our visualization with X different tasks as
+seen in \ref{table:StudyTask}. Tasks 1 through 4 are objective tasks where we
+would expect the same, or similar outcomes from our test trails. Tasks 5 through
+7 are subjective tasks, they look at how the visualization is used to help with
+decision making process.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l| p{4.0in}|}
+\hline
+ \# & Type & Task Description \\
+\hline
+\hline 
+1 &  Objective & Select the component that has the highest rate of complaints in
+year X (With heatmap feature disabled) \\
+\hline
+2 &  Objective & Select the component that has the highest rate of complaints in
+year X with heatmap selection \\
+\hline
+3 &  Objective & Select the component(s) with the highest number of complaints\\
+\hline 
+4 &  Objective & User the lens widget to select region that contains the highest
+number of issues\\
+\hline
+5 & Subjective & Identify the components that failed when component X also
+failed \\
+\hline
+6 & Subjective & Given vehicle X and Y, which part in X contains more complaints
+than the equivalent component in Y? Which part in vehicle Y contains more
+complaints then the equivalent component in X? \\
+\hline
+7 & Subjective & Given a list of vehicles (X,Y,Z) of similar type and price
+range, which vehicle would you purchase and why? \\
+\hline
+\end{tabular}\caption{Study Tasks}\label{table:StudyTask}
+\end{table}
+ 
+\subsection{Study Design}
+The experiment is run one participant at a time. We begin the study by
+describing the goal of the study and the nature of the dataset. We explain how
+the colour scale is used to differentiate high occurring and low occurring
+entities, and go over the widget functionalities. The next phase consist of warm
+up tasks, our system prompt the participants to use specific features in the
+correct manner, this gives the participants time to familiarize themselves with
+the environment. After the tasks are completed, we give each participants X
+minutes to explore the visualization on their own, we are on hand to answer any
+questions they have at this time.
+
+After this phase, we begin to task trials. We administer the tasks in order,
+participants may take as much time as necessary to complete each trial. After
+the trial completion we solicit additional feedback via a semi-formal interview,
+in particular, we ask them what features they found to be useful, and whether
+they encountered any issues with the visualization. Each experiment takes
+approximately 60 to 90 minutes.
+
+The experiment ran on a 60 inch display screen running at 1680 x 1050
+resolution. The display is enhanced with a touch sensor that is capable of of
+detecting up to X touch points. Video recording is used to record the
+experiment.
+
 \subsection{Study Result}
+We recruited our participants from the graduate student population and the
+computer science faculty.
+
 \subsection{Discussion}

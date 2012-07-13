@@ -270,8 +270,8 @@ meant to show what the buildings may have looked like in the past. They found
 that straight, solid strokes conveys a higher degree of certainty than strokes
 that are drawn faded and sketch like. While this result isn't overly surprising
 (It matches the types of drawings done by artists), together with
-different style of pen-and-ink renderings (Salesin) they created a automated way
-to imitate the type of architectural sketches done by hand.
+different style of pen-and-ink renderings \cite{Salisbury1994} they created a
+automated way to imitate the type of architectural sketches done by hand.
 
 Another branch of non-photorealistic rendering deals with semantic segmentation
 of objects in the scene, such as illustrations found in science and medical 
@@ -377,10 +377,12 @@ understand the overall context.
 
 NPRLens\cite{Neumann2007a} allows the user to interactively create images in
 a non-photorealistic style in an object independent manner. NPRLens performs
-image processing on the \twod projections of objects in \threed space. Graphical data points are first projected to screen space, collected and aggregated into higher level graphical constructs such as line 
-segments and curves. These can then be further manipulated such as stretching, 
-shrinking or changing the stroke styles of each line segments. NPRLens supports
-many of the effects discussed in the NPR section above.
+image processing on the \twod projections of objects in \threed space. Graphical
+data points are first projected to screen space, collected and aggregated into
+higher level graphical constructs such as line segments and curves. These can
+then be further manipulated such as stretching, shrinking or changing the stroke
+styles of each line segments. NPRLens supports many of the effects discussed in
+the NPR section above.
 
 MagicLens\cite{Viega1996} is likely the first foray of the lens idea taken into
 3 dimensional space, unlike the previously mentioned works, MagicLens works with 
@@ -417,17 +419,18 @@ additional visual complexity.
 
 While both Excentric and Extended Excetric Lens operate in \twod space, there
 are some researches with that takes the same ideas into environments that are
-composed of \threed objects. Sonnet \etal \cite{Sonnet2004} created a medical volume rendering system where the lens takes
-the form of a \threed cursor, although the viewers cannot view into the
-cursor itself, the cursor creates a spherical volume that pushes other volumes
-away from the center, thus creating more space for labels and annotations, and
-reduce the occlusion issues that comes naturally with \threed environment.
-BrainGazer \cite{Bruckner2009} is a volumetric visualization application
-that allows users to draw a query path onto a segmented volume data. The
-path behaves as a visual query, that is, a query that can be specified via
-visual inspection, rather than explicitly stating the query parameters. When the
-query is issued/drawn, volume objects near the drawn path are collected, and
-their semantic information are displayed in a user interface panel.
+composed of \threed objects. Sonnet \etal \cite{Sonnet2004} created a medical
+volume rendering system where the lens takes the form of a \threed cursor,
+although the viewers cannot view into the cursor itself, the cursor creates a
+spherical volume that pushes other volumes away from the center, thus creating
+more space for labels and annotations, and reduce the occlusion issues that
+comes naturally with \threed environment. BrainGazer \cite{Bruckner2009} is a
+volumetric visualization application that allows users to draw a query path onto
+a segmented volume data. The path behaves as a visual query, that is, a query
+that can be specified via visual inspection, rather than explicitly stating the
+query parameters. When the query is issued/drawn, volume objects near the drawn
+path are collected, and their semantic information are displayed in a user
+interface panel.
 
 
 %\textbf{Summary:} Our approach to focus+context resembles a combination of
@@ -442,9 +445,27 @@ their semantic information are displayed in a user interface panel.
 As the cost of touch surface computing becomes cheaper, we have gradually seeing 
 interactive surfaces introduced into public areas, office work environments and 
 personal spaces. Interactive interfaces brings new possibilities of exchanging 
-information in a walk-by scenario \cite{Vogel2004}, without the need
-of peripheral hardware devices such as the mouse or keyboard. New challenges also arise in how 
-best to interact with the touch surface. Wigdor and Wixon in their book touched 
+information in a walk-by scenario \cite{Vogel2004}, allowing people to
+interact with data without the need of peripheral hardware devices such as the
+mouse or keyboard. Much of the challenges today seem to focus on two central
+themes: collaboration and gesture design. Collaboration deals with the idea of
+having personal and collaborative spaces, as well how people interact with each
+other either in a co-located, or distributed setting. Gestures, on the other
+hand, deals with classification and design of gestures that are natural and
+intuitive to use. In this work, we focus on the gesture design aspect.
+
+As a general reference, Wigdor and Wixon in their book touched upon the idea of
+natural user interfaces (NUI), where they emphasis that NUIs are meant to be
+intuitive to use, rather than a strictly organic process \cite{Wigdor2011}.
+Additionally they look at interactive surface computing from a historical
+perspective, with many DOs and DO NOTs and design implications.
+
+Other researchers looked at gesture design from a crowd-sourcing approach.
+Wobbrock \etal conducted an experiment where the consequences are given, and the
+participants needed to come up with an appropriate gesture to match the end
+result \cite{Wobbrock2009}.  
+
+New challenges also arise in how best to interact with the touch surface. Wigdor and Wixon in their book touched 
 upon the idea of natural user interfaces, in the sense that an interface design 
 that feels intuitive to use rather than an organic process\cite{Wigdor2011}.
 Other researchers looked into building touch interactions from a user-defined perspective 
