@@ -1,55 +1,83 @@
 \chapter{Introduction}
- With data constantly growing, understanding large quantities of text is a
- difficult challenge in terms of the sheer volume and lack of task-driven visual
- techniques by which text documents can be effectively summarized \cite{ROH2011a}.
- People often resort to summarization techniques to extract the main themes in a
- collection of text. Popular visual summarization techniques such as TagCloud
- and WordCloud (Cite) render frequently occurring words in an abstract array,
- often out of context and without considering the underlying semantics of the
- words, nor the overall subject matter. However, many words in a text have
- easily discovered relationships. One type of this relation is meronymy or the
- \emph{part-of} relationship. Using a meronym database, it is possible to
- construct a part-whole relationship. In this thesis, we focus on the
- visualization of meronyms that have implicit spatial relationship, that is,
- they have physical representations in the real world. 
+The amount of data available today is stagger. With advanced technologies, data
+are constantly been created and archived. Understand large quantities of data is
+a difficult challenge in terms of sheer volume and the time effort needed to
+sift through the data to find salient information. Information Visualization
+(InfoVis), is a field that deals with this data overload by using visual
+representations of data to amplify human cognition \cite{Card1999}. While there
+are many InfoVis techniques that deals with summarization and exploration of
+data, particularly in text format, these techniques are not always in context
+because of their abstract presentation. For example, consider the popular
+technique of TagCloud, the size of the tags are semantically linked to the
+frequency, but the actual context and subject matter of the text is not taken
+into account. Many of these missing context are concrete ideas about objects and
+space relations that do not naturally lend themselves to be mapped against
+abstract representations.
  
+In this work, we explore an alternative approach for summarizing text documents
+by preserving the physical entities in the text as they would appear in the real
+world. We realize these entities as \threed geometries and encode additional
+semantics as graphical effects. We then design interactions to navigate and
+explore the \threed visualization space.
+
+ %With data constantly growing, understanding large quantities of text is a
+ %difficult challenge in terms of the sheer volume and lack of task-driven visual
+ %techniques by which text documents can be effectively summarized \cite{ROH2011a}.
+ %People often resort to summarization techniques to extract the main themes in a
+ %collection of text. Popular visual summarization techniques such as TagCloud
+ %and WordCloud (Cite) render frequently occurring words in an abstract array,
+ %often out of context and without considering the underlying semantics of the
+ %words, nor the overall subject matter. However, many words in a text have
+ %easily discovered relationships. One type of this relation is meronymy or the
+ %\emph{part-of} relationship. Using a meronym database, it is possible to
+ %construct a part-whole relationship. In this thesis, we focus on the
+ %visualization of meronyms that have implicit spatial relationship, that is,
+ %they have physical representations in the real world. 
  
- \section{Motivation and Approach}
- Illustrations in technical and medical textbooks are typically drawn in a
- manner that is closely tied to Non-Photorealistic Rendering (NPR). Unbounded by
- physical constraints, these illustrations takes on a plethora of rendering
- styles, putting emphasis on different subsections of the rendered scene. Thus,
- these illustrations are information-rich entities, not only do these
- subsections \emph{pop-out} to the viewers, they still retain their easily
- recognizable shape and forms. While NPR techniques are used prominently in the
- field of Scientific Visualization, we have seen few examples of its usage in
- Information Visualization, specifically the use of NPR techniques to augment
- text-analytic tasks.
+ \section{Motivation}
+ Illustrations found in technical or medical materials are often drawn in a way
+ to attract the viewer's attention to specific parts of the illustration. This
+ stylistic approach, known as Non-Photorealistic Rendering (NPR) outshines
+ traditional photographic pictures in its capability to carry a specific
+ message to the viewers, for example, putting emphasis on sub sections of the
+ image such that they \emph{pop-out} to the viewers. While the idea of using 
+ NPR is fairly common in the field of Scientific Visualization; from the 
+ InfoVis side, we have seen few example usages of NPR techniques to  highlight
+ interesting data.
  
- Here we investigate an integrated approach for analyzing text content. Our
- system analyzes collections of descriptive text, extracts mentions of parts of
- physical entities and computes an importance score. We then encode the
- resulting scores onto a virtual \threed representation of these entities,
- with the magnitude of the score determining the type of graphical
- embellishments. Finally, we create interactions to allow people to visually
- query and filter the data based on their pre-existing spatial awareness and
- familiarity of the subject.
+ Motivated by the lack of coverage in this area, we want to investigate how an
+ integrated approach of using both InfoVis and NPR graphics can enhance visual
+ exploration of data.
  
+ \section{Approach}
+ There are three main problems that should be addressed here: how to handle the
+ text document, how to visualize the document, and lastly how to interact with
+ the visualization data.
  
- To demonstrate our application in a realistic scenario, we applied our methods
+ For the first problem, our system analyzes collections of descriptive text,
+ extracting entities that forms a \emph{part-of} relationship known as meronomy
+ relationship. We then construct a scoring function that tells us how frequently
+ entity occurs in the document, as well as their relative occurrence to each
+ other. 
+ 
+ In the second problem, we built a virtual representation of the document
+ entities. We start with a segmented \threed geometric model that is mapped onto
+ our meronomy ontology. We then encode the scores above onto each segments, 
+ using colour, transparency and other stylization styles to put emphasis on  an
+ entity. We render the model as precisely as possible to retain the familiarity
+ one would have with the entities in the real world.
+ 
+ Lastly, to enable exploration of data, we designed a set of widgets to perform
+ filter and drill-down operations. In particular we allow queries to be executed
+ visually via a widget that embodies the lens metaphor. We then mapped simple
+ touch gestures onto our user interface, to enable our visualization to run on a
+ large display in a walk-up-and-use case scenario.
+ 
+ To demonstrate our application in a realistic context, we applied our methods
  to analyze a text corpus composed of over 800,000 vehicle complaint reports
  from the US National Highway Traffic Safety Administration (NHTSA). Our goal is
  to help consumers make better purchasing decisions.
  
- %\begin{figure}
- % \centering 
- % \includegraphics[width=\columnwidth]{test.jpg}
- % \caption{A subset of the component keywords hierarchy.  Words in square brackets are synonyms.  The components in this hierarchy were isolated in the \threed model of a car, and extracted from the text data and counted.}
- % \label{figure:meronym}
- %\end{figure}
-  
- 
- > Presenting visualization that promotes more collaboration ? > NPR Rendering techniques
  
  \section{Contribution}
  This work describes a novel approach for conducting text analytic tasks.
@@ -62,15 +90,19 @@
  \section{Organization}
  The remainder of the these is organized as follows:
  
- \noindent Chapter 2 discusses related works from research literature. 
+ \noindent Chapter 2 discusses related researches and other inspirational works
+ from research literature.
  
  \noindent Chapter 3 discusses the problem scenario in depth, it describes how
  we came up with our goals and requirement for design.
  
- \noindent Chapter 4 presents our visual design and our justifications. 
+ \noindent Chapter 4 presents our design and justifications. This chapter is
+ broken down into 3 main subsections, data handling, visual design and
+ visualization interactions.
  
- \noindent Chapter 5 discusses high level interactions, in particular we
- discuss typical usage scenarios of the visualization system
+ \noindent Chapter 5 discusses in our architecture and implementation. In
+ addition we address some non-trivial problems that we came across during the
+ development of this visualization.
  
  \noindent Chapter 6 discusses our user study design and study results. 
  
