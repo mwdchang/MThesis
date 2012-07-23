@@ -135,7 +135,16 @@ single to multiple passes, a complete rendering will take N/2 passes where N is
 the number of geometric layers based on the present viewing position. This 
 method yield accurate and eye-pleasing results, while more performance friendly
 methods exists, we decided that this was the most reasonable approach because
- the required features are available on most hardware at the time of implementation.
+the required features are available on most hardware at the time of implementation.
+  
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{oit_example.png} 
+ \caption[Order Independent Transparency]{Top row shows the blending artifacts
+ with and without order-independent-transparency. Bottom row show the result on
+ our \threed model, note it is more difficult to distinguish depth without OIT}
+ \label{figure:oit}
+\end{figure}
 
 
 \subsection{Cache and Stabilization}

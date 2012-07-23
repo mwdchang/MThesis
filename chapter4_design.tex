@@ -51,6 +51,13 @@ equivalent of one another, for example ``limo'' and ``limousine'' both describe
 the same type of objects and thus belongs to the same synset. For each word in
 our current collection, we replace it with its respective synset.
 
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{meronomy.png}
+ \caption{An example of the meronomy + synset structure}
+ \label{figure:meronomy}
+\end{figure}
+
 
 The addition of synsets into the vocabulary gave us a comprehensive number of
 keywords, however it also created undesirable noises. Manual examination of data
@@ -167,7 +174,9 @@ remedy this as more vehicle models are processed.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Visual Design}
 The following sections discuss our user interface and design decisions. In
-summary, our interface is composed of five major components as seen in <Figure of overview>:
+summary, our interface is composed of five major components as seen in
+\ref{figure:overview}
+
 \begin{itemize} [noitemsep]
   \item \threed Visualization:  The central point of the visualization system is
   a stylized rendering of the physical entities in the text documents (In our scenario, 
@@ -203,6 +212,14 @@ summary, our interface is composed of five major components as seen in <Figure o
   The panel displays documents relating to the current selected objects and 
   highlights all component keywords.
 \end{itemize}
+
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{overview.png}
+ \caption{System Overview}
+ \label{figure:overview}
+\end{figure}
+
 In the following subsections we will describe each visualization components in
 more detail, the trade offs and choices we made and our justifications.
 
@@ -300,18 +317,19 @@ In our design, we want to make all important objects visible (See requirement
 R1), these includes objects partially or fully occluded by another object, and 
 objects that are contained within others. The first case can be partially solved 
 by altering the viewing distance and viewing perspective on the visualization,
-whereas in the second case no amount of viewing adjustment will solve the occlusion issue. To address this 
-problem, we double-encoded the importance score as both the colour and transparency 
-values. The transparency value of each object is proportional to the object’s score, 
-such that the higher scored entities appear more opaque, while the lower scored 
-entities appear more transparent. The maximum and minimum transparency values 
-are capped at both ends such that no objects are completely opaque or completely 
-transparent. Our transparency scale is slightly weighted to give more
-emphasis for more frequently occurring entities. One caveat of rendering
-translucent geometries in \threed space is that ordering of geometries becomes
-important for blending to work correctly, out-of-sequence geometries appear to
-lose their depth cues when blended together. We will discuss this effect, and
-solutions in further detail in the implementation section. 
+whereas in the second case no amount of viewing adjustment will solve the
+occlusion issue. To address this problem, we double-encoded the importance score
+as both the colour and transparency values. The transparency value of each
+object is proportional to the object’s score, such that the higher scored
+entities appear more opaque, while the lower scored entities appear more
+transparent. The maximum and minimum transparency values are capped at both ends
+such that no objects are completely opaque or completely transparent. Our
+transparency scale is slightly weighted to give more emphasis for more
+frequently occurring entities. One caveat of rendering translucent geometries in
+\threed space is that ordering of geometries becomes important for blending to
+work correctly, out-of-sequence geometries appear to lose their depth cues when
+blended together. We will discuss this effect, and solutions in further detail
+in the implementation section.
 
 
 The zero score has a special semantic in our prototype. When an entity's score
@@ -424,6 +442,24 @@ tagged, and have their detailed information displayed on the left/right sides of
 information charts. A tagged object is identified with its chart by the use of 
 line segments connecting the chart back to the component’s centroid location in 
 screen space.
+ 
+  
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{lens_schematic.png}
+ \caption[Lens Widget Schematics]{Cross section schematics of the Lens Widget}
+ \label{figure:lensSchematic}
+\end{figure}
+
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{lens_example.png}
+ \caption[Lens Widget in Action]{On the left, using the Lens Widget to expose
+ underlying semantics.
+ On the right, adjusting the depth field to cull away occluding geometries.}
+ \label{figure:lensExample}
+\end{figure}
+
 
 Each lens widget has its own rendering pipeline, as such, the focused area under
 the lens can be rendered in the same style as the default \threed
@@ -552,25 +588,28 @@ support common tasks.
 
 \subsection{Object Selection and Query Construction}
 The current query criteria determines the visibility of the \threed objects, as
-well as their selectability. Query is constructed by combining together selected values 
-from widget instances and the selection buffer, which holds the currently selected 
-entities. The system detects any changes to the query criterion and triggers the 
-visualization to reevaluate. 
+well as their selectability when an action is performed. Query is constructed by
+combining together selected values from widget instances and the selection
+buffer, which holds the currently selected entities. The system detects any
+changes to the query criterion and triggers the visualization to reevaluate. 
 
 Object selection can be done in two ways: One, direct selection by clicking on
 the \threed objects themselves or clicking through the lens widget. Two,
 indirect selection  by clicking on their representative heatmaps.
-In the case where objects occlude each other, direct selection will return the object that is closest to viewing
-point. In order to select occluded objects, the \threed model can be rotated to reveal
-hidden entities. Alternatively, we can use the lens’ depth functionality to cut
-away occluding geometries, or directly clicking on the heatmap representations which 
-are always available. 
+In the case where objects occlude each other, direct selection will return the
+object that is closest to viewing point. In order to select occluded objects,
+the \threed model can be rotated to reveal hidden entities. Alternatively, we
+can use the lens’ depth functionality to cut away occluding geometries, or
+directly clicking on the heatmap representations which are always available. 
 
 Selection is toggle based, thus clicking on a selected object or heatmap will 
 de-select that item. Clicking on an empty space will trigger a reset and de-select 
 all items. Selected items are accentuated visually with a glowing blue halo
 around the objects, this also applies to corresponding heatmaps which will have
-their border highlighted in blue.
+their border highlighted in blue. Any entities with 0 scores are considered
+inactive and are only drawn on the screen to give context, as such they are not
+selectable, any clicking on inactive object will cause the select action to go
+through the object to select the next nearest non-zero entity.
 
 Selected objects are added to the selection buffer, which also act as a query filter. 
 When selection buffer is not empty, object scores are calculated in relation to 
@@ -580,21 +619,41 @@ objects are recalculated to see if they co-occurs with both “engine” and “door”.
 By this convention, the selected objects will always have the maximal score after 
 normalization, and will be coloured with the deepest shade on our colouring scale.
 
+
 \subsection{Spatial Interaction}
-The lens widget allows people to demand and filter detailed information by means
-of of a visual query, people move the lens to inspect what they perceive to be 
-interesting areas on the display screen. For any spatial or parameter changes in 
-the lens, or changes to the \threed model’s orientation, we update the lens’
-effect to reflect these changes to spatial coordinates in real time. Unlike
-conventional systems where filters are explicitly stated (therefore requiring the users to have some 
-notions of what they are looking for), our spatial interaction allows people to 
-freely roam the visualization without prior knowledge or any explicit goals. Thus, 
-this type of exploration is more playful and open-ended, which may lead to
-people to discover things that are unknown to them before. For example, imagine a case where a strange noise is coming from the 
-front of the car, while we do not have a clear idea of what component is causing
-the noise, it is possible to use the lens widget to examine the ``front'' of the 
-car for similar incident, and use the query results to bootstrap our research
-effort.
+Traditional systems, particularly databases use explicit queries as a mean to
+communicate with the underlying data. While this works well for task analysis,
+it has an implicit assumption that you know what you are looking for, and that
+the query executor has some notion of what the underlying data structures are
+like. Thus it can be difficult for anyone to come up and use the system without
+prior training.
+
+Here we take a different approach, the lens widget allows people to demand and
+filter detailed information by means of a visual query. Unlike explicit queries,
+visual query is done more passively by moving the lens widget about the screen
+to inspect different spatial areas that appear interesting to the viewer. This
+is the key difference, as the focus selection is done visually, rather than
+through explicit selection, this means the viewers do not need to know what the
+entities are called to select them, reducing the need to have prior knowledge
+about the data. This type of interaction is more playful and open-ended, people
+are free to explore the visualization on their on terms which may lead to
+unknown or unexpected discoveries.
+
+In addition of the freedom to explore the visualization, the spatial
+interaction has two other advantages: proximal relationship and reduced effort
+in query construction. First, with most complex objects, incidents relating to
+an entity is rarely in isolation, neighbouring objects are often impacted as
+well. The lens widget allows selection of a volume range, which easily
+facilitate bringing back entities close to the one we want to focus on. Second,
+the visual query allows us to form queries that can be difficult to construct in
+conventional systems. Imaging a case where we want to know how many vehicle
+complaints are related to the ``front'' of the vehicle, traditional query would
+require knowledge of the parts that belong to the front of the car, then follow
+by an aggregation step of constructing a query that includes all these parts.
+Our visual query simplifies this step by taking advantage of the familiar form
+factor, a lens widget can be over the ``front'' of the vehicle visualization,
+automatically pulling out all the relevant entities.
+
 
 \subsection{Surface Based Interaction}
 We intended to have our application running on a walk-up-and-use scenario
@@ -678,7 +737,7 @@ point is registered, we render a gradient circle at the XY coordinates as
 detected by the sensor, the radius of the circle is rendered such that it is
 large enough to be seen and not hidden under the fingertip.
 The circle's position is updated real time with with respect to updates to the
-touch point, and is removed when the touch point is deregistered. Thus, if there
+touch point, and is removed when the touch point is unregistered. Thus, if there
 are any touch points lost during a gesture, the user gets immediate visual
 feedback that the gesture failed and he needs to repeat the gesture. Furthermore,
 we also keep track up to the last 10 most recent updates of any active touch points and render them as 
@@ -744,8 +803,8 @@ drop-down list located at the bottom left of the user interface.
 \begin{figure}
  \centering  
  \includegraphics[width=\columnwidth]{heatmap.png}
- \caption{Showing the different heatmap perspectives. Left displays the monthly
- perspective, centre displays the component perspective, and right displays the
+ \caption[Heatmap Perspectives]{Showing the different heatmap perspectives. Left
+ displays the monthly perspective, centre displays the component perspective, and right displays the
  global perspective}
  \label{figure:heatmap}
 \end{figure}
@@ -781,6 +840,14 @@ problematic object from both side will have a strong presence overall but with a
 faint outline, while a lopsided but infrequent problem will have strong outline
 but barely visible interior colour.
 
+ 
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{comparison.png}
+ \caption[Comparison View]{Comparison View}
+ \label{figure:comparison}
+\end{figure}
+
 By default, comparison mode is turned off. It is activated when the viewer
 switches the second hierarchy filter from the ``None'' position to a valid
 selection. Subsequent query modifications are carried out in comparison mode
@@ -814,11 +881,11 @@ subsystem.
 Aggregation mode is enabled/disabled by a toggle switch located at the bottom
 left of the user interface. Aggregation mode works in conjunction with
 comparison mode, allow people to make comparison of major systems.
-
+ 
 \begin{figure}
  \centering  
  \includegraphics[width=\columnwidth]{aggregation.png}
- \caption{Top: Aggregation mode disabled. Bottom: Aggregation mode enabled,
- note that the seat and engine now appears more prominent in the visualization.}
+ \caption[Aggregation View]{Top: Aggregation mode disabled. Bottom: Aggregation
+ mode enabled, note that the seat and engine now appears more prominent in the visualization.}
  \label{figure:heatmap}
 \end{figure}
