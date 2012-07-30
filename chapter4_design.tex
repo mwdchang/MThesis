@@ -14,12 +14,27 @@ seeking.
 \section{Data Processing}
 In order to create our visualization, first we must be able to process and
 extract semantics from our text collection. Our processing is broken down into 
-three different stages, a preprocessing stage and an extraction/scoring stage.
-The preprocessing stage deals with normalizing the text and building a vocabulary 
-of keywords that are used to represent the entities found in the document. 
-The extraction/scoring stage scores each document the number of occurring keywords. 
-Lastly, the final stage involves segmentation of \threed models into subgroups
-such that each group can be semantically mapped against the keywords.
+three different stages, normalization, preprocessing and an
+extraction/scoring stage. The normalization stage removes irrelevant entries and
+attemps to clean up the text as much as possible. The preprocessing stage deals
+with normalizing the text and building a vocabulary of keywords that are used to
+represent the entities found in the document. The extraction/scoring stage
+scores each document the number of occurring keywords. Lastly, the final stage
+involves segmentation of \threed models into subgroups such that each group can
+be semantically mapped against the keywords.
+
+
+\subsection{Stage 0: Normalization}
+From a preliminary analysis of the dataset, we found entries that are
+irrelevant with respect to our subject data. There entries can be identified by
+a type field and filtered out before any type of processing takes place. On top
+of that, the text descriptions are quite difficult to read, because they are
+capitalized and have have trailing suffix characters that are not English nor
+are they domain specific terms. We use regular expressions to perform upper
+and lower case conversions such that the descriptions would be atypical of
+English text. To remove the suffix characters, we created a dictionary of stop
+words.
+
 
 \subsection{Stage 1: Automatic Bootstrapping}
 The foremost issue is to devise a method for extracting physical entities; a
@@ -426,7 +441,14 @@ The current time selection can be changed by interacting with individual month o
 year bars (Clicking), or by dragging with the two markers at the base of each slider. 
 Selections are highlighted, while non-selections are greyed out. Selection of an entire 
 year (January to December) can be achieved by clicking on a selected year.
-
+ \begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{filter_widgets.png}
+ \caption[Filters]{Close up of Time Slider Widget, Hierarchy Widget and
+ Document Widget}
+ \label{figure:widgets}
+\end{figure}
+
 
 \subsection{Lens Widget}
 Using a metaphor of looking through a magnifying glass to reveal better details
@@ -619,7 +641,15 @@ objects are recalculated to see if they co-occurs with both “engine” and “door”.
 By this convention, the selected objects will always have the maximal score after 
 normalization, and will be coloured with the deepest shade on our colouring scale.
 
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{interaction_select.png}
+ \caption[Interactive Selection]{The visualization changes based on the
+ currently selected entities.}
+ \label{figure:selection}
+\end{figure}
 
+ 
 \subsection{Spatial Interaction}
 Traditional systems, particularly databases use explicit queries as a mean to
 communicate with the underlying data. While this works well for task analysis,
@@ -689,12 +719,29 @@ Higher level gestures are built by compositing together lower level gestures
 \begin{itemize} [noitemsep]
   \item Spread/Pinch: Dragging two touch point away or closer to each other, the
   two touch points need to start off in the same zone.
-  \item 2-Finger Drag: Two point drags in the same direction. Where the two
-  touch points are in the same zone and are close to each other.
   \item Hover: Hold followed by drag.
-  \item 2-Finger Tap: Two tap gestures in the same zone. We additionally
-  differentiate whether the taps are close or far apart and allow different types to take on different semantics.
 \end{itemize}
+
+While we tried to adhere to commonly accepted gestures for navigational and
+selection based tasks, our gesture design is also influenced heavily by our
+hardware and our perceived usage scenario: an infrared sensor overlay placed
+atop a large, nearly vertical display screen. The sensor starts tracking
+points when an object is sufficiently close to the display screen. The fact that
+touch points can be detected in mid-air has several implications. One, it is
+quite possible to create false positives due to hand orientation and the
+gestures being performed, we discuss our heuristics to counter balance these
+artifact in the implementation chapter. Two, gestures done with single hand,
+multi-fingers tend to be unreliable, the sensor can lose track of the touch
+points or introduce ambiguities through false-positive points. For example,
+picture a one handed pinching gesture with the thumb and index fingers, we found
+that often times additional tracking points are formed inadvertently by the
+knuckles of the pinky or ring fingers. Because there are significant distance
+among these points, it is difficult to judge which points are real without
+additional information. Since we are only provided with XY coordinates
+information, we decided to design our interactions around single finger
+gestures. While we lose the opportunity to create unique gestures, we gain in
+return more reliable system.
+
 Our interactions with the system can be summarized by the table below: 
 
 % Interaction table starts
