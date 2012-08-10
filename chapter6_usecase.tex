@@ -86,48 +86,66 @@ panel to read the detailed complaint descriptions.
 \section{Study}
 We created a user study to see how people can use our visualization to solve
 specific problems. In particular we are interested to see how people respond to
-using \threed interface for solving analytical tasks.
+using \threed interface for solving analytical tasks. Our primary concerns are
+not whether the visualization is more efficient than conventional interfaces,
+rather, we focus on the type of questions that can be answered by our software
+as well as the user-experiences of using a \threed visualization.
 
-\subsection{Data and Task}
+\subsection{Data Preparation}
 To remove any personal biases against particular makes of vehicles or
-manufacturers. We perform a replacement scheme to remove known and common
+manufacturers, we perform a replacement scheme to remove known and common
 identifiers and replace them with generic placeholders like ``Make1'',
-``Model2'' \ldots etc. We tested our visualization with X different tasks as
-seen in \ref{table:StudyTask}. Tasks 1 through 4 are objective tasks where we
-would expect the same, or similar outcomes from our test trails. Tasks 5 through
-7 are subjective tasks, they look at how the visualization is used to help with
-decision making process.
+``Model2'' \ldots etc. For the purpose of making meaningful comparisons across
+different brand of vehicles, and not burden participants with potentially
+dozens of choices to choose from, we opted to select the top 10 frequently
+occurring manufacturers and eliminated the reset from the test dataset.
 
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|l| p{4.0in}|}
-\hline
- \# & Type & Task Description \\
-\hline
-\hline 
-1 &  Objective & Select the component that has the highest rate of complaints in
-year X (With heatmap feature disabled) \\
-\hline
-2 &  Objective & Select the component that has the highest rate of complaints in
-year X with heatmap selection \\
-\hline
-3 &  Objective & Select the component(s) with the highest number of complaints\\
-\hline 
-4 &  Objective & User the lens widget to select region that contains the highest
-number of issues\\
-\hline
-5 & Subjective & Identify the components that failed when component X also
-failed \\
-\hline
-6 & Subjective & Given vehicle X and Y, which part in X contains more complaints
-than the equivalent component in Y? Which part in vehicle Y contains more
-complaints then the equivalent component in X? \\
-\hline
-7 & Subjective & Given a list of vehicles (X,Y,Z) of similar type and price
-range, which vehicle would you purchase and why? \\
-\hline
-\end{tabular}\caption{Study Tasks}\label{table:StudyTask}
-\end{table}
+\subsection{Study Method}
+Our study involves a series of computer based tasks, as well a short,
+semi-formal interview that is held at the end of the study. Our tasks are
+divided into categories, objective tasks and subjective tasks. Objective tasks
+are designed to test whether participants can accurately interpret the
+visualization encoding. Subjective tasks are designed to solicit analytical
+processes from each of our participants, they tell us if our visualization can
+support decision making. 
+Our list of tasks can be seen in the appendix section of the thesis.
+
+%We tested our visualization with X different tasks as
+%seen in \ref{table:StudyTask}. Tasks 1 through 4 are objective tasks where we
+%would expect the same, or similar outcomes from our test trails. Tasks 5 through
+%7 are subjective tasks, they look at how the visualization is used to help with
+%decision making process.
+
+%\begin{table}[h]
+%\centering
+%\begin{tabular}{|l|l| p{4.0in}|}
+%\hline
+% \# & Type & Task Description \\
+%\hline
+%\hline 
+%1 &  Objective & Select the component that has the highest rate of complaints in
+%year X (With heatmap feature disabled) \\
+%\hline
+%2 &  Objective & Select the component that has the highest rate of complaints in
+%year X with heatmap selection \\
+%\hline
+%3 &  Objective & Select the component(s) with the highest number of complaints\\
+%\hline 
+%4 &  Objective & User the lens widget to select region that contains the highest
+%number of issues\\
+%\hline
+%5 & Subjective & Identify the components that failed when component X also
+%failed \\
+%\hline
+%6 & Subjective & Given vehicle X and Y, which part in X contains more complaints
+%than the equivalent component in Y? Which part in vehicle Y contains more
+%complaints then the equivalent component in X? \\
+%\hline
+%7 & Subjective & Given a list of vehicles (X,Y,Z) of similar type and price
+%range, which vehicle would you purchase and why? \\
+%\hline
+%\end{tabular}\caption{Study Tasks}\label{table:StudyTask}
+%\end{table}
  
 \subsection{Study Design}
 The experiment is run one participant at a time. We begin the study by

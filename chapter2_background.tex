@@ -19,16 +19,16 @@ can only perceive a small fraction of the entire spectrum of light, and of our
 field of vision, only a small area is truly in focus. However, there is a small
 set of visual properties that can be detected extremely rapidly (comparatively
 to other sensory systems) and accurately by low-level perceptual system known as
-pre-attentive processing \cite{WAR2004b}. In theory, this perceptual feature
-deals with the extractions of specific graphical features without the need to 
+preattentive processing \cite{WAR2004b}. In theory, this perceptual systeme
+deals with the extraction of specific graphical features without the need to 
 consciously focus attention on the details, allowing viewers to spot salient and 
-outlier features in a single glimpse. For example, picking out a red circle 
+outlier data in a single glimpse. For example, picking out a red circle 
 out of a group of blue circles is considered instantaneous, barring any visual 
-abnormalities. In terms of design, exploitation of pre-attentive processing can 
+abnormalities. In terms of design, exploitation of preattentive processing can 
 greatly increase the rate of comprehension and ease of use.
 
-To establish clear visual communication, it is crucial to have a set of visual
-building blocks that can be grouped and arranged to convey information. Much of
+For establishing clear visual communication, it is crucial to have a set of
+visual building blocks that can be grouped and arranged to convey information. Much of
 the initial work came from the field of cartography, particularly with the ideas
 of marks and visual variables from Bertin \cite{BER1983a}. Bertin defined seven
 variables, including position, size, shape, value, colour, orientation and
@@ -73,8 +73,8 @@ their characteristics}\label{table:VisualVariable}
 %group/differentiate objects by proximity, similarity and closure.
 
 In terms of building a visualization system, there are several key contributions
-in this area. The visualization pipeline from Card \etal (Card) describes a
-step-by-step process of data manipulation and mapping as follows:
+in this area. The visualization pipeline from Card \etal \cite{Card1999}
+describes a step-by-step process of data manipulation and mapping as follows:
 \begin{itemize}[noitemsep]
   \item Analysis: Normalization of raw data for visualization
   \item Filter: Select subsections of data to be visualized
@@ -119,31 +119,33 @@ images based on text input. It can be considered as a text-analytic tool because
 it renders the text in a literal sense, or through some kind of interpretive
 representation. Systems that attempts to do literal renderings are concerned
 with understanding of natural languages, whereas interpreted rendering systems
-tend to some basis intentions that are user based.
+tend to involve user intentions. Here we look at several examples. 
 
 
 Though strictly speaking not a text-to-scene application, the IBIS application
 from Seligmann and Feiner renders a \threed scene based on a set of user
 provided rules \cite{Selgmann1991}. These rules specify which
-object and locations in the \threed scene have higher degree of interest. The application itself
-evaluates these rules and determines the optimal viewing perspective, as well
+object and locations in the \threed scene have higher degrees of interest. The
+application itself evaluates these rules and determines the optimal viewing perspective, as well
 the application adjust the lighting conditions as a way to draw attention to
-specific details in the scene. To our knowledge this is one of the first system
-where a pre-constructed scene can be modified by text input.
+specific details in the scene. To our knowledge this is one of the first systems
+where a preconstructed scene can be modified by text input.
+
 
 One of the most fully-realized text-to-scene generation application is
 WordsEye\cite{Coyne2001}. WordsEye uses a combination of grammatical rules 
-and heuristics to determine subjects and their actions. The subjects are mapped 
-against a large repository of \threed models, and the verb actions are mapped to 
+and heuristics to determine subjects and their actions. These subjects are
+mapped against a large repository of \threed models, and the verb actions are mapped to 
 predefined poses. One of the interesting WordsEye strives for is the preservation 
 of spatial relations among subjects in the text, for example: ``The giant orange 
 cat is on the black chair.'' will literally rendering a large cat on top of a chair. 
 However, WordsEye is limited by the inherent ambiguities in written language and
 the accuracy of its semantic interpretation. 
 
+
 Another example of text-to-scene generation is CarSim\cite{Akerberg2003},
 which uses a similar logical processing and rendering process, but is specifically designed
-to deal with the re-creation of car accidents by parsing traffic accident reports. 
+to deal with the recreation of car accidents by parsing traffic accident reports. 
 Where CarSim differs is that it tries to generate an animated sequence by 
 inferring the speed and direction of vehicles from the text content, it is less 
 concerned with the literal representation of the car, but with the situation 
@@ -156,22 +158,29 @@ surrounding the incident.
 %the text, but often produced with artistic flares and particular theme in mind.
 
 On the interpretive side, a popular example is the web-based application called
-Wordle(???). Unlike the systems mentioned above, Wordle does not perform any
-semantic inferences on the underlying text, it rather collects frequency
-statistics of each string tokens. Unlike the closely related tagcloud, Wordle
-allows people to fit the most frequently occurring words into arbitrary \twod
-geometric shapes. This give creativity control over to the users, which in
-practice lead to the usage of symbolic shapes that exposes underlying themes in
-the text. For example, a Wordle visualization of a text document about the
-economy will use a dollar-sign shape to instill the idea that the visualization
-is related to monetary issues.
+Wordle(http://www.wordle.net). Unlike the systems mentioned above, Wordle does
+not perform any semantic inferences on the underlying text, it rather collects frequency
+statistics of each string tokens and encode the frequencies as font sizes.
+Unlike the closely related tag cloud, Wordle offers more creative freedom in
+varying typography and colours, which are all interactively chosen by the user.
+Thus it is possible to create interpretive art works based on social and
+cultural norms, for example using the green colour to represent topics about
+money and finance. Later variations (http://www.tagul.com) took this idea
+further by binding the placement of the words to specific geometric shapes and
+outlines, which further strengthens how people can create their own interpretations and
+expose the underlying themes. For example, a text article about love can be
+place inside a shape of a heart, instilling the idea that it is emotionally
+based. However, because these creations are not usually tied back to their
+original text, it can be questionable whether these are proper tools for text
+analysis. (Maybe participatory worlde by viega?)
 
-Another example is calligraphic packing \cite{Xu2007}, which takes a more artistic approach. 
-This research visualizes single words by distorting individual glyphs to fit into \twod regions. 
-Creative freedom is given to the people to choose which image best represents
-the word, as well as the amount of acceptable distortion. However, due to
-concentration on artistic style, the legibility of the actual words after the
-distortion transformation is not guaranteed.
+
+Another example is calligraphic packing \cite{Xu2007}, which takes a more
+liberal, artistic approach. This research visualizes single words by distorting
+individual glyphs to fit into \twod regions. Creative freedom is given to the
+people to choose which image best represents the word, as well as the amount of
+acceptable distortion. However, due to concentration on artistic style, the
+legibility of the actual words after the distortion transformation is not guaranteed.
 
 
 %\textbf{Summary:} Unlike WordsEye and CarSim, we start with a scene that is
@@ -191,18 +200,18 @@ however, another area of computer graphics research have been looking in the
 opposite direction: Non-Photorealistic Rendering. Non-Photorealistic Rendering can be 
 described as any computer generated graphics that do not involve the accurate 
 simulation of the behaviour of light. While photorealism has long been the holy
-grail in graphics research, there are compelling reasons for choosing NPR
-representations. First, NPR images are judged based on their ability to
+grail in graphics research, there are compelling reasons for using NPR
+techniques. First, NPR images are judged based on their ability to
 communicate a specific message to their viewers, thus they are driven to
 emphasize features in a scene or some underlying attributes \cite{Gooch2001}.
 This is in contrast with photorealistic rendering where they are compared
 against a ground-truth image. Second, often times it is undesirable to preserve
 a high degree of accuracy, specular reflections, shadows and other natural
-lighting phenomenons can hinder viewers ability to see vital details and create
+lighting phenomenons can hinder viewers' ability to see vital details and create
 ambiguities. NPR can choose to ignore the natural laws of physics, and instead
 choose to focus on different abstractions such that the illustration can be
 meaningful to people from different fields. Because there are multitude of
-possibilities in NYPR, this section solely focuses on prior works that related
+possibilities in NPR, this section solely focuses on prior works that related
 to our work here, or served as our inspirations.
 
 
@@ -218,9 +227,9 @@ photography. One, strong lighting effects under conventional shading model are
 reduced, preserving the surface details under the light patches. Two, the
 removal of shadow regions shows the hidden details that were not previous
 visible. Other NPR shading techniques also exist, for example
-cel-shading/toon-shading techniques (???). Generally speaking, cel and toon
-shading map the intensity of light from a continuous function into
-discrete values, creating distinct contours where the values change.
+cel-shading/toon-shading techniques (???). Generally speaking, cel-shading and
+toon-shading map the intensity of light from a continuous function into discrete
+values, creating distinct contours where the values change.
 These type of shading algorithms mimics those illustrations found in
 hand-drawn illustrations such as comics. Other works looks at the simulation of
 physical materials, for example textures as halftones to simulate stylistic
@@ -236,21 +245,21 @@ seeing continuities and surfaces as dictated by Gestalt Principals
 geometric primitives. Feature extraction is one way to achieve this goal.
 Feature extraction can be done in either \twod or \threed spaces. The \twod
 algorithm is image based, and based upon calculating the a discontinuity valuee
-of a pixel against its neighbouring pixels (Cite Book). The discontinuity can
-take on several types, for example colour, normal and depth. A square matrix,
+of a pixel against its neighbouring pixels \cite{Gonzalez2002}. The
+discontinuity can take on several types, for example colour, normal and depth. A square matrix,
 called a kernel, is used to evaluate the discontinuity measure and is run
 against every pixel in the image. Any pixels that fell below a specified
 threshold hold are discarded, the remaining pixels are collected and aggregated
 into higher level geometric primitives. In \threed space, features can
-classified as ridges and valleys silhouettes. Ridges are formed by two front
-facing polygons with dihedral angle between 0 to 180, similarly, valleys are
-front facing polygons with dihedral angle between 180 to 360, both of these are
-exclusive, as angle of 0 or 180 results in a flat surface. Lastly silhouette
-edges are formed by the shared edge of front-facing polygon and back-facing
-polygon. Raskar \cite{Raskar2001} computes these \threed features without
-connectivity information by extruding features per polygon, using existing
-geometries to hide the generated features there they are inappropriate. In
-addition, since the features are geometric quads, additional processing can be
+classified under the broad categories of ridges, valleys and  silhouettes.
+Ridges are formed by two front facing polygons with dihedral angle between 0 to
+180, similarly, valleys are front facing polygons with dihedral angle between
+180 to 360, both of these are exclusive, as angle of 0 or 180 results in a flat
+surface. Lastly silhouette edges are formed by the shared edge of front-facing
+polygon and back-facing polygon. Raskar \cite{Raskar2001} computes these \threed features without
+connectivity information by extruding additional faces per polygon, using
+existing geometries to hide the generated features if they turn out to be
+inappropriate. In addition, since the features are geometric quads, additional processing can be
 performed so they take on different styles. Hermosilla \cite{Hermosilla2009}
 took this idea further by moving the extrusion process to modern graphic
 pipeline's geometry shader, removing the need to do the computations on the CPU.
@@ -261,21 +270,22 @@ extraction operation need to run once per frame.
 
 When it comes to expressiveness, NPR rendering styles can be used to convey a
 variety of styles. Of particular interest to us is the idea of uncertainty:
-graphics that are visible to the viewer, but also visible is a degree of error
-or inaccuracy. Works done in this area includes researches from Strothotte, Masuch 
-and Isenberg, they looked at using lines and stroke primitives
+graphics that are visible to the viewer, but also convey a sense of error
+and inaccuracy. Works done in this area includes researches from Strothotte,
+ Masuch and Isenberg, they looked at using lines and stroke primitives
 to reconstruct ancient architectures \cite{Strothotte1999, Masuch1998}. 
 As much of the buildings left standing today are in ruins, the renderings are 
 meant to show what the buildings may have looked like in the past. They found
 that straight, solid strokes conveys a higher degree of certainty than strokes
 that are drawn faded and sketch like. While this result isn't overly surprising
 (It matches the types of drawings done by artists), together with
-different style of pen-and-ink renderings \cite{Salisbury1994} they created a
-automated way to imitate the type of architectural sketches done by hand.
+different style of pen-and-ink renderings \cite{Salisbury1994} it became
+possible to create an automated way to imitate the type of architectural
+sketches done by hand.
 
 Another branch of non-photorealistic rendering deals with semantic segmentation
 of objects in the scene, such as illustrations found in science and medical 
-literature where different parts are highlighted in different colours. This is
+literature where specific parts are highlighted in different colours. This is
 done in order to differentiate normal and outlier areas. These type of
 techniques look at visibility issues, to ensure that semantically important objects are easily visible and to provide 
 features to deal with occlusion issues. One prominent research came from an 
@@ -285,7 +295,7 @@ components such that more important objects are rendered more opaque than object
 of lesser importance. The authors also introduce a screen-door transparency 
 technique to ensure overall visibility and context by rendering ``holes'' into 
 the outer layers. This idea of segmentation and context is taken further in
-Tietjen \etal described a method for  volumetric medical visualizations
+Tietjen \etal, they described a method for  volumetric medical visualizations
 where different sub volumes are divided to take on different semantics \cite{Tietjen2005}. In summary
 they divided any scene into three categories:
 \begin{itemize}[noitemsep]

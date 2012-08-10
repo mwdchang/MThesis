@@ -387,13 +387,14 @@ Our data contains 4 such fields: manufacturer, make, model and model year.
 For example: Civic (Make) belongs to Honda (Manufacturer). These filters are 
 shown as a variant of the combo boxes which supports single selection, each item 
 in the filter shows the name and the number of documents that belongs to it.
-
 Rather than having the readers comparing items by reading the numbers in text
 format, we double-encoded the number of document as a horizontal histogram in 
-similar style as the scented widget approach \cite{Willett2007}. The
-additional histogram makes it very clear any outlier items, and allows reader to make relative comparison 
-among items. Toggling the widget will activate an animated transition
-to open/close the item list, which can be scrolled and selected. Selected item is shown in bold font.
+similar style as the scented widget approach in \cite{Willett2007}. The
+histogram bars are shaded in light grey, except for the selected item which
+we render in blue for distinction. The additional histogram makes it very clear
+any outlier items, and allows reader to make relative comparison among items.
+Toggling the widget will activate an animated transition to open/close the item
+list, which can be scrolled and selected. Selected item is shown in bold font.
 
 % Choose to leave the list open on selection to allow simpler selection of
 % outher types ???
@@ -448,8 +449,7 @@ year (January to December) can be achieved by clicking on a selected year.
  Document Widget}
  \label{figure:widgets}
 \end{figure}
-
-
+
 \subsection{Lens Widget}
 Using a metaphor of looking through a magnifying glass to reveal better details
 about a specific subject, we created an interactive widget to extract and show 
@@ -685,21 +685,19 @@ factor, a lens widget can be over the ``front'' of the vehicle visualization,
 automatically pulling out all the relevant entities.
 
 
+
 \subsection{Surface Based Interaction}
-We intended to have our application running on a walk-up-and-use scenario
-on large displays, thus we have build our prototype to take into account
+We intend to have our application running on a walk-up-and-use scenario
+on large displays, thus we have built our prototype to take into account
 keyboard/mouse free interactions.
 We use the idea of ``zones'' to segment our display space and to process touch
-point events.
-Each interactive element has an implicit zone that is calculated when a touch point is detected by the 
-sensor. The zones are either bounding boxes, or polygonal shapes that are detected 
-using native picking support. An overview of different zones are as follows:
+point events. Each interactive element has an implicit zone that is calculated
+when a touch point is detected by the sensor. An overview of different zones are as follows:
 \begin{itemize}[noitemsep]
-  \item Visualization Zone: An axis-aligned bounding box that bounds the central
-  visualization
-  \item Time Block Zone: Covers the year/month sliders as well as their markers
+  \item Visualization Zone: The main \threed visualization
+  \item Time Block Zone: Covers the year and month time sliders 
   \item Filter Zone: Covers the accessible hierarchy filters
-  \item Lens Zone: Area covered by the lens circumference
+  \item Lens Zone: Area covered by the lens widget
   \item Text Zone: Covers the document widget
   \item Empty Zone: An empty zone is none of the above.
 \end{itemize}
@@ -707,40 +705,52 @@ using native picking support. An overview of different zones are as follows:
 Each touch point is tied to a single zone, and remains so until the touch point 
 is removed. Thus, if we put our finger down on the visualization zone, and then
 we drag the finger into text zone, the touch point is still registered with
-the visualization zone. This creates a continuous interaction and avoid distracting the users by sudden transition of different zones.
+the visualization zone. This creates a continuous interaction and avoid
+distracting the users by sudden transition of different zones.
 
-We designed the following gestures as our fundamental building blocks
-\begin{itemize}[noitemsep]
-  \item Tap Gesture: Tap and lift finger.
-  \item Hold: Tap and hold for at least X milliseconds
-  \item Drag: Tap followed by move
-\end{itemize}
-Higher level gestures are built by compositing together lower level gestures
-\begin{itemize} [noitemsep]
-  \item Spread/Pinch: Dragging two touch point away or closer to each other, the
-  two touch points need to start off in the same zone.
-  \item Hover: Hold followed by drag.
-\end{itemize}
+
+%We designed the following gestures as our fundamental building blocks
+%\begin{itemize}[noitemsep]
+%  \item Tap Gesture: Tap and lift finger.
+%  \item Hold: Tap and hold for at least X milliseconds
+%  \item Drag: Tap followed by move
+%\end{itemize}
+%Higher level gestures are built by compositing together lower level gestures
+%\begin{itemize} [noitemsep]
+%  \item Spread/Pinch: Dragging two touch point away or closer to each other, the
+%  two touch points need to start off in the same zone.
+%  \item Hover: Hold followed by drag.
+%\end{itemize}
 
 While we tried to adhere to commonly accepted gestures for navigational and
 selection based tasks, our gesture design is also influenced heavily by our
 hardware and our perceived usage scenario: an infrared sensor overlay placed
-atop a large, nearly vertical display screen. The sensor starts tracking
-points when an object is sufficiently close to the display screen. The fact that
-touch points can be detected in mid-air has several implications. One, it is
-quite possible to create false positives due to hand orientation and the
-gestures being performed, we discuss our heuristics to counter balance these
-artifact in the implementation chapter. Two, gestures done with single hand,
-multi-fingers tend to be unreliable, the sensor can lose track of the touch
-points or introduce ambiguities through false-positive points. For example,
-picture a one handed pinching gesture with the thumb and index fingers, we found
-that often times additional tracking points are formed inadvertently by the
-knuckles of the pinky or ring fingers. Because there are significant distance
-among these points, it is difficult to judge which points are real without
-additional information. Since we are only provided with XY coordinates
-information, we decided to design our interactions around single finger
-gestures. While we lose the opportunity to create unique gestures, we gain in
-return more reliable system.
+atop a large, nearly vertical display screen. Our hardware setup has several
+design implications. The infrared sensor is imprecise because it senses
+movements instead of real touches, as such it is quite possible to introduce
+false positives due to how the hand is oriented. While it is possible to use
+heuristics to mitigate the consequences of unintended noises, there are
+ambiguous cases where we cannot guarantee the correct outcomes. For  example,
+imagine a single handed pinch gesture with the thumb and index  finger, we have
+noticed through experimental trials that the knuckles on the  other fingers are
+sometimes picked up as touch points as well. This case  creates a problem,
+because the points are roughly the same distance apart, it is difficult to judge
+which points are actually created by the thumb and index finger without
+additional information. Because we only receive normalized coordinates from the
+sensor device, we opted to abandon any complex, single-handed, multi-finger
+gestures in order to have a system will be able to react inline with respect
+to user expectations.
+
+We design two types of touch gesture semantics for our system: a tap semantic
+and a hold semantic. The tap semantic results from a single touch where there is
+no delay between the initial touch gesture and subsequent actions, conversely
+the hold semantic requires the user to hold the initial touch point briefly
+before transitioning into subsequent movements. We map the tap semantic to
+actions to selection, scrolling and orientation logic. For the gestures that use
+the hold semantics, we reserve these gestures for the toggling our custum made
+user interface widgets.
+
+
 
 Our interactions with the system can be summarized by the table below: 
 
@@ -779,19 +789,53 @@ this is due to the users accidentally lifting their fingers. When this happens p
 can get confused because they may be not be aware that their touch points are lost 
 since their fingers are still contacting the table, there are no feedback system 
 to alert the actual touch point had disappeared. To accommodate the lack of
-physical response, we implemented a visual feedback system. Whenever a touch
-point is registered, we render a gradient circle at the XY coordinates as
-detected by the sensor, the radius of the circle is rendered such that it is
-large enough to be seen and not hidden under the fingertip.
-The circle's position is updated real time with with respect to updates to the
-touch point, and is removed when the touch point is unregistered. Thus, if there
-are any touch points lost during a gesture, the user gets immediate visual
-feedback that the gesture failed and he needs to repeat the gesture. Furthermore,
-we also keep track up to the last 10 most recent updates of any active touch points and render them as 
-breadcrumb trails. The trail gives additional visual clues to the type of 
-gestures being performed. Visual feed back is disabled when the system is
-running on a desktop setting, the mouse pointer itself provides sufficient
-feedback.
+physical response, we implemented out own visual feedback system. We created
+four different types of visual cues, which we summarize below and can be seen in
+Figure \ref{figure:feedback}. 
+
+\begin{itemize}[noitemsep]
+  \item Touch Point: Whenever a touch point is registered, we render a gradient
+  circle at the XY screen coordinate as detected by the infrared sensor. The
+  radius of the circle is slightly larger than the average finger tip such that
+  is is always visible, this is about 15 pixels on our display. The position of
+  the gradient circle is updated in-sync with the sensor updates, and is removed
+  when the touch point is rescinded. This visual cue gives viewers immediate
+  feedback of the active touch points, which can be used to perform higher level
+  actions.
+  \item Hold Point: A hold point has the same basic visual cue as a touch point.
+  A hold point starts off as a touch point, a ticking timer running in the
+  background determines when the touch point transitions into a hold point. We
+  visualize this timing sequence as a arc outside of the circle, the arc grows
+  with an increasing central angle and opacity that are mapped to the amount of
+  time required to become a hold point. A hold gesture is activated once the arc has travelled
+  the entire circumference and lock down. An interruption during the transition
+  phase will remove the animation, the gesture will return back to a normal
+  touch point.
+  \item Trails: Our system keeps track of previous updates for a single,
+  uninterrupted point. We visualize up to the last 10 most recent updates as
+  breadcrumb trails to serve as a reminder of what type of high level gesture is
+  being performed. The XY coordinates of previous update points are drawn in
+  smaller circles, similar to that of touch points.
+  \item Removals: These visual cues are used to denote any removals sensed by
+  the hardware device, these includes the active points sensed by our software
+  and also any other ones that were rejected by our evaluating heuristics. This
+  cue gives the viewers some sense of the hardware capabilities and
+  deficiencies. We think this is useful as a learning device, viewers are able
+  to see where they may inadvertently cause unwanted touch points and use this
+  experience to adjust how they operate their gestures next time they interact
+  with the system. We visualize this as circular outlines that decrease in
+  opacity and radius with time, they are removed from the system when the radius
+  reaches zero.
+\end{itemize}
+ 
+ 
+\begin{figure}
+ \centering  
+ \includegraphics[width=\columnwidth]{feedback.png}
+ \caption[Visual Feedback]{Different visual feedback to help viewers
+ differentiate different system states}
+ \label{figure:feedback}
+\end{figure}
 
 
 
