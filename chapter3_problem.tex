@@ -4,12 +4,13 @@
 % TODO:
 % - Should probably explain more on tasks and requirements, tie back to % motivations
 % - Show actual complaint report to better illustrate the data dimension section
+% - Maybe picture of the NHTSA search interface
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Problem and Data Analysis}
 \section{Problem Statement}
-For navigating, exploring and querying large bodies of text, traditional
-visualization techniques often approach the problem from an abstract
+When it comes to navigating, exploring and querying large bodies of text,
+traditional visualization techniques often approach the problem from an abstract
 perspective. These techniques explores the context of words in the sentence of
 the documents, for example Word Tree \cite{Wattenberg2008} allows people to
 explore the most frequently occurring sentence structures within a document.
@@ -32,18 +33,18 @@ contains not only a co-occurrence relationship among the entities ``door'' and
 real world automobile.
 
 Revealing these spatial relations of common words in text may enable new types of 
-insights and exploration techniques. By mapping physical entities onto virtual 3D 
-representations it is possible to create a visualization environment that
-resembles the real world, the environment can then be explored and queried with relative ease
-due to existing familiarity of how these objects operates in real life.  There are 
+insights and exploration techniques. By mapping physical entities onto virtual
+\threed representations it is possible to create a visualization environment
+that resembles the real world, the environment can then be explored and queried with relative ease
+due to existing familiarity of how these objects operates in real life. There are 
 many types of text that carries these sort of physically mappable vocabulary: 
-product reviews, technical manuals, maintenance logs, and our data, vehicle 
+product reviews, technical manuals, maintenance logs, and our dataset: vehicle 
 defect reports.
 
-So far, we are not aware of any visualization which approach text visualization 
-by visualizing the real-world spatial context of the words in text. Thus, our 
-works looks at revealing these real world relations in a manner that is useful 
-for conducting text-analytic activities.
+So far, we are not aware of any exploratory visualizations which approach text
+visualization by visualizing the real-world spatial context of the words in
+text. Thus, our work looks at revealing these real world relations in a manner
+that is useful for conducting text-analytic activities.
 
 
 \section{Data Overview}
@@ -68,11 +69,11 @@ thus likely prevent any type of unexpected discoveries.
 On the other end of the spectrum, there exist consumer product website such as 
 Consumer Reports\footnote{http://www.consumerreports.org/} and
 Edmunds\footnote{http://www.Edmunds.com}. These website provide reviews and
-linear scale rating for different types of vehicles, but these ratings seldom provide 
-details and in-depth analysis. In other words, the ratings are too coarsely grained. 
-Yet another issue with these websites is that they are typically targeted at 
-newer vehicle models, as such, it can be difficult to look up and compare 
-ratings between new and old models.
+linear scale ratings for different types of vehicles, but these ratings seldom
+provide details and in-depth analysis. In other words, the ratings are too
+coarsely grained. Yet another issue with these websites is that they are
+typically targeted at newer vehicle models, as such, it can be difficult to look
+up and compare ratings between new and old models.
  
 \section{Tasks}
 While our data is temporal in nature and new 
@@ -81,9 +82,10 @@ real-time system that consumes streaming text data. Our system consume data in
 batches, and to our knowledge, there are no known external facing API available 
 for monitoring updates. Having said that, our system share many of the same 
 concern as real time text streaming applications. Rohrdanz \etal
-\cite{ROH2011a} outline seven important tasks analytical tasks for working with text streams, 
-including monitoring, decision making, change/trend detection, event tracking, 
-historical retrieval, exploration and situational awareness. 
+\cite{ROH2011a} outline seven important tasks analytical tasks for working with
+text streams which we found to be suitable for our problem domain. These
+includes monitoring, decision making, change/trend detection, event tracking,
+historical retrieval, exploration and situational awareness.
 
 For the purpose of analyzing vehicle defect reports, and for an audience of prospective 
 car/used-car buyers, some of the vital tasks are:
@@ -95,9 +97,11 @@ car/used-car buyers, some of the vital tasks are:
   category?''
 \end{itemize}
 
-For a quality assurance engineer or investigator, the tasks may be:
+From the perspective of an assurance engineer or incident investigator, the
+tasks may be:
 \begin{itemize}[noitemsep]
-  \item Monitoring: ``Are there any new complaints relating to make Y?''
+  \item Monitoring: ``Are there any new complaints relating to vehicles of make
+  Y?''
   \item Decision Making: ``Are there enough reports and evidences to warrant a
   full scale investigation or a recall?''
   \item Change and Trend Detection: ``For this type of vehicle, are the rate of
@@ -112,7 +116,7 @@ consumer as the primary stakeholder. Thus, our goal is to provide text-analytic
 visualization for helping consumers understand and explore vehicle safety issues, 
 which in turn will affect their purchasing decisions
 
-\section{Requirement Gathering}
+\section{Requirements}
 To build a useful system, we need to understand the stakeholder’s mindset. We
 start our initial requirement gathering by looking at websites dedicated to 
 vehicle owners and potential car buyers, our sources include expert columns, 
@@ -124,17 +128,18 @@ perspectives: the forums tell us what the consumers are thinking, while the expe
 websites tell us what the consumers ought to think.
 
 Our findings revealed that, aside 
-from the price factor, the next item people care about are safety and reliability; 
-this makes sense, purchase of a vehicle is a big investment, the vehicle itself 
+from the price factor, the next item people care about are safety and reliability. 
+This makes sense, purchase of a vehicle is a big investment, the vehicle itself 
 needs to be reliable to be used frequently and ensure the safety of its passengers. 
-Basically, consumers want to know which brand/make they can trust. Other forum posts 
-refer to existing problems, with the owners asking whether the problem is an 
-isolated event or if the issues are wide spread, this indicates a need and willingness 
-for detailed exploration. Car buying guides often advocate conducting thorough 
+In general, consumers want to know which brand/make they can trust. Other forum
+posts refer to existing problems, with the owners asking whether the problem is an 
+isolated event or if the issue is widely spread, this indicates a need and
+willingness for detailed exploration. Car buying guides often advocate conducting thorough 
 research on the vehicle and brand history, as well as leverage the experience of 
 other owners. This is particularly important for used vehicles.
 
-Based on these findings, we propose the following four design requirements for our visualizaiton prototype:
+Based on these findings, we propose the following four design requirements for
+our visualization prototype:
 \begin{itemize}[noitemsep]
   \item R1: Provide an intuitive representation and make important items clearly
   visible;
@@ -150,9 +155,9 @@ Based on these findings, we propose the following four design requirements for o
 A typical complaint report consist of both structured and unstructured fields.
 The structured fields related to the type of vehicle and other explicitly 
 quantifiable variables relating to the incident (\eg, the odometer reading, 
-number of injuries, the geo-location). The unstructured field is a free-form text field, 
-it typically consist of several sentences describing the circumstances of the 
-incident, as well as the parts that failed. 
+number of injuries, the incident location). The unstructured field is a
+free-form text field, it typically consist of several sentences describing the
+circumstances of the incident.
 
 \textbf{Spatial:} Many texts contain spatial variables that can be mapped to the
 real, physical world. Sometimes these are explicitly stated, such as GPS 
@@ -176,8 +181,8 @@ constraints of normal reality \cite{Shneiderman2003}.
 whether it is the creation date or the timestamps within the document itself. 
 For our specific dataset, we suspect that much interesting information can be 
 gained by supporting high level activities such as seeing how a particular 
-object changes over time, and comparing season to season statistics. Being able 
-to search, compare and extrapolate trend information across time is vital for 
+object changes over time, and comparison of season to season statistics. Being
+able to search, compare and extrapolate trend information across time is vital for 
 understanding the underlying data, thus making time an obvious choice for our 
 visualization.
 
@@ -189,7 +194,7 @@ companies are producing reliable vehicles in general and how manufacture rank
 with respect to each other. The organization hierarchy present a natural 
 progression from the most general selection down to specific models, and thus 
 supports successive refinement of queries. Note that the selection of 
-organizational hierarchy as a data dimension is a domain specific decision, 
+organizational hierarchy as a data dimension is a problem specific decision, 
 it does not generalize to text analytics for other domains.
 
 

@@ -324,23 +324,23 @@ from both fields, though the two sides remain separate disciplines. As data
 becomes more heterogeneous, new approaches for data visualization make the case 
 of whether the boundary should exist or not, as illustrated by recent attention 
 to discuss the similarities and differences between the two groups
-\cite{Hauser2005, Weiskopf2004}. The SciVis community is in particular has
+\cite{Hauser2005, Weiskopf2004}. The SciVis community in particular has
 adopted techniques and practices that are traditionally in the InfoVis community, 
 a well known example is the volumetric visualization from Doleisch \etal, where 
 multiple coordinated views, and linking and brushing techniques are used to 
 further help the exploration process \cite{Doleisch2003}.
 
-In a more hybrid space between InfoVis and SciVis,  Balabanian \etal placed
-hierarchical renderings of human anatomy inside an interactive balloon-tree graph.
-In this graph, each anatomical object occupies a node, and is arranged by
+For a more hybrid space approach between InfoVis and SciVis,  Balabanian \etal
+placed hierarchical renderings of human anatomy inside an interactive
+balloon-tree graph \cite{Balabanian2010}. In this graph, each anatomical object occupies a node, and is arranged by
 logical hierarchy. The colours, size and arrangement of the nodes are dictated by abstract 
 semantics, such as what is currently selected, filtering operations, 
 and relations among the anatomical parts. The \threed rendering supports SciVis
-operations such as viewing, slicing and picking objects. Changes are linked and propagated across 
-relevant nodes and volume renders, integrating the SciVis and InfVis actions. 
+operations such as viewing, slicing and picking of objects. Changes are linked
+and propagated across relevant nodes and volume renders, integrating the SciVis and InfVis actions. 
 
 In the InfoVis space, researches done by Sedlmair \etal looked at enriching
-InfoVis with \threed model representations \cite{Sedlmair2009}.
+InfoVis visualizations with \threed models \cite{Sedlmair2009}.
 In this work, they presented two applications, CarComVis which allows users to
 explore intercommunication among vehicle components, and LibVis which explores
 environmental reading in a library setting. Neither one is explicitly about
@@ -350,7 +350,8 @@ environment for LIbVis. Sedlmair \etal explores different types of integration
 techniques, including the usage of multiple coordinated views and a total immersion 
 environment where the user is in a virtual world. Subject feedback 
 from their study suggest a strong desire for integration of \threed
-visualizations, reaffirming the need to fuse techniques from SciVis and InfoVis.
+visualizations, reaffirming the need to fuse together techniques from SciVis and
+InfoVis.
 
 %\textbf{Summary:} We take an approach similar to CarComVis [Seldmair2009], we
 %generated a virtual vehicle based on the components mentioned in our dataset. However, rather 
@@ -372,6 +373,7 @@ computer science field, the lens acts as a specialised user interface widget,
 where the data graphics under the lens widget undergoes a some type of transformation to 
 represent different semantics. 
 
+
 Fisheye Lens\cite{Sarkar1992} is a well known lens technique for enlarging
 details on a \twod image, for example on digital maps and circuit diagrams. Much
 like its real world counterpart, a fisheye lens technique creates an ultra-wide viewing perspective that
@@ -385,27 +387,38 @@ that undergoes geometric distortion: it is difficult to tell where the focus is,
 because the lens itself occludes nearby objects that helps the readers to
 understand the overall context.
 
-NPRLens\cite{Neumann2007a} allows the user to interactively create images in
-a non-photorealistic style in an object independent manner. NPRLens performs
-image processing on the \twod projections of objects in \threed space. Graphical
-data points are first projected to screen space, collected and aggregated into
-higher level graphical constructs such as line segments and curves. These can
-then be further manipulated such as stretching, shrinking or changing the stroke
-styles of each line segments. NPRLens supports many of the effects discussed in
-the NPR section above.
 
-MagicLens\cite{Viega1996} is likely the first foray of the lens idea taken into
-3 dimensional space, unlike the previously mentioned works, MagicLens works with 
+Although not directly a focus+context scenario, the original idea of using a
+flexible and multipurpose virtual lens likely came from research by Bier \etal,
+where a transparent overlay can be used to modify the appearance and behaviour
+of objects underneath the overlay panel \cite{Bier1993}. Perhaps more
+significantly, the lens acts as an interactive layer, where actions can be send
+through the lens directly to the objects beneath it.
+
+
+NPRLens\cite{Neumann2007a} follows up on the MagicLens metaphor from Bier
+\etal to allows the user to interactively create images in a non-photorealistic
+style which is object independent. NPRLens performs image processing on
+the \twod projections of objects in \threed space. Graphical data points are
+first projected to screen space, collected and aggregated into higher level
+graphical constructs such as line segments and curves. These can then be further
+manipulated such as stretching, shrinking or changing the stroke styles of each
+line segments. NPRLens supports many of the effects discussed in the NPR section above.
+
+
+\threed MagicLens\cite{Viega1996} is likely the first foray of the lens idea
+taken into 3 dimensional space, unlike the previously mentioned works, MagicLens works with 
 viewing volumes rather than \twod image maps. The lens in this scenario slices
 the scene into different frustum volumes, each volume is then rendered separately 
 and then recomposed together to create the final scene. This technique allows 
 people to create interesting effects, for example exposing the skeletal 
-structures of layered objects.
+structures of multi-layered objects.
+
 
 Other than stylization and distortion techniques, the same lens metaphor can
 also be used as a way to augment information seeking, in this context the lens 
 is an exploration device that exposes hidden data points, or data points that 
-cannot be displayed in a readable manner. Generally these cases arise
+cannot be feasibly displayed in a readable manner. Generally these cases arise
 because of overlapping points, or there are too many points on the screen,
 making labelling of all points impractical as they introduce too much visual
 clutter. Excentric Labeling \cite{Fekete1999} uses the lens metaphor to deal
@@ -470,19 +483,19 @@ intuitive to use, rather than a strictly organic process \cite{Wigdor2011}.
 Additionally they look at interactive surface computing from a historical
 perspective, with many DOs and DO NOTs and design implications.
 
-Other researchers looked at gesture design from a crowd-sourcing approach.
+Other researchers looked at gesture design using a crowd-sourcing approach.
 Wobbrock \etal conducted an experiment where the consequences are given, and the
 participants needed to come up with an appropriate gesture to match the end
-result \cite{Wobbrock2009}.  
+result \cite{Wobbrock2009}. They are able to come up with a classification of
+generally used gesture set. Others, such as Hinrich and Carpendale, looked
+at how environment and social context affect how gestures are performed
+\cite{Hinrich2011}. They found that in general gestures are not executed in
+isolation, but dependent on previous gestures, as well as the social context and
+demographic of the executor.
 
-New challenges also arise in how best to interact with the touch surface. Wigdor and Wixon in their book touched 
-upon the idea of natural user interfaces, in the sense that an interface design 
-that feels intuitive to use rather than an organic process\cite{Wigdor2011}.
-Other researchers looked into building touch interactions from a user-defined perspective 
-by studying how people create their own gestures given a effect-cause
-scenario \cite{Wobbrock2009}, as well how gestures relate to
-different social context \cite{Hinrichs2011}.
-
+While in this project our goal is not centred around the creation of a new set
+of gestures, the findings and experimental approaches were inspirations to how
+we designed our interaction techniques.
 
 %\textbf{Summary:} While our primary focus is about the visualization of
 % entities in text.
