@@ -3,12 +3,19 @@
 % and the visual design
 %
 % - Can probably expand interaction section, particulary spatial-interaction
+% - Should consider rewording 'stage 2: tagging'
+% - Should probably talk about active versus inactive versus context objects 
+%   in the 3D visualization section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Design}
-This chapter has three sections. The first section goes over our data processing
-and data dimensions. Section 2 describes our visualization design and
-justifications. Section 3 describes the high level interactions for information
-seeking.
+This chapter covers our visual design process and our rationals for our
+decisions. The first section describes our treatment of the dataset and how we
+calculate our scoring functions. The second and third covers the visualization
+interface in detail, describing our visual encoding and how each interactive
+widget's design tie back to our requirement as listed in the previous chapter.
+Lastly, we describe our design for higher level functions that can be used to
+detect trends and to make comparisons across different entities.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Processing}
@@ -22,22 +29,32 @@ represent the entities found in the document. The extraction/scoring stage
 scores each document the number of occurring keywords. Lastly, the final stage
 involves segmentation of \threed models into subgroups such that each group can
 be semantically mapped against the keywords.
+ 
+
+%\subsection{Stage 0: Normalization}
+%From a preliminary analysis of the dataset, we found entries that are
+%irrelevant with respect to our subject data. There entries can be identified by
+%a type field and filtered out before any type of processing takes place. On top
+%of that, the text descriptions are quite difficult to read, because they are
+%capitalized and have have trailing suffix characters that are not English nor
+%are they domain specific terms. We use regular expressions to perform upper
+%and lower case conversions such that the descriptions would be atypical of
+%English text. To remove the suffix characters, we created a dictionary of stop
+%words.
 
 
-\subsection{Stage 0: Normalization}
-From a preliminary analysis of the dataset, we found entries that are
-irrelevant with respect to our subject data. There entries can be identified by
-a type field and filtered out before any type of processing takes place. On top
-of that, the text descriptions are quite difficult to read, because they are
-capitalized and have have trailing suffix characters that are not English nor
-are they domain specific terms. We use regular expressions to perform upper
-and lower case conversions such that the descriptions would be atypical of
-English text. To remove the suffix characters, we created a dictionary of stop
-words.
+\subsection{Stage 1: Bootstrapping}
+Before any logical processing can take place, we spent some time doing
+preliminary analysis, looking at the data text, their format and how they have
+evolved over the life span of the data repository. We performed several
+normalization tasks: One, we used regular expressions to convert the text, which
+is call caps, to regular case format. Secondly, we remove suffix characters that
+appear at the end of the text paragraph, that, as far as we know contributes
+nothing to the incident context. Although we changed the underlying text, the
+normalization process improves readability, and allows us receive meaningful
+output from natural language parsers.
 
-
-\subsection{Stage 1: Automatic Bootstrapping}
-The foremost issue is to devise a method for extracting physical entities; a
+The first issue was to devise a method for extracting physical entities; a
 document can contain multiple entities, but not all of which are related to the 
 subject matter. On top of that, many entities can have implicit hierarchical 
 relations, such as relation between component and its subcomponents. This 
@@ -59,43 +76,44 @@ hierarchies, assuming that ``car'' and ``vehicle'' are equivalent.
 While this process extracts a fair amount of physical entities, an analysis of
 sample dataset showed that it is not representative of the entities being
 mentioned in the documents. The primary reason for this is due to the use of synonyms in the documents, 
-where the words in question are using an alternative names. To alleviate some of
-these confusion, we additionally extract the synset relations from WordNet. A
+where the entity words in question are using an alternative names. To alleviate
+some of these confusion, we additionally extract the synset relations from WordNet. A
 synset is a set relationship that describes words that are semantically
 equivalent of one another, for example ``limo'' and ``limousine'' both describe
-the same type of objects and thus belongs to the same synset. For each word in
-our current collection, we replace it with its respective synset.
-
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{meronomy.png}
- \caption{An example of the meronomy + synset structure}
- \label{figure:meronomy}
-\end{figure}
-
+the same type of object and thus belongs to the same synset group. For each word
+in our current collection, we replace it with its respective synset.
 
 The addition of synsets into the vocabulary gave us a comprehensive number of
 keywords, however it also created undesirable noises. Manual examination of data
-sample reveal that there are still disconnects between the dictionary vocabulary 
-and real world vocabulary. The next section we will describe how we overcome these issues.
+sample reveals that there are still disconnects between the dictionary
+vocabulary and real world vocabulary. The next section we will describe how we
+overcome these issues.
+
+    % ===== Figure =====
+	\begin{figure}
+	   \centering  
+	   \includegraphics[width=\columnwidth]{meronomy.png}
+	   \caption{An example of the meronomy plus synset structure}
+	   \label{figure:meronomy}
+	\end{figure}
+	% ==================
 
 \subsection{Stage 1: Manual Processing}
-As an additional step to create our keyword vocabulary, we perform two manual
+As an additional step to augment our keyword vocabulary, we perform two manual
 steps:
 \begin{itemize} [noitemsep]
   \item Removal of nouns that are too generic from the vocabulary.
   \item Preprocess the documents and mine for any missing nouns.
 \end{itemize}
 The first step deals with the removal of keywords that are not considered to be
-physical objects under typical usage, for example WordNet hierarchy of car contains 
-``first'', ``second'', ``third'' and ``fourth'', which describes the first,
-second, third and fourth gears respectively. Including these words will likely result in 
-over-counting the number of occurrences of gears than we should. We also removed 
-several acronyms that will likely cause ambiguities, for example ``ice'', which
-is short for internal-combustion-engine, will cause issues if the document is about ice, 
-the solid state of water. They are therefore removed from the keyword
-dictionary. In the event where a node removal breaks the hierarchical structure, we simply connect 
-the node’s children to the node’s parent.
+physical objects under typical usage, for example WordNet hierarchy of a
+vehicle contains ``first'', ``second'', ``third'' and ``fourth'', which
+describes the first, second, third and fourth gears respectively. Including
+these words will likely result in over-counting the number of occurrences of
+gears because they are used in every day speech. We also removed several
+acronyms that will likely cause ambiguities, for example ``ice'', which is short for internal-combustion-engine,
+will cause issues if the document is about ice, the solid state of water. They
+are therefore removed from the keyword dictionary. 
 
 The second step deals with any possible missing keywords that are not in WordNet
 meronyms. We attempted to detect these semi-automatically with natural language 
@@ -126,10 +144,18 @@ perform stemming on both documents and key word vocabularies.
 For the document text, stemming is performed on all string tokens and not
 limited to nouns. This has both positive and negative effects. In our data, 
 there are many word tokens with both noun and verb forms, for example ``braking
-problem'' can be correctly associated with the keyword ``brake'' with stemming. On the 
-other hand this also introduced false positives, the word ``lock'', which refers
-to the component, is falsely picked up when the text describe components
+malfunction'' can be correctly associated with the keyword ``brake'' with
+stemming. On the other hand this also introduced false positives, the word
+``lock'', which refers to the component, is falsely picked up when the text describe components
 ``locking up''.
+
+We have also looked at tagging explicit casual relations. Using the dependency
+parser extension, the output is a tree-like structure that can be used to infer
+word dependencies. In practice this did not work very well; informal languages,
+spelling mistakes and grammatical errors result in incorrect dependency parse
+trees. We ultimately opted to go for a more general approach, where we tag each
+physical entities as well as co-occurring entities within the same document.
+
 
 \subsection{Stage 2: Scoring Scheme}
 Once we have identified the entities in each document, we can compute each
@@ -193,18 +219,20 @@ summary, our interface is composed of five major components as seen in
 \ref{figure:overview}
 
 \begin{itemize} [noitemsep]
-  \item \threed Visualization:  The central point of the visualization system is
-  a stylized rendering of the physical entities in the text documents (In our scenario, 
-  a \threed rendering of a vehicle and its components).  The rendering is
-  created in a way to emphasize the most highly scored object components so they are immediately 
-  apparently to the readers via preattentive perception. The model can be interactively 
-  rotated and zoomed in or out to explore different viewing angles and levels of detail.
-
-  \item Time Filter: The time block filter is placed at the top-left of the
-  screen. It allows selection of individual time periods, or the selection of a 
-  contiguous block of time periods. The filters are subdivided into year and month 
-  filters sliders.
-
+  \item \threed Visualization: The central point of the visualization system is
+  a stylized rendering representing the physical entities in the text documents,
+  the visualization can be zoomed and rotated to explore different viewing
+  perspectives. Each entity is rendered with respect to a function which denotes
+  its importance, we explore different rendering styles to take advantage of
+  viewers' preattentive perception, allowing them to quickly uncover the
+  important subject matters.
+  
+  \item Time Filter: The filter is composed of two independent range sliders
+  with different granularity: year and month. The filter allows viewers to
+  adjust the time range for the visualization. Accompanying each range slider is
+  a histogram showing the accumulated volume of complains over a time period.
+  The widget itself is place at the top-left of the display space.
+  
   \item Hierarchy Filter: The hierarchy filters are placed at the
   bottom portion of the display akin to a series of drop-down menus. These are 
   designed specifically for our data of automotive complaints. The
@@ -218,10 +246,11 @@ summary, our interface is composed of five major components as seen in
   \threed visualization, additional information of the objects underneath the
   lens are displayed as heatmap charts placed around the lens circumference.
 
-  \item Heatmap Widget: The heatmap widget displays time-series data, volume for
-  each period is encoded as a shaded square and arranged into a grid pattern to
-  match the selected time range. The heatmap offers the viewer several different
-  perspectives to see trends and find outliers in the data.
+  \item Heatmap Widget: The heatmap widget displays time-series data, it
+  is similar in function to the histogram of the Time Filter widget, but
+  at a component level. Volume for each period is encoded as a shaded square and
+  arranged into a grid pattern to match the selected time range. The heatmap
+  offers the viewer several different perspectives to see trends and find outliers in the data.
   
   \item Document Widget: The document widget displays the source text documents.
   The panel displays documents relating to the current selected objects and 
@@ -239,7 +268,7 @@ In the following subsections we will describe each visualization components in
 more detail, the trade offs and choices we made and our justifications.
 
 \subsection{Visual Mapping}
-Because our visualization environment tries to mimics that of a real world ideals, 
+Because our visualization environment makes use of three dimensional space,
 extra care are taken into account for the selection of visual variables. Not all 
 variables are appropriate, shape, position and orientation are inherently used 
 to represent the geometries on the virtual model, a double encoding of these
@@ -260,7 +289,7 @@ characteristics, particularly descriptive attributes. It may be possible to use
 textures to simulate certain effects, for example a rusty surface. Nonetheless,
 textures do not possess order or quantifiable characteristics and was not
 included in our design. However it may be interesting to use textures for
-visualizing individual document, we leave this idea as furture work.
+visualizing individual document, we leave this idea as future work.
 
 \subsection{3D Visualization}
 Data comes in many different dimensions, include those with spatial attributes
@@ -275,14 +304,16 @@ we use \threed models comprised of segmented sub-mesh groups that link to our
 part-of relation hierarchy of component keywords.
 
 In order to enhance the message carrying capacity of the visualization, we
-considered several NPR techniques to created a more expressive rendering.
-We encode the score of each entity onto its respective \threed component with
-NPR technique as emphasis. In accordance with our requirement, the encoding
+considered several NPR techniques as a medium to created a more expressive
+illustrations. We associate the entity score with either a NPR technique, or use
+the score as a parameter into a NPR function. In accordance with our requirement, the encoding
 scheme should be clear and distinguishable by visual examination (Requirement
 R1) while maintaining the real world aspects. Our effects include varying
-stroke, halo/glow, colour variations, transparency effects and lighting effects.
-We chose colour mappings as our primary visual encoding, and use other effects
-as special effects and interactive highlights.
+stroke, halo/glow, colour variations, and transparency effects. 
+
+We chose colour mappings as our primary visual encoding which denotes the
+strength of non-zero scored components, and use other techniques to denote
+selection and overall context.
 
 Designing a colour scheme for the encoding of the virtual component objects
 presented several design trade-offs. We colour each object by mapping its score 
@@ -290,35 +321,36 @@ to a linear diverging yellow-orange-red hue scale, which is further divided into
 six discrete scoring bins. This has both advantages and disadvantages. The
 advantage is that it is much easier to distinguish a small number of hues than a
 continuous hue scale. The disadvantage being that we lose the ability to compare
-the relative distance between the buckets, for example, imagining the case were
+the relative distance between the buckets. For example, imagining the case were
 we have low value in bucket 1 and high value in bucket 2, this is equivalent
-to high value in bucket 1 and low value in bucket 2. We remedy this by allowing
-the viewers to extract numerical values with the heatmap widgets, we will
-discuss this further down.
+to high value in bucket 1 and low value in bucket 2. We partially mitigate
+the ambiguity by allowing the viewers to extract exact numerical values with the
+heatmap widgets, we will discuss this further down. We display the discrete hue
+scale as an on-screen legend at the bottom-left of the display screen.
 
-We display these hues as an on-screen legend at the
-bottom-left of the screen. We recognize that blending different hues in \threed 
-space does not necessarily produce a result which preserves the original hues, 
-and can potentially lead to distracting visual artifacts. Different hue
-preservation  schemes exist\cite{Chuang2009} but were not implemented for this
-prototype due to the added performance complexity (Hue adjustments are done at per pixel levels).
+We recognize that blending different hues in \threed space does not necessarily
+produce a result which preserves the original hues, and can potentially lead to
+distracting visual artifacts. Different hue preservation schemes
+exist\cite{Chuang2009} but were not implemented for this prototype due to the
+added performance complexity (Hue adjustments are done at per pixel levels).
 Due to known issues with blending, we have tried to use a single hue grey scale 
 with varying brightness, but we found that it was somewhat difficult to distinguish 
-overlapping or contained objects. Subjectively, single-hue also looks less 
-aesthetically pleasing. Thus we decided that using a multi-hue scheme was 
-more appropriate, despite the potential blending artifacts.
+overlapping or contained objects. Subjectively speaking, single-hue also looks
+less aesthetically pleasing, the entities did not have the ``pop-out'' effect
+as we seen with multi-hue schemes. Thus we decided that using  a multi-hue
+scheme was more appropriate, despite the potential blending artifacts.
 
-A second design trade-off was whether to use lighting effects or not. Lighting
+A second design trade-off was whether lighting effects should be used. Lighting
 effects such as specular lighting can create distractions because it can create 
-highlights in places of little or no significance. Without any realistic lighting 
-effects, or even simulated lighting effects, the visible colour of the components 
-exactly matches the colour assigned to the score (and as seen on the legend). 
+highlights in places of little or no significance. Without any realistic
+or simulated lighting effects, the visible colour of the components exactly
+matches the colour assigned to the score (and as seen on the legend).
 However, without any sort of lighting, particularly some type of diffuse lighting, 
 the \threed nature of the model, and the details of various components are not
 sufficiently visible. Adjacent objects that share the same score appear to be glued together 
-as a single component, adding boundary outlines helps but creates additional 
-clutters. When lighting effects are enabled, the objects are easily distinguishable 
-as lighting provides a clear silhouette. However, this type of lighting modifies 
+as a single component, adding boundary outlines helps but creates undesirable
+visual clutters. When lighting effects are enabled, the objects are easily
+distinguishable as lighting provides a clear silhouette. However, this type of lighting modifies 
 the colour based on the incidence angle of the light rays, thus it no longer matches 
 the assigned colour. Ultimately our design decision is that object recognition and 
 familiarity is important to us. Thus, by restricting the number of hues (6 buckets) 
@@ -326,7 +358,19 @@ and using soft white light, we contend that the lighting effects do not disturb
 the colour perception enough to obscure which hue-bin the component belongs to. 
 We made the design decision that the benefits of enabling lighting to visually 
 resolve the components outweighed the negative effect of shifting colours away 
-from those displayed in the onscreen legend.
+from those displayed in the onscreen legend. The results of our design choices
+can be seen in Figure \ref{figure:visualEncoding}.
+ 
+
+    % ===== Figure =====
+	\begin{figure}
+	   \centering  
+	   \includegraphics[width=\columnwidth]{visual_encoding.png}
+	   \caption{Showing the visual design trade offs}
+	   \label{figure:visualEncoding}
+	\end{figure}
+	% ==================
+
 
 In our design, we want to make all important objects visible (See requirement
 R1), these includes objects partially or fully occluded by another object, and 
@@ -382,26 +426,29 @@ part of our future work.
 The hierarchy widget is designed to model inclusive relationship, in particular,
 it is specifically designed to address the need to for comparison(R2) and trend
 finding(R3). For our problem domain, this relationship is represented as the
-organizational hierarchy.
-Our data contains 4 such fields: manufacturer, make, model and model year. 
-For example: Civic (Make) belongs to Honda (Manufacturer). These filters are 
-shown as a variant of the combo boxes which supports single selection, each item 
-in the filter shows the name and the number of documents that belongs to it.
-Rather than having the readers comparing items by reading the numbers in text
-format, we double-encoded the number of document as a horizontal histogram in 
-similar style as the scented widget approach in \cite{Willett2007}. The
-histogram bars are shaded in light grey, except for the selected item which
-we render in blue for distinction. The additional histogram makes it very clear
-any outlier items, and allows reader to make relative comparison among items.
-Toggling the widget will activate an animated transition to open/close the item
-list, which can be scrolled and selected. Selected item is shown in bold font.
+organizational hierarchy. Our data contains four such fields: manufacturer,
+make, model and model year. For example: Civic (Make) belongs to Honda
+(Manufacturer). These filters are shown as a variant of the combo boxes which
+supports single selection, each item in the filter shows the name and the number
+of documents associated with this organizational level. Rather than having the
+readers comparing items by reading the numbers in text format, we double-encoded
+the number of document as a horizontal histogram in similar style as the scented
+widget approach in \cite{Willett2007}. The histogram bars are shaded in light
+grey so they are visible but not overly distracting. The histogram makes it very
+clear any outlier items, and allows reader to make relative comparison among
+items. We capped the number of items that can be displayed at once, as such,
+scrolling is required to navigate long list of items. When an item is selected,
+we change the selected item's font type to bold and change its bar to the
+selected colour(blue).
+
+
 
 % Choose to leave the list open on selection to allow simpler selection of
 % outher types ???
 
 Each level of the hierarchy is shown in individual filters. We position the
 filters left-to-right across the display space, from the most general to most
-specific organizational classification. Each filter's content is 
+specific classification. Each filter's content is 
 dependent on the selection made on its parent. For example, the ``make''
 selection widget will contain different makes if ``GM'' is the selected manufacturer than
 it would for ``Chrysler''.  Non-top level hierarchy widgets remain hidden from view 
@@ -420,144 +467,186 @@ the volume of unique complaints for that time period. There are several granular
 options with our document collection: daily, weekly, monthly or yearly. From a 
 preliminary analysis of the incoming volume of complaint documents, we found that 
 daily and weekly granularity resulted in too much noises, there are insufficient
-amount of data at that level to detect trends and other interesting patterns. Thus 
-we selected to use month and year as our granularity levels. The widget consist of 
-two sliders, the top slider represents time period in years, and the bottom slider 
-represent time periods in months. Text labels at the top of each bar give the 
-numerical representation of the volume of documents.
+amount of data at that level to form visually detectable trends and other
+interesting patterns. Thus we selected to use month and year as our base time
+periods. The widget is made up of two sliders. The top slider represents time
+period in years, and the bottom slider represent time periods in months. Text
+labels at the top of each bar give the numerical representation of the volume of
+documents.
 
-The widget allows people to select blocks of time, rather than a continuous time 
-range. To explain this type of selection, imagine selecting a squarified region
-from a \twod grid. The year sliders controls where to start and stop on the
-vertical direction, while the month slider controls where to stop and start on
-the horizontal direction. However, instead of presenting a grid controller, we
-realize this as two sliders. We choose to condense the grid, such that the
-month volumes are the accumulated volumes of that month across the selected years. 
-This is done for several reasons: One, this saves space, especially for when dealing with a large time
-span. Two, this is an easier way to see seasonal trends (Requirement R2) since
-the viewers do not have to sum up the values themselves, for example, comparing
-all summer months versus all winter months. 
+Time selection is not continuous, but rather in a block like manner. Multiple
+years and multiple months can be selected simultaneously; when more than one
+year is selected, the values on the month's histogram become the accumulated sum
+of the month across the selected years. There were two motivations for this
+design approach: One, this allows us to analyze a large time frame without
+sacrificing too much screen real estate. Two, because the number of months is
+static, viewers can compare month-to-month or season-to-season without
+difficulty,  this follows up on our requirement to allow analysis of seasonal
+trends (Requirement R2). We illustrate with an example, suppose we want to
+compare the number of incidents in January versus June from 2000 to 2005, we
+select 2000 to 2005 on the year slider, we can then compare the January volume
+and June volume directly, furthermore, each month can be selected for further
+analysis.
 
-The current time selection can be changed by interacting with individual month or 
-year bars (Clicking), or by dragging with the two markers at the base of each slider. 
-Selections are highlighted, while non-selections are greyed out. Selection of an entire 
-year (January to December) can be achieved by clicking on a selected year.
- \begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{filter_widgets.png}
- \caption[Filters]{Close up of Time Slider Widget, Hierarchy Widget and
- Document Widget}
- \label{figure:widgets}
-\end{figure}
-
+User interaction is done through click/tapping the individual histogram bars, or
+by dragging each slider's respective markers. A short cut for selecting an
+entire year is provided by double clicking/tapping any non-zero bar on the year
+range slider. An animated transition is used to interpolate the height of the
+histogram bars from their current volume to their new volume.
+
+    % ===== Figure =====
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{filter_widgets.png}
+	 \caption[Filters]{Close up of Time Slider Widget, Hierarchy Widget and
+	 Document Widget}
+	 \label{figure:widgets}
+	\end{figure}
+    % ===================
+
 \subsection{Lens Widget}
 Using a metaphor of looking through a magnifying glass to reveal better details
 about a specific subject, we created an interactive widget to extract and show 
-detailed information about entities in the text. This is in some sense a 
-combination of filter plus detail-on-demand operations in terms of the
-information seeking process.
+detailed information about entities in the text. With respect to the information
+seeking process, this approach combines both filter and detail on demand phase.
 
-The lens widget operates in a hybrid \twod/\threed space, the lens itself exist
-on a flat \twod plane, but it casts a cylindrical query volume into the
-\threed visualization. Objects whose centroids are within the query volume are
-tagged, and have their detailed information displayed on the left/right sides of the lens as interactive 
-information charts. A tagged object is identified with its chart by the use of 
-line segments connecting the chart back to the component’s centroid location in 
-screen space.
- 
+The lens widget operates in a hybrid \twod/\threed space, the lens itself exists
+on a flat \twod plane, it casts a cylindrical query volume into the scene. To be
+able to query different entities, each entity object is tested to see if their
+corresponding meshes are in the querying volume. In this project, we use the
+centroid of the mesh as our test criteria, more advanced techniques do exist
+and would make detection more accurate \cite{Ali2005}, though this comes with
+higher performance implications. Entity objects in the lens activate their
+heatmap charts, which are displayed alongside the widget's circumferences in a
+flush-right/flush-left manner. To make the associate between the \threed mesh
+and the heatmap chart, we make use of line segments to connect the chart back to
+the entity's centroid location in screen space.
+
   
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{lens_schematic.png}
- \caption[Lens Widget Schematics]{Cross section schematics of the Lens Widget}
- \label{figure:lensSchematic}
-\end{figure}
-
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{lens_example.png}
- \caption[Lens Widget in Action]{On the left, using the Lens Widget to expose
- underlying semantics.
- On the right, adjusting the depth field to cull away occluding geometries.}
- \label{figure:lensExample}
-\end{figure}
+    % ===== Figure =====
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{lens_schematic.png}
+	 \caption[Lens Widget Schematics]{Cross section schematics of the Lens Widget}
+	 \label{figure:lensSchematic}
+	\end{figure}
+	% ==================
 
 
-Each lens widget has its own rendering pipeline, as such, the focused area under
-the lens can be rendered in the same style as the default \threed
-visualization, or in a different styles, allows the objects under the lens to
-take up additional semantics and put further emphasis on the focus+context technique.
-The lens itself is circular, with a semi-transparent border around its
-circumferences so viewers are aware of its existence. Lens can be active,
-denoting it is being used, in which case the lens border will be coloured blue.
-Inactive lens is coloured grey. Whether a lens is active or not does not impact
-the semantics of the lens itself.
+    % ===== Figure =====
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{lens_example.png}
+	 \caption[Lens Widget in Action]{On the left, using the Lens Widget to expose
+	 underlying semantics.
+	 On the right, adjusting the depth field to cull away occluding geometries.}
+	 \label{figure:lensExample}
+	\end{figure}
+	% ==================
 
-To build a rich, flexible query mechanism, the position of the lens and the
-radius can be altered, thus creating different querying volume in different 
-spatial locations. In addition, each lens widget use a depth parameter that acts 
-as a cutting plane, all objects that comes before the cutting plane are excluded 
-from the tagging process and are rendered as inactive objects. The depth parameter 
-allows people to investigate occluded objects without resorting to changing their 
-viewing perspectives.
+The lens widget utilizes its own rendering pipeline, object geometries are
+sent into the pipeline as normal, the rasterized result is then stored in an
+intermediate buffer and later combined in fragment shaders with the default
+rasterization scene. This is an independent process, and thus allows us to
+render the lens' scene in different rendering styles and semantics. To visualize
+the lens widget itself, we draw a semi-transparent border around its
+circumference so viewers are aware of its existence. When interacting with the
+lens widget, the widget is active and we render the border in blue, otherwise we
+use the default grey colour. The semantics of the lens is not impacted by
+whether the lens is active or inactive.
 
-Multiple lens widget are allowed to facilitate simultaneous exploration of
-different areas, for example if we are looking at a tower structure, we can one
-lens examining the base of the structure, while another lens examining the top of
-the tower. However we have not defined any semantics for the lens to overlap, thus 
-each lens should be used individually.
+Three different types of interactions can be performs on the lens widget. The
+position of the lens can be moved around the display, which impacts the
+currently selected filters and the heatmap charts. The lens can be resized,
+which increases or decreases its querying area. Lastly, a depth field can be
+adjusted, this field acts as a cutting plane that removes entity objects that
+comes before the plane. The depth field function provides a method for people to
+reduce occlusion, as all entities that are the cut by the plane drawn in
+an outline style that allows viewers to see into the object. Objects that are
+cut off are excluded from any scoring calculations, they also have their
+heatmaps hidden to reduce visual clutter. These three interactions can be
+combined together to create a rich, flexible query mechanism.
+
+Multiple lens widget are allowed for vacillating simultaneous explorations of
+different parts of the visualization. For example, if the subject matter is of
+an elongated shape, it is possible to use two lens to explore the entities
+positioned at either end. However, we have not defined any semantics for
+multiple lens to co-exist in the same spatial location, that is, the lens widget
+has no defined behaviour when it is overlapped with another lens.
+
+%To build a rich, flexible query mechanism, the position of the lens and the
+%radius can be altered, thus creating different querying volume in different 
+%spatial locations. In addition, each lens widget use a depth parameter that acts 
+%as a cutting plane, all objects that comes before the cutting plane are excluded 
+%from the tagging process and are rendered as inactive objects. The depth parameter 
+%allows people to investigate occluded objects without resorting to changing their 
+%viewing perspectives.
+
+%Multiple lens widget are allowed to facilitate simultaneous exploration of
+%different areas, for example if we are looking at a tower structure, we can one
+%lens examining the base of the structure, while another lens examining the top of
+%the tower. However we have not defined any semantics for the lens to overlap, thus 
+%each lens should be used individually.
 
 
 \subsection{Heatmap Widget}
-The information chart extruded from the lens widget is designed as a heatmap-like 
-chart, it shows the volume of complaints registered against individual objects 
-across time. Like our design for the time slider histograms, our intention is to 
-allow people to compare specific periods of time across different years for a 
-specific objects, albeit in finer detail. 
+The heatmap is an interactive widget that shows entity specific information over
+the selected time frame. Each heatmap is designed to communicate how the volume
+of complaints changed over time for individual entity components by fitting a
+time series data onto a two dimensional grid. In particular, the heatmaps allows
+year-to-year and month-to-month comparisons.
+
+%The information chart extruded from the lens widget is designed as a
+% heatmap-like chart, it shows the volume of complaints registered against individual objects 
+%across time. Like our design for the time slider histograms, our intention is to 
+%allow people to compare specific periods of time across different years for a 
+%specific objects, albeit in finer detail. 
 
 Prior to our heatmap implementation, we have also considered using a simple 
-scatter-plot, with time on the X-axis and the volume on the Y-axis. While 
-this solution is simpler to read and to detect long term trend it has two 
-drawbacks: It does not allow easy comparison across different years, and it is 
-not space efficient. Imagine the case where we have a 15 year period, it becomes 
-difficult to compare year two versus year fourteen because they are too far apart, 
-we also must allocate at least 180 pixels (One pixel minimum for each month) 
-which takes up too much screen real estate.
+scatter-plot approach, with time on the X-axis and the volume of complaints on
+the Y-axis. While this solution is simpler to read and likely easier to detect
+long term trend, its major drawback is that it is likely more difficult to
+make seasonal comparisons. For example, imagine a case where we want to compare
+summer to fall over a 4 year span, one must constantly make the context switch
+to decipher which parts of the graph represents summer, and which parts
+represent winter. Also, in extreme cases scrolling need to be utilized for very
+long time frames.
 
 We arrange the time segments chronologically onto a grid like a calendar,
 the month are arranged left-to-right in ascending order, and the years arranged 
 top-to-bottom in ascending order. Each cell then represents the entity score for
 the particular month. We use the same 6-bin colour encoding for the heatmap
 widget to keep a consistent colouring scheme throughout the system. The widget
-label, from left-to-right, shows the component name, the current importance score, and the
-score if nothing is selected (The maximum score it can have). Since each
-component can correspond to multiple names, we label the component with the
-first name which appears in our vocabulary.
+label, from left-to-right, shows the entity name, the number of complaints
+referring to the entity with respect to the current query, and the number
+of complaints in total if nothing is selected. Due to the use of synsets, each
+entity has at least one corresponding string representations, we use the first
+lemma that appears in our vocabulary, which may differ from actual text.
 
 When examining the heatmap, trends and outliers can be detected visually. The
 grid view aligns both month and year time dimensions, allowing viewers to
 compare year and month with relative ease. Hovering over individual cells will cause a
 tooltip to appear, showing the precise numerical score for the month, the tooltip itself is 
 rendered with a semi-transparent style to avoid occlusion. Hovering also creates 
-a highlight on the cell border, as well the same cell on all visible heatmap widgets 
-are highlighted as a brush+link effect, this supports comparison across different 
-object components.
+a visual cue of a highlighted border around the selected cell, the highlighting
+effect is carried across all visible heatmaps as a brush+link effect.
 
-We have considered two types of labeling layout for our lens widget: A
-flush-left/flush-right layout that places the heatmaps on either left or right 
-side of the lens, and a radial layout where each heatmap is placed around the 
-lens’ circumference. The radial layout is anchored at the centre of the lens, 
-imaginary line segments extends from the centre through the projected centroids,
-and a real line segments extends the imaginary line to the circumference. The 
-result was eye-pleasing, but due to the nature of the lens being an exploratory 
-tool which is moved around the screen frequently, the layout is unstable and 
-not suited for this particular usage case. For the flush-based layout, we first 
-sort the object centroids by their Y-coordinates in screen space, then we place 
-the heatmaps on left/right side based on the heuristics below. Since there is 
-no reliance on the centre of the lens for placement, movement of the lens widget
-will not cause drastic changes to the heatmap placement and thus produce a more 
-stable looking layout. Lastly we horizontally align the charts so it is easier 
-for people to compare values across different heatmaps.
+With respect to the actual placement of the heatmaps, we have considered two
+types of labeling layout for our lens widget: A flush-left/flush-right layout
+that places the heatmaps on either left or right side of the lens, and a radial
+layout where each heatmap is placed around the lens’ circumference. The radial
+layout is anchored at the centre of the lens, imaginary line segments extends
+from the centre through the projected centroids, and a real line segments
+extends the imaginary line to the circumference. The result was eye-pleasing,
+but due to the nature of the lens being an exploratory tool which is moved
+around the screen frequently, the layout is unstable and not suited for this
+particular usage case. For the flush-based layout, we first sort the object
+centroids by their Y-coordinates in screen space, then we place the heatmaps on
+left/right side based on the heuristics below. Since there is no reliance on the
+centre of the lens for placement, movement of the lens widget will not cause
+drastic changes to the heatmap placement and thus produce a more stable looking
+layout. Lastly we horizontally align the charts so it is easier for people to
+compare values across different heatmaps.
 
 In order to avoid occluding the \threed visualization, or to run off screen
 space, we employ the following heuristics for heatmap placement.
@@ -570,10 +659,10 @@ space, we employ the following heuristics for heatmap placement.
 \end{itemize}
 
 Because of limited screen space, we have made the decision to cap the number
-of heatmaps that can be displayed at any given time. Rather than showing all the 
-heatmaps under the lens widget, which would inevitably create visual clutter or 
-having the heatmaps running off the screen, we use a scrolling mechanism that 
-allows people to scroll through the objects under the lens. We have a parameter
+of heatmaps that can be displayed at any given time. Rather than showing
+heatmaps for all the entities under the lens widget, which would
+inevitably create visual clutter, we employed a scrolling mechanism that 
+allows people to scroll through the entities under the lens. We have a parameter
 N which controls the maximum number of visible heatmaps. We have no
 recommendations to what N should be, as it is tied to the amount of entities in
 total, as well as the spatial placement of these entities. We found N=8 works
@@ -583,63 +672,84 @@ well with our vehicle complaint corpus.
 \subsection{Document Widget}
 The document widget is the final stage of our drill-down process by providing links 
 to the raw text (Requirement R4). Each document is divided into two sections,
-the header section shows each document’s queryable attributes and the content section shows the raw 
-text descriptions. Text are rendered on top of a semi-transparent panel and highlights 
-are applied to selected object and co-occurring objects. To differentiated selected 
-entities and related entities, we highlight selected entities in blue and related 
-entities in grey, this creates a sharp contrast against the rest of the document text, 
-allow readers to pick out the entities easily. 
+the header section shows each document’s fixed attributes and the content
+section shows the raw text descriptions. We denote the selected entity words and
+co-occurring entity words using blue and grey highlights respectively to create
+contract against the remainder of the text. Scrolling is enabled with textual
+content overflows the display panel, we use per-pixel based scrolling to ensure
+fluid transition from document to document without any sudden disruptions.
 
-By default the document widget is hidden from view as to not occlude the 
-\threed visualization. Once the widget is toggled into existence, it can be
-moved around the screen to user preferred position. Toggling of the
-document panel is done with a fluid transition that enlarges/shrinks
-the GUI panel. Scrolling on the document widget is enabled if the contents
-overflow the display area. Scrolling is done at a pixel base level, rather than
-document base level. Pixel based scrolling is smoother, and are not prone to
-sudden changes in the visual display which can distract the readers.
+We restrict the application to have a single document widget only. The widget is
+toggle-based and is by default hidden from view. Once activated, an animation
+will expand its dimension from a single pixel to its full size at the
+activation coordinate, a reverse animation is used to deactivate the panel. Once
+visible, a person can reposition the panel to move it to the desired location.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Interaction}
-Interaction with the \threed model and interactive widgets dynamically update
-the visualization to reflect any changes. The change of visualization state is carried 
-through an animated transition that interpolates the colours and histogram values. 
-In this section we describe the high-level interactions and models that 
-support common tasks.
+In this section we describe in greater detail how a person interacts with the
+visualization by changing the underlying filters and using the widget to create
+visually based queries. We also describe here our design for touch based
+gestures, and visual feedback system for help people in their orientation of the
+application.
 
-\subsection{Object Selection and Query Construction}
-The current query criteria determines the visibility of the \threed objects, as
-well as their selectability when an action is performed. Query is constructed by
-combining together selected values from widget instances and the selection
-buffer, which holds the currently selected entities. The system detects any
-changes to the query criterion and triggers the visualization to reevaluate. 
+%Interaction with the \threed model and interactive widgets dynamically update
+%the visualization to reflect any changes. The change of visualization state is carried 
+%through an animated transition that interpolates the colours and histogram values. 
+%In this section we describe the high-level interactions and models that 
+%support common tasks.
 
-Object selection can be done in two ways: One, direct selection by clicking on
-the \threed objects themselves or clicking through the lens widget. Two,
-indirect selection  by clicking on their representative heatmaps.
-In the case where objects occlude each other, direct selection will return the
-object that is closest to viewing point. In order to select occluded objects,
-the \threed model can be rotated to reveal hidden entities. Alternatively, we
-can use the lens’ depth functionality to cut away occluding geometries, or
-directly clicking on the heatmap representations which are always available. 
+% This needs some work, it sounds kind of weird at places
+\subsection{Entity Selection}
+Entity objects can be acquired in two ways: One can directly select the entity
+by performing the tap gesture on the \threed representation, or tapping the
+heatmap through the lens widget. In the case where objects occlude each other
+in \threed space, direct selection will return the object that is closest to
+viewing point. In order to select occluded objects, the scene can be
+rotated to reveal hidden entities. Alternatively, we can use the lens’ depth
+functionality to cut away occluding geometries, or directly clicking on the
+heatmap representations which are always available.
 
-Selection is toggle based, thus clicking on a selected object or heatmap will 
-de-select that item. Clicking on an empty space will trigger a reset and de-select 
-all items. Selected items are accentuated visually with a glowing blue halo
-around the objects, this also applies to corresponding heatmaps which will have
-their border highlighted in blue. Any entities with 0 scores are considered
-inactive and are only drawn on the screen to give context, as such they are not
-selectable, any clicking on inactive object will cause the select action to go
-through the object to select the next nearest non-zero entity.
+Selection is toggle based. When an entity is selected, we apply a blue borderb
+to the associated heatmap and the line segments that links the heatmap back to
+the visualization. To visually accentuate the selection in \threed
+space, we employ a halo like effect around the hull of the mesh objects. Both
+selection and deselection of any entity triggers an event to recalculate the
+entity scores, an animated sequence then starts to interpolate the colour of
+each \threed object to reflect the scoring change.
 
-Selected objects are added to the selection buffer, which also act as a query filter. 
-When selection buffer is not empty, object scores are calculated in relation to 
-the objects in the buffer, thus forming co-occurrence relations. For example, if 
-we selected the “engine” and “door” objects in the visualization, the rest of the 
-objects are recalculated to see if they co-occurs with both “engine” and “door”. 
-By this convention, the selected objects will always have the maximal score after 
-normalization, and will be coloured with the deepest shade on our colouring scale.
+The re-evaluation of the entity scores are based on current selection,
+specifically they are recalculated based on their co-occurrence relation with
+the current selection. Thus, highly co-occurring entities will score higher and
+be more visible than lowly co-occurring entities.
+
+Selection of an entity with zero score is considered invalid, instead, the
+system will propagate the selection event through the zero scored entities.
+
+
+
+%Selection is toggle based, thus clicking on a selected object or heatmap will 
+%de-select that item. Clicking on an empty space will trigger a reset and de-select 
+%all items. Selected items are accentuated visually with a glowing blue halo
+%around the objects, this also applies to corresponding heatmaps which will have
+%their border highlighted in blue. Any entities with 0 scores are considered
+%inactive and are only drawn on the screen to give context, as such they are not
+%selectable, any clicking on inactive object will cause the select action to go
+%through the object to select the next nearest non-zero entity.
+
+
+% This should be moved to the data section, probably. It talks about scores and
+% how they are recalculated in co-occurring situations
+
+%Selected objects are added to the selection buffer, which also act as a query
+% filter.
+%When selection buffer is not empty, object scores are calculated in relation to 
+%the objects in the buffer, thus forming co-occurrence relations. For example, if 
+%we selected the “engine” and “door” objects in the visualization, the rest of the 
+%objects are recalculated to see if they co-occurs with both “engine” and “door”. 
+%By this convention, the selected objects will always have the maximal score after 
+%normalization, and will be coloured with the deepest shade on our colouring scale.
 
 \begin{figure}
  \centering  
@@ -685,98 +795,121 @@ factor, a lens widget can be over the ``front'' of the vehicle visualization,
 automatically pulling out all the relevant entities.
 
 
-
 \subsection{Surface Based Interaction}
-We intend to have our application running on a walk-up-and-use scenario
-on large displays, thus we have built our prototype to take into account
-keyboard/mouse free interactions.
-We use the idea of ``zones'' to segment our display space and to process touch
-point events. Each interactive element has an implicit zone that is calculated
-when a touch point is detected by the sensor. An overview of different zones are as follows:
+We use the idea of zone to segment our display space and to process touch
+point events. Each zone consist of one or more polygonal spaces with predefined
+semantics for handling touch based gestures. In the event that the zones overlap
+each other and an event comes in, we only process the zone with the highest
+priority. The priority of each zone is fixed and is predetermined. 
+
+When a touch point is registered by the sensor hardware, we tie the touch point
+to a single zone, the coupling will remain so until the touch point is removed.
+The reason for this approach is to create a continuous interaction model, we
+want to avoid sudden change of semantics which defies user expectations. This
+approach also allows a subset of our dragging gestures(lens handle, slider
+makers and scrolling) to continue to execute even if the actual touch point is
+move off the predefined area, allowing higher tolerance for human error and
+error recovery.
+
+In the list below, we summarize the different zones we have in our application
 \begin{itemize}[noitemsep]
-  \item Visualization Zone: The main \threed visualization
-  \item Time Block Zone: Covers the year and month time sliders 
-  \item Filter Zone: Covers the accessible hierarchy filters
-  \item Lens Zone: Area covered by the lens widget
-  \item Text Zone: Covers the document widget
-  \item Empty Zone: An empty zone is none of the above.
+  \item Visualization Zone: The main visualization, handles selection
+  and deselection semantics of \threed objects, as well as heatmap selection.
+  \item Time Zone: Covers the year and month time sliders 
+  \item Filter Zone: Covers the organizational hierarchy filters
+  \item Lens Zone: Handles semantics for change the physical attributes of a
+  lens widget
+  \item Document Zone: Covers the document widget
+  \item Empty Zone: An empty zone is specially designated zone that is none of
+  the above. Empty zone handles gestures related to camera and miscellaneous
+  functions.
 \end{itemize}
 
-Each touch point is tied to a single zone, and remains so until the touch point 
-is removed. Thus, if we put our finger down on the visualization zone, and then
-we drag the finger into text zone, the touch point is still registered with
-the visualization zone. This creates a continuous interaction and avoid
-distracting the users by sudden transition of different zones.
-
-
-%We designed the following gestures as our fundamental building blocks
-%\begin{itemize}[noitemsep]
-%  \item Tap Gesture: Tap and lift finger.
-%  \item Hold: Tap and hold for at least X milliseconds
-%  \item Drag: Tap followed by move
-%\end{itemize}
-%Higher level gestures are built by compositing together lower level gestures
-%\begin{itemize} [noitemsep]
-%  \item Spread/Pinch: Dragging two touch point away or closer to each other, the
-%  two touch points need to start off in the same zone.
-%  \item Hover: Hold followed by drag.
-%\end{itemize}
 
 While we tried to adhere to commonly accepted gestures for navigational and
 selection based tasks, our gesture design is also influenced heavily by our
 hardware and our perceived usage scenario: an infrared sensor overlay placed
 atop a large, nearly vertical display screen. Our hardware setup has several
 design implications. The infrared sensor is imprecise because it senses
-movements instead of real touches, as such it is quite possible to introduce
-false positives due to how the hand is oriented. While it is possible to use
-heuristics to mitigate the consequences of unintended noises, there are
-ambiguous cases where we cannot guarantee the correct outcomes. For  example,
-imagine a single handed pinch gesture with the thumb and index  finger, we have
-noticed through experimental trials that the knuckles on the  other fingers are
-sometimes picked up as touch points as well. This case  creates a problem,
-because the points are roughly the same distance apart, it is difficult to judge
-which points are actually created by the thumb and index finger without
-additional information. Because we only receive normalized coordinates from the
-sensor device, we opted to abandon any complex, single-handed, multi-finger
-gestures in order to have a system will be able to react inline with respect
-to user expectations.
+movements instead of real touches, as such it is possible to introduce
+false positives due to how the hand posture and orientation. We can use software
+heuristics to mitigate the consequences of these unintended noises, however,
+there are ambiguous cases where we cannot guarantee the correct outcome. For example,
+imagine a single handed gesture with the thumb and index finger, we have
+noticed through experimental trials that the knuckles on the other fingers are
+often picked up as extra touch points as well due to their proximity to the
+sensor. In this case, it is difficult to judge which points are intentional and
+which ones are not; these points are roughly equal distance apart, and without
+additional information such as a camera image or depth which may be used to
+conjecture hand orientation, we cannot guarantee correctness as we only have
+Cartesian coordinates as our data source. Due to said reason, we decided
+to abandon any complex, explicitly-singled-handed, multi-fingered gestures in
+favour of a simpler, less error prone approach.
 
-We design two types of touch gesture semantics for our system: a tap semantic
-and a hold semantic. The tap semantic results from a single touch where there is
-no delay between the initial touch gesture and subsequent actions, conversely
-the hold semantic requires the user to hold the initial touch point briefly
-before transitioning into subsequent movements. We map the tap semantic to
-actions to selection, scrolling and orientation logic. For the gestures that use
-the hold semantics, we reserve these gestures for the toggling our custum made
-user interface widgets.
+Our final gesture set is a cumulation of several iterations of redesign, new
+heuristics and refinement of existing gestures. We pilot-test each iteration by
+asking people to perform sample tasks and observer their reactions, in a few
+cases we gave no instructions on how to use the system in order to observe their
+natural instinct.
 
+In our current iteration, we designed two types of touch gesture semantics for
+our system: a tap semantic and a hold semantic. The tap semantic results from a
+single touch where there is no delay between the initial touch gesture and
+subsequent actions, conversely the hold semantic requires the user to hold the
+initial touch point briefly before transitioning into subsequent movements. We
+map the tap semantic to actions to selection, scrolling and orientation logic.
+For the gestures that use the hold semantics, we reserve these gestures for the
+toggling our custom made user interface widgets. 
+We summarize our gesture set
+below, group by by functional areas:
+\begin{itemize} [noitemsep]
+  \item Perspective Manipulation: Perspective manipulation consist of rotation
+  of \threed model and camera zoom. Rotation is achieved with a
+  single point horizontal or vertical drag gesture, which corresponds to
+  rotation of the XY and XY planes. Zooming events are triggered by bringing
+  together two touch points closer together or further apart. All perspective
+  manipulations are restricted to the empty zone.
 
+  \item Entity Selection: Entity selection is triggered with a single tap event.
+  A hold gesture on an entity will invoke the tooltip widget, if applicable.
+  
+  \item Time Sliders: Single-tap gesture is used to send select events to
+  individual time sliders. Dragging gesture is used to move the markers left and
+  right for selecting multiple periods.
+  
+  \item Hierarchical Filters: A single tap gesture is used to open, close and to
+  make selections. Scrolling is achieved by dragging the item list vertically.
+  Note the gestures are associated with unique events, thus we do not allow
+  transition from one semantic to another, even though the gesture point is on
+  the same zone. For example, one cannot transition directly from dragging the
+  item list to select, a separate gesture need to be executed to perform the
+  selection.
+  
+  \item Lens Manipulation: A lens widget is created by specifying its diameter
+  with two hold points, for example using index fingers on left and right hand
+  to create the diameter. We impose a minimum and maximum diameter length to
+  keep the physical size of the lens within reason, with our display hardware,
+  we use the range between 100 to 500 pixels. Dragging gesture performed on the inner part
+  of the lens shift the lens location, while dragging gesture performed on the
+  border resize the lens with respect to the point's distance away from the
+  lens centre. A resize that results in a diameter that falls below the minimum
+  threshold removes the lens widget from the application. The handle on the
+  widget adjusts the depth parameter, dragging the handle counter-clockwise
+  increases the cutting depth, while the reverse decreases the cutting depth, we
+  modelled this behaviour after the zooming mechanism on the barrels of camera
+  lenses.
+  
+  \item Text Browsing: The document panel becomes active upon a hold gesture
+  event, with no other hold events in its vicinity. The hide the panel from
+  view, executing a hold gesture anywhere on the document widget will trigger
+  the close event. The widget is further subdivided vertically into two separate
+  zones at 80 percent and 20 percent of the widget's width. The larger of the
+  two listens to move events, while the smaller one, positioned on the right
+  side handles scrolling of text. Both of these zones receive tap based
+  events.
+  
+\end{itemize}
 
-Our interactions with the system can be summarized by the table below: 
-
-% Interaction table starts
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|l|l|l|}
-\hline
-Action & Zone & Mouse/Keyboard & Touch \\
-\hline
-\hline 
-Selection & Visualization & Click & Tap \\
-\threed Model Rotation & Empty & Drag & Drag \\
-\threed Model Zoom & Empty & Mouse Wheel & Spread/Pinch \\
-Activate Lens & Empty & Ctrl+Click & 2 Finger Tap \\
-Enlarge/Shrink Lens & Lens & Right-Mouse Drag & Spread/Pinch \\
-Lens Depth & Lens & Mouse Wheel & 2-Finger Drag \\
-Time Selection & Time & Click/Drag & Tap/Drag \\
-Hierarchy Selection & Hierarchy & Click/Drag & Tap/Drag \\
-Open Document & Empty & Space & 2-Finger Tap \\
-Scroll Document & Document & Mouse Wheel & 2-Finger Drag \\
-Close Document & Empty & Space & Pinch \\
-\hline
-\end{tabular}\caption{List of interactions}\label{table:Interaction}
-\end{table}
-% Interaction table ends
 
 
 \subsection{Visual Feedback}
