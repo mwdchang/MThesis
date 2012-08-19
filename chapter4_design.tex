@@ -6,6 +6,8 @@
 % - Should consider rewording 'stage 2: tagging'
 % - Should probably talk about active versus inactive versus context objects 
 %   in the 3D visualization section
+% - Should probably talk about rational for picking 3D space first before
+%   going into too much detail
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Design}
 This chapter covers our visual design process and our rationals for our
@@ -23,7 +25,7 @@ In order to create our visualization, first we must be able to process and
 extract semantics from our text collection. Our processing is broken down into 
 three different stages, normalization, preprocessing and an
 extraction/scoring stage. The normalization stage removes irrelevant entries and
-attemps to clean up the text as much as possible. The preprocessing stage deals
+attempts to clean up the text as much as possible. The preprocessing stage deals
 with normalizing the text and building a vocabulary of keywords that are used to
 represent the entities found in the document. The extraction/scoring stage
 scores each document the number of occurring keywords. Lastly, the final stage
@@ -219,7 +221,7 @@ summary, our interface is composed of five major components as seen in
 \ref{figure:overview}
 
 \begin{itemize} [noitemsep]
-  \item \threed Visualization: The central point of the visualization system is
+  \item Stylized Visualization: The central point of the visualization system is
   a stylized rendering representing the physical entities in the text documents,
   the visualization can be zoomed and rotated to explore different viewing
   perspectives. Each entity is rendered with respect to a function which denotes
@@ -267,8 +269,32 @@ summary, our interface is composed of five major components as seen in
 In the following subsections we will describe each visualization components in
 more detail, the trade offs and choices we made and our justifications.
 
+
+\subsection{Design Rational}
+A major part of our design for this thesis is the mapping of abstract semantics
+onto realistic looking, \threed models. But this can also be a source of
+complication, we have to deal with the additional difficulties of navigating in
+three dimensional space,  as well as work around perceptual limitations. So why
+use \threed models in the first place? We hypothesize that the additional sense of
+realism helps people see and communicate better then when they are working with
+raw text or data in abstract forms. The familiarity with how the physical
+entities look means people do not have to learn additional visual mappings. Communication may
+be eased because there is a shared common ground among the different parties.
+Proximal relationships are also easily perceived if they have realistic spatial
+mappings and can encourage more thorough exploration of the dataset. These
+advantages are not readily present in abstract representations, while with
+careful design it is possible to overcome the pitfalls of perceiving \threed graphics.
+
+Yet another argument is that the use of a set of \twod images can also convey
+realism, our opinion is that they lack the expressive power and playfulness of a
+fully rendered \threed model. Flat image representation would likely result in
+multiple images, to cover different sections of the entities and viewing angles,
+this can result in more cognitive load due to the viewers switching between
+images to get an overview.
+
+
 \subsection{Visual Mapping}
-Because our visualization environment makes use of three dimensional space,
+Because our visualization environment makes use of 3 dimensional space,
 extra care are taken into account for the selection of visual variables. Not all 
 variables are appropriate, shape, position and orientation are inherently used 
 to represent the geometries on the virtual model, a double encoding of these
@@ -291,17 +317,17 @@ textures do not possess order or quantifiable characteristics and was not
 included in our design. However it may be interesting to use textures for
 visualizing individual document, we leave this idea as future work.
 
-\subsection{3D Visualization}
-Data comes in many different dimensions, include those with spatial attributes
-and those with abstract attributes. Our innovation is to show these spatial 
-vocabulary as they would exist in the physical world, while using the abstract 
-attributes as rendering parameters. For tasks related to word frequencies and 
-other scores, we hypothesize that people will be able to see, and communicate 
-better than in raw text formats because they are working with a familiar form. 
-Proximity-based clusters formed in the spatial dimension would also encourage 
-exploration of these areas that may otherwise go undetected. In our visualization, 
-we use \threed models comprised of segmented sub-mesh groups that link to our
-part-of relation hierarchy of component keywords.
+\subsection{Stylized Visualization}
+%Data comes in many different dimensions, include those with spatial attributes
+%and those with abstract attributes. Our innovation is to show these spatial 
+%vocabulary as they would exist in the physical world, while using the abstract 
+%attributes as rendering parameters. For tasks related to word frequencies and 
+%other scores, we hypothesize that people will be able to see, and communicate 
+%better than in raw text formats because they are working with a familiar form. 
+%Proximity-based clusters formed in the spatial dimension would also encourage 
+%exploration of these areas that may otherwise go undetected. In our visualization, 
+%we use \threed models comprised of segmented sub-mesh groups that link to our
+%part-of relation hierarchy of component keywords.
 
 In order to enhance the message carrying capacity of the visualization, we
 considered several NPR techniques as a medium to created a more expressive
@@ -763,10 +789,9 @@ system will propagate the selection event through the zero scored entities.
 \subsection{Spatial Interaction}
 Traditional systems, particularly databases use explicit queries as a mean to
 communicate with the underlying data. While this works well for task analysis,
-it has an implicit assumption that you know what you are looking for, and that
-the query executor has some notion of what the underlying data structures are
-like. Thus it can be difficult for anyone to come up and use the system without
-prior training.
+it has an implicit assumption that the person knows something about how the
+system works, and how the data is structured. Thus it can be a limiting factor
+that prevents a wider audience from using applications without prior training.
 
 Here we take a different approach, the lens widget allows people to demand and
 filter detailed information by means of a visual query. Unlike explicit queries,

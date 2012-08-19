@@ -550,7 +550,8 @@
       A thesis submitted in conformity with the requirements\\
       for the degree of {\@degree}\\
       Graduate Department of {\@department}\\
-      University of Toronto\\
+      University of Ontario Institute of Technology\\ 
+      %University of Toronto\\
       \vfill
       Copyright {\copyright} {\@gradyear} by {\@author}\\
       \vspace{.2in}
@@ -577,7 +578,8 @@
       {\@author}\\
       {\@degree}\\
       Graduate Department of {\@department}\\
-      University of Toronto\\
+      University of Ontario Institute of Technology\\
+      %University of Toronto\\
       {\@gradyear}\\
    \end{center}
    \begingroup
