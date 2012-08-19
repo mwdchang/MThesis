@@ -6,8 +6,6 @@
 % - Should consider rewording 'stage 2: tagging'
 % - Should probably talk about active versus inactive versus context objects 
 %   in the 3D visualization section
-% - Should probably talk about rational for picking 3D space first before
-%   going into too much detail
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Design}
 This chapter covers our visual design process and our rationals for our
@@ -259,12 +257,14 @@ summary, our interface is composed of five major components as seen in
   highlights all component keywords.
 \end{itemize}
 
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{overview.png}
- \caption{System Overview}
- \label{figure:overview}
-\end{figure}
+    % === Figure ===
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{overview.png}
+	 \caption{System Overview}
+	 \label{figure:overview}
+	\end{figure}
+	% ==============
 
 In the following subsections we will describe each visualization components in
 more detail, the trade offs and choices we made and our justifications.
@@ -777,13 +777,15 @@ system will propagate the selection event through the zero scored entities.
 %By this convention, the selected objects will always have the maximal score after 
 %normalization, and will be coloured with the deepest shade on our colouring scale.
 
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{interaction_select.png}
- \caption[Interactive Selection]{The visualization changes based on the
- currently selected entities.}
- \label{figure:selection}
-\end{figure}
+    % === Figure ===
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{interaction_select.png}
+	 \caption[Interactive Selection]{The visualization changes based on the
+	 currently selected entities.}
+	 \label{figure:selection}
+	\end{figure}
+	% ==============
 
  
 \subsection{Spatial Interaction}
@@ -987,13 +989,15 @@ Figure \ref{figure:feedback}.
 \end{itemize}
  
  
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{feedback.png}
- \caption[Visual Feedback]{Different visual feedback to help viewers
- differentiate different system states}
- \label{figure:feedback}
-\end{figure}
+    % === Figure ===
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{feedback.png}
+	 \caption[Visual Feedback]{Different visual feedback to help viewers
+	 differentiate different system states}
+	 \label{figure:feedback}
+	\end{figure}
+	% ===============
 
 
 
@@ -1003,6 +1007,7 @@ A comprehensive analytic system requires a variety of ways to manipulate and
 looking at data. In this section we describe our solutions for trend detection,
 making comparisons and high level overview.
 
+% TODO: Maybe illustrate with an example
 \subsection{Heatmap Perspective}
 The heatmap’s data, in essence, is a time series data. There are multiple ways
 we can view this time series to derive interesting patterns and trends. For this 
@@ -1021,6 +1026,30 @@ prototype:
   \item Global-Max: A global perspective where the month score is divided by the
   maximum score of all components over the selected time. 
 \end{itemize}
+
+We illustrate how the perspective scoring works with an example of a time over a
+period of three month in table \ref{table:perspective}.
+ 
+ 
+    % === Table ===
+    \begin{table}[h]
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|} 
+	   % Column Heading
+	   \hline
+	   & \multicolumn{3}{|c|}{Score} & \multicolumn{3}{|c|}{Month} &
+	   \multicolumn{3}{|c|}{Component} & \multicolumn{3}{|c|}{Global} \\
+	   
+	   % Data
+	   \hline
+	   Engine & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3\\
+	   Brake & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3\\
+	   \hline
+	\end{tabular} \caption{Sample perspective
+	based scores} \label{table:perspective}
+	\end{table}
+	% ============
+
+
 Each of the perspectives above answers different questions and has its own
 advantages and disadvantages. The month-max perspective allows us to compare 
 component-to-component by month, but comparison against adjacent cells are 
@@ -1028,9 +1057,11 @@ meaningless because each cell uses a different base value. The component-max
 perspective is the opposite, it allows us to see trends with a single entity, 
 but it does not allow comparison across components. Lastly, the global-max 
 perspective is good at showing the outliers and supports both month-to-month 
-and component-to-component comparisons, but it can be difficult to see any
-trends  in the non-outlier data because they are pushed into the bottom bins on 
-the colour scale. To put the different modes in better context, we list sample 
+and component-to-component comparisons, but it is difficult to see overall
+trends because the outliers, if any, will dominate and push all non-outliers
+into the same scoring bin.
+
+To put the different perspectives in better context, we list sample 
 questions that can be answered with these different perspective views:
 \begin{itemize} [noitemsep]
   \item Month-Max: In month X, which vehicle component had the most complaints?
@@ -1038,25 +1069,25 @@ questions that can be answered with these different perspective views:
   the winter month?
   \item Global-Max: What are the most unreliable vehicle components?
 \end{itemize}
-We had some considerations on whether to make the perspective a localized
-setting or a global setting. A localized perspective could be attached to aa
-lens widget, allowing more flexibility, but at the same time introduces more
-complexity because the reader will have to deal with multiple modalities
-simultaneously. A global setting makes it clear what perspective is being used,
-but cause global changes even when the reader only wants to query a single
-entity. In the end, we decided that localized perspective may cause too much
-confusion for our users. We made the perspective mode a global setting, via a
-drop-down list located at the bottom left of the user interface.
+
+The heatmap viewing perspective is at a global scope, thus a change in
+perspective will affect all visible heatmaps. This keeps the interface
+consistent and avoid viewers from switching to different modalities when they
+shift their attention from one heatmap to another. The view switching mechanism
+is realized as a drop-down control sitting atop the hierarchy filters and shows
+the currently selected viewing mode.
 
 
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{heatmap.png}
- \caption[Heatmap Perspectives]{Showing the different heatmap perspectives. Left
- displays the monthly perspective, centre displays the component perspective, and right displays the
- global perspective}
- \label{figure:heatmap}
-\end{figure}
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{heatmap.png}
+	 \caption[Heatmap Perspectives]{Showing the different heatmap perspectives. Left
+	 displays the monthly perspective, centre displays the component perspective, and right displays the
+	 global perspective}
+	 \label{figure:heatmap}
+	\end{figure}
+	% ==============
 
 \subsection{Comparison}
 Comparison mode allows people to compare two different types of the same
@@ -1080,8 +1111,8 @@ use percentage based comparisons because it enables as to compare query results
 of different sizes.
 
 We encode the sum score as the colour of the \threed component, based on the
-default colour scale. For the difference, we render the measure as an outline
-around the object. The sign of the difference is encoded as one of two diverging
+default colour scale. For the difference score, we render the measure as an
+outline around the object. The sign of the difference is encoded as one of two diverging
 colours, one for positive and one for negative values. The magnitude of the
 difference is encoded as the transparency of the outline, larger magnitude have
 more distinct, solid outlines compared to smaller values. Thus, a highly
@@ -1090,12 +1121,14 @@ faint outline, while a lopsided but infrequent problem will have strong outline
 but barely visible interior colour.
 
  
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{comparison.png}
- \caption[Comparison View]{Comparison View}
- \label{figure:comparison}
-\end{figure}
+    % === Figure ===
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{comparison.png}
+	 \caption[Comparison View]{Comparison View}
+	 \label{figure:comparison}
+	\end{figure}
+	% ==============
 
 By default, comparison mode is turned off. It is activated when the viewer
 switches the second hierarchy filter from the ``None'' position to a valid
@@ -1108,9 +1141,6 @@ relations to the number of documents in the corpus, which may or may not be a
 good indication of the overall contribution. 
 
 
-%The of the limitation in the current prototype is that we do not have any
-%normalization of comparative scores, thus it only makes sense comparing two 
-%different types of products with similar volumes.
 
 \subsection{Aggregation}
 By default, the system treats each object individually rather than object
@@ -1118,7 +1148,7 @@ groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all scored
 separately, even though they are logically under the group ``seat''. This
 setting allows people to isolate and identify unique problems accurately. There
 are times, however, when this level of information is unnecessarily detailed and
-a higher level overview is desirable.
+a higher level of abstraction is desirable.
 
 Aggregation mode mimics the type of high level rating system found on consumers
 review websites. When aggregation mode is enabled, individual objects, and their
@@ -1131,10 +1161,12 @@ Aggregation mode is enabled/disabled by a toggle switch located at the bottom
 left of the user interface. Aggregation mode works in conjunction with
 comparison mode, allow people to make comparison of major systems.
  
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{aggregation.png}
- \caption[Aggregation View]{Top: Aggregation mode disabled. Bottom: Aggregation
- mode enabled, note that the seat and engine now appears more prominent in the visualization.}
- \label{figure:heatmap}
-\end{figure}
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{aggregation.png}
+	 \caption[Aggregation View]{Top: Aggregation mode disabled. Bottom: Aggregation
+	 mode enabled, note that the seat and engine now appears more prominent in the visualization.}
+	 \label{figure:heatmap}
+	\end{figure}
+	% ==============
