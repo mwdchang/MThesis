@@ -1,9 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Implementation and algorithm details
 %
-% - If there are enough content, remove the cache section, it isn't vital to 
-%   describe how the cache works.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \chapter{Implementation}
 In this section we discuss our implementation. We will briefly discuss our
@@ -12,31 +11,34 @@ pipeline. Lastly we will discuss interesting problems that we encountered
 and how we attempted to solve these problems. Finally we will discuss performance 
 implications.
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Environment and Architecture}
+The implementation of this prototype is done in the Java programming language.
+Graphics are rendered through Java for OpenGL (JOGL) graphics library. A MySQL
+database is used to host the text documents as well as their respective document
+scores. Our graphics hardware is a NVIDIA Quadro FX video card. The prototype is
+designed to run on 1680x1050 screen resolution. 
 
-
-\section{Architecture}
 Our prototype implementation is a standard two-tier system: A persistence layer
 and a user interface layer. The persistence layer is in charge of database
 transactions, cached resources and system state. The user interface layer takes
 care of the rendering tasks. 
 
-\begin{figure}
- \centering  
-% \includegraphics[width=\columnwidth]{Architecture.pdf}
- \includegraphics[width=2.5in]{Architecture.pdf} 
- \caption{High level system architecture}
- \label{figure:arch}
-\end{figure}
-
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=2.5in]{Architecture.pdf} 
+	 \caption{High level system architecture}
+	 \label{figure:arch}
+	\end{figure}
+	% ==============
 
 The major components of our system, as well as their functionalities are listed
 below: 
 \begin{itemize}[noitemsep]
   \item Render Task: Each rendering task is responsible for rendering a
-  functional part of the user interface, as well as communicating its states back
-  to the persistence layer.
+  functional part of the user interface. Each task communicates with the
+  persistence layer to retrieve updated states.
   \item State Manager: It keeps track of all data used for rendering and query
   building.
   \item Model Manager: Holds and manipulate model geometries.
@@ -45,44 +47,6 @@ below:
   Manager.
 \end{itemize}
 
-We should highlight that the Event Manager is not tied to the Render Tasks, and
-is only communicating with the State Manager. While this makes dispatching logic
-to the UI much more complicated, a separate event handler is easier to
-transition to different hardware platforms.
-
-
-\section{Environment}
-The implementation of this prototype is done in the Java programming language.
-Graphics are rendered through Java for OpenGL (JOGL) graphics library. A MySQL
-database is used to host the text documents as well as their respective document
-scores. Our graphics hardware is a NVIDIA Quadro FX video card. The prototype is
-designed to run on 1680x1050 screen resolution. 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Pipeline Modification}
-In order to create our NPR effects and to perform additional semantics on the
-visualization, each mesh group are enriched with these additional attributes:
-
-\begin{itemize}[noitemsep]
-  \item Adjacent Vertices: Each triangle geometry can have 0 to 3 adjacent
-  vertices, these came from neighbouring (connected) triangles. We use these to 
-  calculate edges and silhouettes. Where there are no adjacent vertices, we 
-  create a placeholder vertices such that it forms a sharp, acute angles with 
-  the original triangle.
-  \item Centroid: The average XYZ coordinates of all the component’s vertices.
-  This is used as inclusion criteria for the lens widget. Other centroid 
-  calculation techniques exists, for example ones that takes vertex density and 
-  the overall shape into account which gives a better approximation of the 
-  logical centre.
-  \item Bounding Box: A \threed bounding box (non-axis aligned). We use the
-  bounding box to calculate the zone boundaries in screen space.
-\end{itemize}
-Note we have chosen to use the “triangle soup” approach where each triangle has
-distinct vertices. Other methods such as index tables allows neighbouring 
-polygons to share vertices which results in better performance and smaller 
-footprint, however the cost of this is flexibility and increased complexity for 
-handling geometric changes (shared vertices need to be duplicated to avoid 
-affecting unaffected polygons). 
 
 
 
@@ -137,14 +101,32 @@ method yield accurate and eye-pleasing results, while more performance friendly
 methods exists, we decided that this was the most reasonable approach because
 the required features are available on most hardware at the time of implementation.
   
-\begin{figure}
- \centering  
- \includegraphics[width=\columnwidth]{oit_example.png} 
- \caption[Order Independent Transparency]{Top row shows the blending artifacts
- with and without order-independent-transparency. Bottom row show the result on
- our \threed model, note it is more difficult to distinguish depth without OIT}
- \label{figure:oit}
-\end{figure}
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{oit_example.png} 
+	 \caption[Order Independent Transparency]{The left image is rendered in
+	 correct back-to-front order. The right image is out-of-order, the green
+	 square does not properly blend into the blue square.}
+	 \label{figure:oit}
+	\end{figure}
+    % =============
+
+
+\subsection{Effects}
+Here we briefly discuss our usage of graphical effects. OIT rendering, as
+described above, is used to ensure correct depth cues, it is possible to achieve
+different look and feel by passing different lighting equations to the shader
+programs. Halo effect is done by calculating silhouettes in \twod space of the
+active entities, we then subtract the geometric shape from the silhouette, and
+perform a smoothing step to blur out sharp features on the outline. The ghostly
+outline effect is done by calculating ridge and silhouette edges of adjacency
+structures in the mesh, as outlined in Hermosilla's GPU implementation
+\cite{Hermosilla2009}. Finally the lens effect is achieved through adding and
+subtracting of textures, the full scenes with lens semantic is rendering into a
+texture, we alter the non-lens area to be completely transparent and superimpose
+the remainder onto the existing scene.
+
 
 
 \subsection{Cache and Stabilization}
@@ -175,8 +157,8 @@ but much faster than the worst case scenarios, most important of all, we have
 consistent performance at around 100 to 200 millisecond, which we found to be 
 acceptable for interactive use.
 
-The table is created at system startup, we iterate through the database tables once, 
-creating the hierarchy structure and increment the counts as we go. As a last 
+The table is created at when system starts, we iterate through the database
+tables once, creating the hierarchy structure and increment the counts as we go. As a last 
 optimization step, we have attempted to serialize out the query tables to disk, 
 so they can be de-serialized on system startup without having to iterate the
 database tables. However, without a customized data container, this in practice turned out 
@@ -184,69 +166,52 @@ to be slower than database lookups and was abandoned.
 
 
 \subsection{Multi-Touch Heuristics}
-We use native TUIO messages for our touch event handling, because we are 
-supporting sensing technology, there are inherent noises that comes from the 
-deformation of the finger and inability to keep the hand posture perfectly still. 
-Furthermore, the upright display makes certain gestures difficult, for example, 
-in our informal evaluation of the display we found that certain curvatures of 
-sinusoidal curves introduced noises because the knuckles of other fingers are 
-sensed as new touch points.
+Touch sensors have a few drawbacks, there are inherent noises that come from
+performing gestures, in addition, our inability to hold our hands perfectly
+still accentuate this issue by create jitters. In our particular use case, the
+upright display makes certain gestures difficult, for example, in our informal
+evaluation of the display we found that certain curvatures of sinusoidal curves
+introduced noises because the knuckles of other fingers are sensed as
+unintended touch points as a result of drifting too lose to the screen itself.
 
-To deal with these unintended noises, we developed the following stabilization 
-heuristics, which reduces the ``jittering'' effects and prevent accidental 
-triggering of unintentional events.
+These noises degrades user experiences, as they trigger unexpected events within
+the system. We introduce a set of software heuristics as an intermediate step
+between when the points are sensed and when they are executed. In general, these
+heuristics remove unintended touches and prevent jittery graphics as a result of
+minute movements. While these are tuned specifically for our hardware, we
+believe rules are general enough that they can be adopted to other touch
+sensors. 
 
 \begin{itemize} [noitemsep]
-  \item \textbf{Real Update:} When a finger is touching the surface, there might
-  be updates triggering even when the finger is kept still. This is likely due to
-  the sensor device been overly sensitive. To compensate, we only accept an
-  update if it is at least X number of pixels away from the previous update
-  point.
+  \item \textbf{Real Update:} The muscle deformation when pressed against the
+  display, paired with inability to keep perfect still postures results in
+  sensor registering jittery updates. This is undesirable because it induces a
+  shaking effect, and often time unnecessary because the updates are minute.
+  To compensate this problem, we only accept an update if it is at least 2
+  number of pixels away from the previous update point.
+  
   \item \textbf{Coincidental Points:} When a touch is initialized on the touch
-  surface, there is a possibility that more than one touch point will get registered, due
-  to the shape and slight movement of the finger. To reduce this scenario from
+  surface, there is a possibility that more than one touch point will be
+  registered. This is similar to the case we presented above. To reduce this scenario from
   occurring, we store the xy-coordinate and the time the touch point is created.
   If a touch point is created too close to any other touch point within a time
   threshold, that point is rejected
+  
   \item \textbf{Movement Buffer:} When a gesture is in transition, there are
-  cases where other parts of the hand will inadvertently get picked up by the touch sensor.
-  Keeping the fingers perpendicular to the screen helps a lot, but it is not a
-  very natural position. To deal with this case we created a buffer zone around
-  the touch point while it is transition, any touch points introduced into the
-  buffer zone are rejected by the system.
+  cases where other parts of the hand will inadvertently cause new points. We
+  try to neutralize these occurrences by introducing buffer zones around touch
+  points in transition. New touch points cannot be created in the zones, however
+  existing touch points are not affected.
+  
   \item \textbf{Reinforce Intention:} This heuristic deals with reducing jitters
-  on the initial touch. This is a case when the touch point is initialized, but
-  due to the size/shape of the finger it also triggers an immediate update,
-  where the distance differential is large enough that it cannot be caught by
-  \textit{Real Update} heuristic. The result is that there is a slight jitter
-  every when a touch point is introduced into the system. We remedy this case by
-  enforcing user intentions: the first update must be at least 20 pixel distance
-  away from the initial position, and no update can occur in the first 500
-  milliseconds.
+  on the initial touch. This can be seen as a special case of the Real Update
+  heuristic, but while Real Update toss away extremely small update in general,
+  the first update can be quite large, probably due to the act of pressing the
+  finger against the display. We made is such that the first update must be at
+  least 20 pixels distance in magnitude. This heuristic is not applicable to
+  lens widget nor document widget because we want them to be immediately
+  responsive.
+  
 \end{itemize}
-While we have tuned our heuristics to work specifically with our hardware, we
-believe many of these can be generalized to other type of touch or sensor based
-devices.
 
 
-%\subsection{Font Texture}
-%We create a texture wrapper to store fonts. Font rendering can be an expensive 
-%process in JOGL because the texture object is allocated per frame, this is true 
-%even if we render the same text with the same parameters. The simplest, and most
-%straightforward choice was to create our own intermediate font buffer, which we
-%realize as an OpenGL texture. The texture is stored in memory and can be placed 
-%anywhere on the display space as a geometric quad. We support simple insert and 
-%delete operations, which corresponds on adding and removing lines of text, a 
-%dirty flag determines if the texture need to be refreshed. All font textures are
-%one-to-one with screen space to avoid distortions that would alias the font 
-%glyphs.
-%
-%Font textures for the document widget works with slightly different semantics: 
-%we use multiple, piecewise textures to store the document text instead of a 
-%single texture. This is done for several reasons, one, we want to prefetch 
-%database result into a cache, and two, we need multiple textures to get around 
-%hardware texture size limitations. The two textures tiled together to create an 
-%illusion of a single texture, when we scroll past the first texture we perform a
-%swap and fetch the next set of results. Thus, even though we may be fetching 
-%from the database, we can scroll through the cached results and therefore 
-%create a smooth scrolling mechanism. 

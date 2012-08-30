@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This chapter covers the design aspects, include design for data processing
 % and the visual design
-%
+% 
 % - Can probably expand interaction section, particulary spatial-interaction
 % - Should consider rewording 'stage 2: tagging'
 % - Should probably talk about active versus inactive versus context objects 
@@ -234,7 +234,7 @@ summary, our interface is composed of five major components as seen in
   The widget itself is place at the top-left of the display space.
   
   \item Hierarchy Filter: The hierarchy filters are placed at the
-  bottom portion of the display akin to a series of drop-down menus. These are 
+  top portion of the display akin to a series of drop-down menus. These are 
   designed specifically for our data of automotive complaints. The
   hierarchy filters allow successive query refinement by organizational
   hierarchies of manufacturers, going in the order of : Vehicle Manufacturer,
@@ -352,7 +352,7 @@ we have low value in bucket 1 and high value in bucket 2, this is equivalent
 to high value in bucket 1 and low value in bucket 2. We partially mitigate
 the ambiguity by allowing the viewers to extract exact numerical values with the
 heatmap widgets, we will discuss this further down. We display the discrete hue
-scale as an on-screen legend at the bottom-left of the display screen.
+scale as an on-screen legend located near the top of the display.
 
 We recognize that blending different hues in \threed space does not necessarily
 produce a result which preserves the original hues, and can potentially lead to
@@ -563,12 +563,14 @@ the entity's centroid location in screen space.
 	\begin{figure}
 	 \centering  
 	 \includegraphics[width=\columnwidth]{lens_example.png}
-	 \caption[Lens Widget in Action]{On the left, using the Lens Widget to expose
-	 underlying semantics.
-	 On the right, adjusting the depth field to cull away occluding geometries.}
+	 \caption[Lens Widget in Action]{The lens widget can be tuned to expose
+	 occluded geometries. Left shows the unaltered geometry. On the right, the
+	 lens cuts into the geometric shapes to expose the tree contained in the
+	 cylinder, which itself is contained in a box.}
 	 \label{figure:lensExample}
 	\end{figure}
 	% ==================
+	
 
 The lens widget utilizes its own rendering pipeline, object geometries are
 sent into the pipeline as normal, the rasterized result is then stored in an
@@ -1141,7 +1143,6 @@ relations to the number of documents in the corpus, which may or may not be a
 good indication of the overall contribution. 
 
 
-
 \subsection{Aggregation}
 By default, the system treats each object individually rather than object
 groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all scored
@@ -1157,9 +1158,9 @@ first level are the major sub-systems in a vehicle. The visualization responds
 by making all child objects referencing the aggregated score of their parent
 subsystem. 
 
-Aggregation mode is enabled/disabled by a toggle switch located at the bottom
-left of the user interface. Aggregation mode works in conjunction with
-comparison mode, allow people to make comparison of major systems.
+Aggregation mode is enabled/disabled by a toggle switch located at the top
+portion of the interface. Aggregation mode works in
+conjunction with comparison mode, allow people to make comparison of major systems.
  
     % === Figure === 
 	\begin{figure}
@@ -1170,3 +1171,15 @@ comparison mode, allow people to make comparison of major systems.
 	 \label{figure:heatmap}
 	\end{figure}
 	% ==============
+
+\subsection{Compact View}
+We provided a compact panel that encapsulates the legend, time and hierarchy
+widgets as a work around to create more screen spaces for the main
+visualization. The compact view removes much of the interactive GUI elements and
+replaces them with textual summaries placed across the top of the display. It
+allows viewers to zoom in closer and place interactive widgets in spatial
+positions that would have otherwise cause occlusion issues. The compact view is hidden by
+default, performing a left-swipe gesture will activate the compact view,
+conversely a subsequent right-swipe gesture will restore the default. As with
+all other display changes, we use an animated transition to facilitate the state
+change.
