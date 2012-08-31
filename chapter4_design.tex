@@ -1035,22 +1035,29 @@ period of three month in table \ref{table:perspective}.
  
     % === Table ===
     \begin{table}[h]
-	\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|} 
+	\begin{tabular}{| l | lll | lll | lll | lll | } 
 	   % Column Heading
 	   \hline
 	   & \multicolumn{3}{|c|}{Score} & \multicolumn{3}{|c|}{Month} &
 	   \multicolumn{3}{|c|}{Component} & \multicolumn{3}{|c|}{Global} \\
 	   
-	   % Data
+	   % Data 
 	   \hline
-	   Engine & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3\\
-	   Brake & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3 & 1 & 2 & 3\\
+	   Engine & 1 & 10 & 100 &       % Original
+	            10 & 15 & 100 &      % Month
+	            100 & 100 & 100 &    % Component
+	            100 & 100 & 100 \\   % Global
+	            
+	   Brake &  10 & 15 & 20  &      % Original
+	            10 & 15 & 100 &      % Month
+	            20 & 20 & 30  &      % Component
+	            100 & 100 & 100 \\   % Global
 	   \hline
 	\end{tabular} \caption{Sample perspective
 	based scores} \label{table:perspective}
 	\end{table}
 	% ============
-
+ 
 
 Each of the perspectives above answers different questions and has its own
 advantages and disadvantages. The month-max perspective allows us to compare 

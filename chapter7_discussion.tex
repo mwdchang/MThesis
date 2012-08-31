@@ -1,3 +1,90 @@
-\chapter{Discussion}
+\chapter{Conclusion and Future Work}
+Visualization systems help us summarize and explore the ever expanding amount of
+information we live with today. In this work we address a particular problem
+domain of trying to make sense of a large quantity of text. Unlike traditional
+InfoVis systems that rely on abstract representations, we explore different ways
+to encoding underlying semantics on forms that are familiar to viewers. 
+
+In this section we summarize our result findings, the limitations of our
+application, and discuss avenues for future work.
+
 \section{Conclusion}
+Our main contribution in this work is an integrated approach for doing text
+analytics for documents that contain both spatial and non-spatial data. We
+developed a scoring function that maps abstract semantics onto \threed models as
+stylistic graphical effects. Our goal is to use this approach to producing a
+more engaging visualization by depicting these objects as they appear in life,
+allowing people to formulate queries based on their familiarity with the objects
+and real world metaphors.
+
+In this thesis, we applied our methods to analyze a large collection of vehicle
+complaint reports from the NHTSA database. We leveraged WordNet database to
+create a vocabulary of vehicle entity, we then score each document based on
+occurrence and co-occurrence relations among the different vehicle entities.
+We also take into consideration time and organizational hierarchy dimensions. We
+applied the entity scores onto a \threed vehicle model using NPR techniques to
+emphasis importance. Finally we created interactive widgets for exploration of
+the dataset. Our intended audience are vehicle owners and potential consumers
+whom have a stake in the safety and reliability of their vehicles.
+
+
+As a necessary step towards validating our design and hypothesis, we ran a user
+study to see if people can accurately interpret the visualization, we also
+solicited qualitative feedback from study participants. Our study showed that
+(need results to put in here)
+
+
+\section{Limitations}
+In this thesis, we have presented a working prototype of our ideas. However,
+there are still some challenges and limitations. The limitations of our
+prototype falls primarily into two categories: language processing and graphical
+representation. In this section we will discuss what they are and possible
+solutions.
+
+From a language perspective, our system of parsing is quite simplistic as we are
+only taking into account word frequencies. Casual relations are inferred with
+co-occurring entities, however a more precise method would use grammatical
+structures to infer relations. While we have made early attempt at extracting
+dependency relations, it did not yield fruitful result due to many grammatically
+incorrect sentences within the document collection, although a different text
+corpus may benefit from this approach. We also only looked at nouns, but verbs
+and other domain specific terms can attribute themselves to specific components,
+including them in our vocabulary would have increased our coverage.
+
+In terms of graphical representations, occlusion still presents an issue,
+especially in densely packed areas. These areas makes interactions difficult.
+While the heatmaps provide an easy alternative for selection, it does not solve
+perceptual difficulties in trying to uniquely identify an object in the
+visualization. Zooming into the scene, or changing the lens' depth only
+partially solve the problem as both method require very fine tuning from the
+viewer. Alternative selecting approaches, such as selecting by importance score,
+or other heuristic may help. More advanced graphical techniques such as exploded
+views would be able to push objects away from each other, avoiding occlusion in
+the first place but at a possible risk of distorting the overall context.
+
+
 \section{Future Work}
+While we have explored different mappings in terms of language and graphics,
+there is another aspect that we have left unexplored. The social aspect of
+computing is a prominent topic today and worthwhile for further investigation.
+How one would go about annotating, sharing and searching for other people's
+findings are tasks that go beyond the individual that can help help the entire
+community.
+
+As hinted in limitations section, more robust language processing would be very
+desirable. In particular, it would be interesting to look at sentiment analysis.
+The capability to quantity positive or negative connotations would be beneficial
+in understanding how people perceive certain objects.
+
+Ambient settings is another possible area for future work, one can imaging using
+camera planning algorithms to conduct a virtual tour of the entities while not
+receiving input interactions. The said tour can be used to raise awareness of
+particular features and highlight trends. The tour could be interrupted when a
+person starts interacting with the display.
+
+Lastly, while in this thesis we have primarily looked at the vehicle domain. We
+believe our approach is generalizable to other problems. Other analytical tasks
+that relates text to physical productions may benefit from our approach. For
+example, it is not hard to imagine using our approach to visualize airplane
+maintenance records, where we can use it to identify past, or perhaps even
+forecast maintenance issues.
