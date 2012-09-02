@@ -16,7 +16,7 @@ widget's design tie back to our requirement as listed in the previous chapter.
 Lastly, we describe our design for higher level functions that can be used to
 detect trends and to make comparisons across different entities.
 
-
+  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Processing}
 In order to create our visualization, first we must be able to process and
@@ -523,10 +523,21 @@ histogram bars from their current volume to their new volume.
     % ===== Figure =====
 	\begin{figure}
 	 \centering  
-	 \includegraphics[width=\columnwidth]{filter_widgets.png}
-	 \caption[Filters]{Close up of Time Slider Widget, Hierarchy Widget and
-	 Document Widget}
-	 \label{figure:widgets}
+	 \includegraphics[width=\columnwidth]{filter_full.png}
+	 \caption[Interactive Filters]{Time Slider Widget and Hierarchy Widget in
+	 interactive mode}
+	 \label{figure:filterFull}
+	\end{figure}
+    % ===================
+    
+
+    % ===== Figure =====
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{filter_compact.png}
+	 \caption[Compact Filters]{Time Slider Widget and Hierarchy Widget in compact
+	 mode}
+	 \label{figure:filterCompact}
 	\end{figure}
     % ===================
 
@@ -684,7 +695,7 @@ space, we employ the following heuristics for heatmap placement.
   AABB itself runs off the screen.
   \item If the heatmaps are off the screen space, perform contraction to move it
   back into screen space.
-\end{itemize}
+\end{itemize} 
 
 Because of limited screen space, we have made the decision to cap the number
 of heatmaps that can be displayed at any given time. Rather than showing
@@ -712,6 +723,17 @@ toggle-based and is by default hidden from view. Once activated, an animation
 will expand its dimension from a single pixel to its full size at the
 activation coordinate, a reverse animation is used to deactivate the panel. Once
 visible, a person can reposition the panel to move it to the desired location.
+
+    % ===== Figure =====
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{document.png}
+	 \caption[Document Widget]{The document viewer, the words highlighted in blue
+	 are selected. The words highlighted in grey are the co-occurring entities}
+	 \label{figure:document}
+	\end{figure}
+    % ===================
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
