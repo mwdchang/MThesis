@@ -215,7 +215,7 @@ remedy this as more vehicle models are processed.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Visual Design}
 The following sections discuss our user interface and design decisions. In
-summary, our interface is composed of five major components as seen in
+summary, our interface is composed of six major components as seen in
 \ref{figure:overview}
 
 \begin{itemize} [noitemsep]
@@ -1079,7 +1079,7 @@ period of three month in table \ref{table:perspective}.
 	based scores} \label{table:perspective}
 	\end{table}
 	% ============
- 
+  
 
 Each of the perspectives above answers different questions and has its own
 advantages and disadvantages. The month-max perspective allows us to compare 
@@ -1151,16 +1151,24 @@ problematic object from both side will have a strong presence overall but with a
 faint outline, while a lopsided but infrequent problem will have strong outline
 but barely visible interior colour.
 
+As an example, see Figure \ref{figure:comparison}, where we compared Plymouth
+against both the Jeep and Chrysler. At a glance most parts remain the same
+with the exception of two outliers, Jeep appear to have a higher failure rate
+than Plymouth, and Dodge has a higher failure rate in brakes component. The
+overview could suggest that Plymouth is more reliable than both vehicles.
  
     % === Figure ===
 	\begin{figure}
 	 \centering  
 	 \includegraphics[width=\columnwidth]{comparison.png}
-	 \caption[Comparison View]{Comparison View}
+	 \caption[Comparison View]{Left: Plymouth versus Chrysler, the brake appears to
+	 be the dominant issue and Make 14 has the higher rate of complaints. Right:
+	 Plymouth versus Jeep, the engine is the dominant issue and Make 1 has higher
+	 rate of complaints.}
 	 \label{figure:comparison}
 	\end{figure}
 	% ==============
-
+ 
 By default, comparison mode is turned off. It is activated when the viewer
 switches the second hierarchy filter from the ``None'' position to a valid
 selection. Subsequent query modifications are carried out in comparison mode
@@ -1190,6 +1198,11 @@ subsystem.
 Aggregation mode is enabled/disabled by a toggle switch located at the top
 portion of the interface. Aggregation mode works in
 conjunction with comparison mode, allow people to make comparison of major systems.
+
+An example is shown in Figure \ref{figure:aggregation}. A default rendering is
+shown in the top portion, one can see that brake is the most severe out of all
+components. The bottom shows the aggregated view, one can observe that on a
+higher level, the engine and seat subsystems are quite problematic.
  
     % === Figure === 
 	\begin{figure}
@@ -1197,7 +1210,7 @@ conjunction with comparison mode, allow people to make comparison of major syste
 	 \includegraphics[width=\columnwidth]{aggregation.png}
 	 \caption[Aggregation View]{Top: Aggregation mode disabled. Bottom: Aggregation
 	 mode enabled, note that the seat and engine now appears more prominent in the visualization.}
-	 \label{figure:heatmap}
+	 \label{figure:aggregation}
 	\end{figure}
 	% ==============
 
