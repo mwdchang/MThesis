@@ -215,7 +215,7 @@ remedy this as more vehicle models are processed.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Visual Design}
 The following sections discuss our user interface and design decisions. In
-summary, our interface is composed of six major components as seen in
+summary, our interface is composed of four major components as seen in
 \ref{figure:overview}
 
 \begin{itemize} [noitemsep]
@@ -227,19 +227,6 @@ summary, our interface is composed of six major components as seen in
   viewers' preattentive perception, allowing them to quickly uncover the
   important subject matters.
   
-  \item Time Filter: The filter is composed of two independent range sliders
-  with different granularity: year and month. The filter allows viewers to
-  adjust the time range for the visualization. Accompanying each range slider is
-  a histogram showing the accumulated volume of complains over a time period.
-  The widget itself is place at the top-left of the display space.
-  
-  \item Hierarchy Filter: The hierarchy filters are placed at the
-  top portion of the display akin to a series of drop-down menus. These are 
-  designed specifically for our data of automotive complaints. The
-  hierarchy filters allow successive query refinement by organizational
-  hierarchies of manufacturers, going in the order of : Vehicle Manufacturer,
-  Vehicle Make, Vehicle Model and Vehicle Year. Hierarchy filter is also used to
-  select two different vehicle types in comparison mode.
 
   \item Lens Widget: The lens widget is used for exploration and
   visually querying the visualization. When the lens is hovered over the
@@ -256,6 +243,26 @@ summary, our interface is composed of six major components as seen in
   The panel displays documents relating to the current selected objects and 
   highlights all component keywords.
 \end{itemize}
+
+In addition, we introduce two domain specific widgets, which are used to filter
+vehicle specific data into manageable pieces:
+
+\begin{itemize} [noitemsep]
+  \item Time Filter: The filter is composed of two independent range sliders
+  with different granularity: year and month. The filter allows viewers to
+  adjust the time range for the visualization. Accompanying each range slider is
+  a histogram showing the accumulated volume of complains over a time period.
+  The widget itself is place at the top-left of the display space.
+  
+  \item Hierarchy Filter: The hierarchy filters are placed at the
+  top portion of the display similar to a series of drop-down menus or spinners.
+  These are designed specifically for our data of automotive complaints. The
+  hierarchy filters allow successive query refinement by organizational
+  hierarchies of manufacturers, going in the order of : Vehicle Manufacturer,
+  Vehicle Make, Vehicle Model and Vehicle Year. Hierarchy filter is also used to
+  select two different vehicle types in comparison mode.
+\end{itemize}
+
 
     % === Figure ===
 	\begin{figure}

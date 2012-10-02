@@ -124,7 +124,7 @@ tend to involve user intentions. Here we look at several examples.
 
 Though strictly speaking not a text-to-scene application, the IBIS application
 from Seligmann and Feiner renders a \threed scene based on a set of user
-provided rules \cite{Selgmann1991}. These rules specify which
+provided rules \cite{Seligmann1991}. These rules specify which
 object and locations in the \threed scene have higher degrees of interest. The
 application itself evaluates these rules and determines the optimal viewing perspective, as well
 the application adjust the lighting conditions as a way to draw attention to
@@ -226,9 +226,9 @@ shadows. Illustrations created in this fashion have major benefits over
 photography. One, strong lighting effects under conventional shading model are
 reduced, preserving the surface details under the light patches. Two, the
 removal of shadow regions shows the hidden details that were not previous
-visible. Other NPR shading techniques also exist, for example
-cel-shading/toon-shading techniques (???). Generally speaking, cel-shading and
-toon-shading map the intensity of light from a continuous function into discrete
+visible. Other NPR shading techniques also exist, for example 
+cel-shading/toon-shading techniques ~\cite{Lake2000}. Generally speaking,
+cel-shading and toon-shading map the intensity of light from a continuous function into discrete
 values, creating distinct contours where the values change.
 These type of shading algorithms mimics those illustrations found in
 hand-drawn illustrations such as comics. Other works looks at the simulation of
@@ -364,7 +364,7 @@ InfoVis.
 Focus+Context is a well known and practiced technique used to draw attention to
 particular areas of interest while maintaining a certain degree of contextual 
 information. There are various ways discriminate these areas, for example 
-Hauser\cite{Hasuser2006} reviewed the general approaches where usage of colour, 
+Hauser\cite{Hauser2006} reviewed the general approaches where usage of colour, 
 spatial-location, opacity and other resources are demonstrated. One interesting 
 use of the focus+context technique is the idea of using lenses, the lens traces 
 back to a real world metaphor of a magnification lens, where the area directly 
@@ -470,38 +470,30 @@ interactive surfaces introduced into public areas, office work environments and
 personal spaces. Interactive interfaces brings new possibilities of exchanging 
 information in a walk-by scenario \cite{Vogel2004}, allowing people to
 interact with data without the need of peripheral hardware devices such as the
-mouse or keyboard. Much of the challenges today seem to focus on two central
-themes: collaboration and gesture design. Collaboration deals with the idea of
-having personal and collaborative spaces, as well how people interact with each
-other either in a co-located, or distributed setting. Gestures, on the other
-hand, deals with classification and design of gestures that are natural and
-intuitive to use. In this work, we focus on the gesture design aspect.
+mouse or keyboard. Instead, people utilize their hands and fingers as
+interactive mediums.
 
-As a general reference, Wigdor and Wixon in their book touched upon the idea of
-natural user interfaces (NUI), where they emphasis that NUIs are meant to be
-intuitive to use, rather than a strictly organic process \cite{Wigdor2011}.
-Additionally they look at interactive surface computing from a historical
-perspective, with many DOs and DO NOTs and design implications.
+Though much of the work today deals with collaborative environment, the focus in
+this work deals with designing gestures for use in a full scale prototype
+system. Gesture design and classification have been looked at from a
+crowd-sourcing approach. Wobbrock \etal conducted experiments where the
+consequences are given, and participants have to come up with their own
+appropriate gestures to cause the said actions \cite{Wobbrock2009}. Others, such
+as Hinrichs and Carpendale, looked at how environmental and social context
+affect how people perform gestures ~\cite{Hinrichs2001}. In both cases, 
+experimental results converge and they were able to create high-level
+classifications. On the other hand, these classifications are derived from
+independent, low-level tasks, where our prototype looks at a specific problem
+from end-to-end. As such, these classification servers as inspirations rather
+than dictating our gesture design.
 
-Other researchers looked at gesture design using a crowd-sourcing approach.
-Wobbrock \etal conducted an experiment where the consequences are given, and the
-participants needed to come up with an appropriate gesture to match the end
-result \cite{Wobbrock2009}. They are able to come up with a classification of
-generally used gesture set. Others, such as Hinrich and Carpendale, looked
-at how environment and social context affect how gestures are performed
-\cite{Hinrich2011}. They found that in general gestures are not executed in
-isolation, but dependent on previous gestures, as well as the social context and
-demographic of the executor.
+Aside from classification, there are many other nuances in gesture design that
+one needs to pay attention to to make them more user friendly. Providing
+appropriate visual feedback, dealing with false-positive/false-negative
+touches, and target acquisition are some of important details for natural
+interactions. Much of the intricacies are outline by Wigdor and Wixon's book,
+where they discussed design principles and guidelines~\cite{Wigdor2001}.
 
-While in this project our goal is not centred around the creation of a new set
-of gestures, the findings and experimental approaches were inspirations to how
-we designed our interaction techniques.
 
-%\textbf{Summary:} While our primary focus is about the visualization of
-% entities in text.
-%We imagine a walk-up-and-use scenario where a single person can use the large 
-%screen display for impromptu exploration, or to use the display as presentation 
-%aid for meetings. Much of our design has been guided by past classifications of 
-%gestures like ones mentioned above, as well to keep our interactions quite simple 
-%to discourage any complexities that might arise from a social setting \cite{Brignull2003}.
+
 

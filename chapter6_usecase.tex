@@ -88,63 +88,191 @@ panel to read the detailed complaint descriptions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Study}
-Our hypothesis states that when it comes to visualizing data involving physical
-objects, people may be able to communicate and gain better insights if we
-present the visualization to match real world entities. We take the first steps
-in evaluating our hypothesis by studying how people respond to our \threed
-interface and if they can use our visualization to solve analytical tasks. Our
-primary concerns are not whether the visualization is more efficient than
-conventional interfaces, rather, we focus on the type of questions that can be
-answered by our software as well as the user-experiences of using our prototype.
+We conducted a user study to see how the visualization is perceived and how
+people perform analytical tasks. In order to create a realistic scenario, we
+leveraged the vehicle complaint dataset, the study is framed around the idea of
+analysing safety and reliability concerns.
+
+%Our hypothesis states that when it comes to visualizing data involving physical
+%objects, people may be able to communicate and gain better insights if we
+%present the visualization to match real world entities. We take the first steps
+%in evaluating our hypothesis by studying how people respond to our \threed
+%interface and if they can use our visualization to solve analytical tasks. Our
+%primary concerns are not whether the visualization is more efficient than
+%conventional interfaces, rather, we focus on the type of questions that can be
+%answered by our software as well as the user-experiences of using our prototype.
 
 
-\subsection{Study Method}
-Our study involves a series of computer based tasks, as well a short,
-semi-formal interview that is held at the end of the study. Our tasks are
-divided into categories, objective tasks and subjective tasks. Objective tasks
-are designed to test whether participants can accurately interpret the
-visualization encoding. Subjective tasks are designed to solicit analytical
-processes from each of our participants, they tell us if our visualization can
-support decision making. 
-
-We have considered running a comparison against existing applications that query
-the complaint database. However, the existing system are web application that
-are form-based. We felt that these applications are sufficiently different from
-ours that a comparative approach would not yield useful insights.
-
-Our study procedure is in the appendix section of this thesis.
-
-
-\subsection{Data Preparation}
-To remove any personal bias against particular makes of vehicles or
-manufacturers, we perform a replacement scheme to remove known and common
-identifiers and replace them with generic placeholders such as ``Make1'',
-``Model2'' \ldots etc. For simplicity, we included only the top four occurring
-manufacturers in the study dataset.
-
+\subsection{Study Methodology}
+We recruited 12 participants from student population. All participant had some
+type of experiences with touch interfaces such as tablets and smart phones. 6
+had some experiences with \threed interfaces, through games or CAD-like
+software. For experiences relating to the automotive domain, 2 participants
+currently own a vehicle, while 7 had previously investigated safety issues is
+some way. 
  
-\subsection{Study Design}
-The experiment is run one participant at a time. We begin the study by
-describing the goal of the study and the nature of the dataset. We explain how
-the colour scale is used to differentiate high occurring and low occurring
-entities, and go over the widget functionalities. The next phase consist of warm
-up tasks, our system prompt the participants to use specific features in the
-correct manner, this gives the participants time to familiarize themselves with
-the environment.
+\daniel{Maybe show a demographic graph here?}
 
-After this phase, we begin to task trials. We administer the tasks in order,
-participants may take as much time as necessary to complete each trial. After
-the trial completion we solicit additional feedback via a semi-formal interview,
-in particular, we ask them what features they found to be useful, and whether
-they encountered any issues with the visualization. Each experiment takes
-approximately 60 to 90 minutes.
+The study takes place in a controlled lab environment. The visualization ran on
+a 60 inch display fitted with a PQLabs infrared sensor overlay capable of
+multitouch gestures. To avoid personal bias that may came from prior domain
+knowledge, we removed known identifiers and replaced them with placeholders, for
+example we replaced the manufacturer``Toyota'' with ``MFR1.''
 
-The experiment ran on a 60 inch display screen with PQLab's touch sensor
-overlay. The study sessions were video taped for further analysis, the usage of
-the prototype during the study were logged by the software.
+After a brief tutorial on how to interpret the visualization and how to use the
+interface, participants were asked to perform 3 sets of tasks. The first set
+consists of warm-up exercises aimed to help participants become familiar with the system
+interactions (These are excluded from our data analysis). Next came a set of
+objective tasks with specific answers, they are intended to indicate whether the
+\threed visualisation can be accurately perceived. For example, one question may
+be ``Select the most complained about car component in the year 1999.'' Finally,
+the third set of questions are subjective in nature and have open-ended answers.
+For these, participants are presented with the several scenarios, participants
+were asked to look for trends and patterns, and finally come up with a decision
+based on their interpretation. For example: ``Between 1997 and 2000, which of
+the vehicles X and Y would you purchase and why? Assume these vehicles are
+similarly priced.'' After these tasks were completed, we conducted a
+semi-structured interview to solicit opinions from participants about their
+experiences. 
 
-\subsection{Study Result}
-We recruited our participants from the graduate student population and the
-computer science faculty.
+Each study session took approximately one hour to complete, though there were no
+strict time constraints and participants were allowed to take as much time as
+they wanted on any task. Each session was recorded on video, and touch
+interactions were logged by the system.
+ 
+
+
+%Our study involves a series of computer based tasks, as well a short,
+%semi-formal interview that is held at the end of the study. Our tasks are
+%divided into categories, objective tasks and subjective tasks. Objective tasks
+%are designed to test whether participants can accurately interpret the
+%visualization encoding. Subjective tasks are designed to solicit analytical
+%processes from each of our participants, they tell us if our visualization can
+%support decision making. 
+%
+%We have considered running a comparison against existing applications that query
+%the complaint database. However, the existing system are web application that
+%are form-based. We felt that these applications are sufficiently different from
+%ours that a comparative approach would not yield useful insights.
+%
+%Our study procedure is in the appendix section of this thesis.
+
+
+%\subsection{Data Preparation}
+%To remove any personal bias against particular makes of vehicles or
+%manufacturers, we perform a replacement scheme to remove known and common
+%identifiers and replace them with generic placeholders such as ``Make1'',
+%``Model2'' \ldots etc. For simplicity, we included only the top four occurring
+%manufacturers in the study dataset.
+
 
 \subsection{Discussion}
+12 participants took part in the study, however one study session was excluded
+from data analysis as the participant had severe difficulty understanding the
+instructions of the tasks and provided confusing and contradictory statements
+during the interview portion of the study.
+
+Interpretation of the \threed visualization seemed to be fairly accurate for
+simple scenarios, while more complicated target acquisition tasks that required
+multiple steps yielded mixed results. The first two tasks, which asked
+participants to directly identify the mostly significant outliers with respect
+to the colouring scale, to accomplish these tasks, participants were to
+visually identify the outlier \threed component and select it, there were
+no restrictions on their method of selection. In total, 8/11 and 10/11 answered
+correctly. The lower score may be attributed to participants not fully
+comprehending that they were suppose to interpret the visualization, as
+illustrated by one participant whom made the choice based on personal opinion
+then what is shown on the display.
+
+The third interpretation task, which asked participants to identify which of the four
+manufacturers used in the study had the highest engine complaints, received
+mixed results. To complete the tasks, participants had to look at each
+manufacturer one-by-one, or carry out a series pairwise comparison to find the
+max. We believe the complexity of having to memorize multiple states likely
+contributed to the incorrect answers, in total 5 participants chose the correct
+manufacturer. The interpretation of co-occurrence relationships were also mixed,
+3 participants had difficulties understanding the concept of co-occurrence and
+required further explanation, 2 others, at times, chose to read the
+co-occurrence relationship from the document widget instead of reading off the
+visualization.
+
+Analysis of subjective tasks showed that participants generally had no problems
+in accomplishing what was asked. For the task regarding trend analysis, most
+attention was on the heatmap widgets. 5 participants explicitly mentioned
+outlier month in particular vehicle components over the a 12 month period that
+they found to be peculiar. 3 participants made note of possible seasonal trends,
+such as winter months usually had higher number of complaints. The remaining 3
+participants did not observe any specific patterns or outliers. 
+
+For the comparison task of picking a more reliable vehicle, the participant
+focused on the \threed visualization. 6 participants made the choice based on
+preconceived notions of which components are more vital then others, for example
+some chose solely based on which one had a lower rate of engine failures. 4
+chose based on the sheer number of different components that failed. The
+remaining lone participant was not able to make a choice but was able to
+correctly interpret the visualization, mentioning each each vehicle's problems
+and that neither one was desirable. One participant did not directly use the
+comparison function, rather each vehicle was examined one at a time.
+
+ 
+
+% Usage data chart
+\begin{figure}
+\begin{tikzpicture}
+\begin{axis}[ 
+    width=12cm,
+    height=8cm,
+    bar width=0.2cm, 
+    ybar=0,
+    ymin=0,
+    symbolic x coords={p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11},
+    xtick=data, 
+    legend style={at={(1.2, 0.9)}},
+    ]
+    \addplot[ybar,fill=blue!50] 
+       coordinates { (p1,85) (p2,172)(p3,106) 
+                     (p4,5)  (p5,11) (p6,96)
+                     (p7,90) (p8,90) (p9,22)
+                     (p10,19) (p11,23)
+       }; 
+    \addplot[ybar,fill=red!50] 
+       coordinates { (p1,160) (p2,4)  (p3,169) 
+                     (p4,45)  (p5,83) (p6, 45) 
+                     (p7,0)   (p8,62) (p9,54)
+                     (p10,19) (p11,143)
+       };
+    \legend{Lens, 3D Visualization}    
+\end{axis}
+\end{tikzpicture}
+\caption{Time spent on Lens and 3D Visualization}
+\label{chart:usage}     
+\end{figure}
+  
+   
+In terms of interaction within the \threed space, we observed 3 different
+interaction styles. One group (P2, P7) used the lens almost exclusively
+as their primary navigational tool. The second group (P4, P5, P11) were the
+opposite and used direct manipulation to rotate and zoom the \threed model to
+access different components. The last group used a combination of both lens
+widget and direct manipulation. A chart showing widget usage can be seen in
+Figure \ref{chart:usage}.
+
+
+Interaction with the heatmap widget had the most negative reactions. 4
+participants thought the heatmap widget provided too much detail, they argued
+that an ordinary consumer would not care for trend details, they would only care
+about the overall verdict of whether a component is reliable or not. 3 other
+participants had concerns about the readability of the heatmap itself, they
+mentioned that the lack of labelling makes it difficult to identify individual
+month, also the additional colour encoding that is applied to the border of each
+cell in comparison mode made it more difficult to distinguish the different
+severity levels.
+
+
+Several participants tried to use the lens' depth function to access occluded
+objects, however we observed that there were difficulties making fine
+adjustments, especially if the objects are located within close proximity to
+each other.
+  
+  
+  
