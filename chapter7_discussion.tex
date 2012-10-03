@@ -13,32 +13,6 @@ to encoding underlying semantics on forms that are familiar to viewers.
 In this section we summarize our result findings, the limitations of our
 application, and discuss avenues for future work.
 
-\section{Conclusion}
-Our main contribution in this work is an integrated approach for doing text
-analytics for documents that contain both spatial and non-spatial data. We
-developed a scoring function that maps abstract semantics onto \threed models as
-stylistic graphical effects. Our goal is to use this approach to producing a
-more engaging visualization by depicting these objects as they appear in life,
-allowing people to formulate queries based on their familiarity with the objects
-and real world metaphors.
-
-In this thesis, we applied our methods to analyze a large collection of vehicle
-complaint reports from the NHTSA database. We leveraged WordNet database to
-create a vocabulary of vehicle entity, we then score each document based on
-occurrence and co-occurrence relations among the different vehicle entities.
-We also take into consideration time and organizational hierarchy dimensions. We
-applied the entity scores onto a \threed vehicle model using NPR techniques to
-emphasis importance. Finally we created interactive widgets for exploration of
-the dataset. Our intended audience are vehicle owners and potential consumers
-whom have a stake in the safety and reliability of their vehicles.
-
-
-As a necessary step towards validating our design and hypothesis, we ran a user
-study to see if people can accurately interpret the visualization, we also
-solicited qualitative feedback from study participants. Our study showed that
-(need results to put in here)
-
-
 \section{Limitations}
 In this thesis, we have presented a working prototype of our ideas. However,
 there are still some challenges and limitations. The limitations of our
@@ -66,6 +40,43 @@ viewer. Alternative selecting approaches, such as selecting by importance score,
 or other heuristic may help. More advanced graphical techniques such as exploded
 views would be able to push objects away from each other, avoiding occlusion in
 the first place but at a possible risk of distorting the overall context.
+
+
+\section{Conclusion}
+Our main contribution in this work is an integrated approach for doing text
+analytics for documents that contain both spatial and non-spatial data. We extract
+physical entities from text documents and encode the abstract semantics onto 
+\threed models that correspond to these entities as stylistic graphical effects, thus 
+reconstructing the subject matter in a way that is familiar to the viewers. We call
+our approach \emph{descriptive non-photorealistic rendering}.
+
+In order to gauge the effects of our approach, we conducted a user study
+asking participants to analyze NHTSA's repository of vehicle complaint reports.
+Each participant were asked to perform objective and open-ended tasks in order to 
+give us a sense of whether the visualization can be accurately interpreted, and whether
+participants can perform complex tasks using our system.
+Our study results showed that people were able to perform analytical tasks
+within our system, and that the visualization itself was well received based on
+aesthetic factors and the interactive options we provided. 
+
+
+% In this thesis, we applied our methods to analyze a large collection of vehicle
+% complaint reports from the NHTSA database. We leveraged WordNet database to
+% create a vocabulary of vehicle entity, we then score each document based on
+% occurrence and co-occurrence relations among the different vehicle entities.
+% We also take into consideration time and organizational hierarchy dimensions. We
+% applied the entity scores onto a \threed vehicle model using NPR techniques to
+% emphasis importance. Finally we created interactive widgets for exploration of
+% the dataset. Our intended audience are vehicle owners and potential consumers
+% whom have a stake in the safety and reliability of their vehicles.
+
+
+% As a necessary step towards validating our design and hypothesis, we ran a user
+% study to see if people can accurately interpret the visualization, we also
+% solicited qualitative feedback from study participants. Our study showed that
+% (need results to put in here)
+
+
 
 
 \section{Future Work}
