@@ -496,15 +496,9 @@ to the raw text (Requirement R4). Each document is divided into two sections,
 the header section shows each document’s fixed attributes and the content
 section shows the raw text descriptions. We denote the selected entity words and
 co-occurring entity words using blue and grey highlights respectively to create
-contract against the remainder of the text. Scrolling is enabled with textual
-content overflows the display panel, we use per-pixel based scrolling to ensure
-fluid transition from document to document without any sudden disruptions.
-
-We restrict the application to have a single document widget only. The widget is
-toggle-based and is by default hidden from view. Once activated, an animation
-will expand its dimension from a single pixel to its full size at the
-activation coordinate, a reverse animation is used to deactivate the panel. Once
-visible, a person can reposition the panel to move it to the desired location.
+contract against the remainder of the text. Scrolling is enabled when text
+content overflows the display panel. A document widget in action is seen in
+Figure \ref{figure:document}.
 
     % ===== Figure =====
 	\begin{figure}
@@ -516,6 +510,16 @@ visible, a person can reposition the panel to move it to the desired location.
 	\end{figure}
     % ===================
 
+We restrict the application to have a single document widget only. The widget is
+toggle-based and is by default hidden from view. Once activated, an animation
+will expand its dimension from a single pixel to its full size at the
+activation coordinate, a reverse animation is used to deactivate the panel. 
+
+Once fully visible, the document widget embed itself with two different
+interaction regions. The left region, which takes up 80 percent of the panel, is
+used for relocating the document widget to a different location. The right
+region is designated for scrolling through the document text.
+
 
 
 
@@ -524,7 +528,8 @@ visible, a person can reposition the panel to move it to the desired location.
 In this section, we describe the time and hierarchy widgets. These are used to
 model the fixed fields (date, make, model, etc.) in the complaint documents.
 They provide domain specific functions to filter the dataset into logical
-partitions.
+partitions. See Figure \ref{figure:filterFull} for a close up of our data
+filters.
 
     % ===== Figure =====
 	\begin{figure}
@@ -613,21 +618,19 @@ by dragging each slider's respective markers. A short cut for selecting an
 entire year is provided by double clicking/tapping any non-zero bar on the year
 range slider. An animated transition is used to interpolate the height of the
 histogram bars from their current volume to their new volume.
-
-
+ 
 
 
 \subsection{Compact View}
 We provided a compact panel that encapsulates the legend, time and hierarchy
 widgets as a work around to create more screen spaces for the main
-visualization. The compact view removes much of the interactive GUI elements and
-replaces them with textual summaries placed across the top of the display. It
-allows viewers to zoom in closer and place interactive widgets in spatial
-positions that would have otherwise cause occlusion issues. The compact view is hidden by
-default, performing a left-swipe gesture will activate the compact view,
-conversely a subsequent right-swipe gesture will restore the default. As with
-all other display changes, we use an animated transition to facilitate the state
-change.
+visualization. As seen in Figure \ref{figure:filterCompact}, the compact view
+removes much of the interactive GUI elements and replaces them with textual
+summaries placed across the top of the display. It allows viewers to zoom in
+closer and place interactive widgets in spatial positions that would have
+otherwise cause occlusion issues. The compact view is turned off by default to
+first allow people to select their filtering criteria. As with all other
+display changes, we use a smooth animation to facilitate the transition.
 
 
 
