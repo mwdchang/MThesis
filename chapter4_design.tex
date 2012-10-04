@@ -1,222 +1,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This chapter covers the design aspects, include design for data processing
-% and the visual design
+% This chapter covers the design aspects, primarily on visual design and
+% touch interactions
 % 
-% - Can probably expand interaction section, particulary spatial-interaction
-% - Should consider rewording 'stage 2: tagging'
 % - Should probably talk about active versus inactive versus context objects 
 %   in the 3D visualization section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Design}
+\chapter{Designing D-NPR}
 This chapter covers our visual design process and our rationals for our
-decisions. The first section describes our treatment of the dataset and how we
-calculate our scoring functions. The second and third covers the visualization
-interface in detail, describing our visual encoding and how each interactive
-widget's design tie back to our requirement as listed in the previous chapter.
-Lastly, we describe our design for higher level functions that can be used to
-detect trends and to make comparisons across different entities.
-
-  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Data Processing}
-In order to create our visualization, first we must be able to process and
-extract semantics from our text collection. Our processing is broken down into 
-three different stages, normalization, preprocessing and an
-extraction/scoring stage. The normalization stage removes irrelevant entries and
-attempts to clean up the text as much as possible. The preprocessing stage deals
-with normalizing the text and building a vocabulary of keywords that are used to
-represent the entities found in the document. The extraction/scoring stage
-scores each document the number of occurring keywords. Lastly, the final stage
-involves segmentation of \threed models into subgroups such that each group can
-be semantically mapped against the keywords.
- 
-
-%\subsection{Stage 0: Normalization}
-%From a preliminary analysis of the dataset, we found entries that are
-%irrelevant with respect to our subject data. There entries can be identified by
-%a type field and filtered out before any type of processing takes place. On top
-%of that, the text descriptions are quite difficult to read, because they are
-%capitalized and have have trailing suffix characters that are not English nor
-%are they domain specific terms. We use regular expressions to perform upper
-%and lower case conversions such that the descriptions would be atypical of
-%English text. To remove the suffix characters, we created a dictionary of stop
-%words.
-
-
-\subsection{Stage 1: Bootstrapping}
-Before any logical processing can take place, we spent some time doing
-preliminary analysis, looking at the data text, their format and how they have
-evolved over the life span of the data repository. We performed several
-normalization tasks: One, we used regular expressions to convert the text, which
-is call caps, to regular case format. Secondly, we remove suffix characters that
-appear at the end of the text paragraph, that, as far as we know contributes
-nothing to the incident context. Although we changed the underlying text, the
-normalization process improves readability, and allows us receive meaningful
-output from natural language parsers.
-
-The first issue was to devise a method for extracting physical entities; a
-document can contain multiple entities, but not all of which are related to the 
-subject matter. On top of that, many entities can have implicit hierarchical 
-relations, such as relation between component and its subcomponents. This 
-relation is important because it enables logical groupings which are useful for
-high level overviews.
-
-Our entity extraction process leverages the WordNet database, a lexical English
-database that stores nouns, verbs, adjectives and their relations among each
-other \cite{WORDNET}. In order to get a comprehensive list of physical entities, we use the meronym 
-relation in WordNet. A meronym describes a ``part-of'' relationship between two 
-nouns, for example, a brake is a part of a wheel, and a wheel is a part of the 
-automotive vehicle. All together, the meroynomy relationship forms a hierarchical 
-structure where the most general part forms the root node, while the most specific 
-parts form the leaf nodes. We use two common words pertaining to cars to bootstrap 
-the hierarchy : ``car'' and ``vehicle''. From this we extracted two tree
-structures rooted at ``car'' and ``vehicle'' respectively, we then merge the two
-hierarchies, assuming that ``car'' and ``vehicle'' are equivalent. 
-
-While this process extracts a fair amount of physical entities, an analysis of
-sample dataset showed that it is not representative of the entities being
-mentioned in the documents. The primary reason for this is due to the use of synonyms in the documents, 
-where the entity words in question are using an alternative names. To alleviate
-some of these confusion, we additionally extract the synset relations from WordNet. A
-synset is a set relationship that describes words that are semantically
-equivalent of one another, for example ``limo'' and ``limousine'' both describe
-the same type of object and thus belongs to the same synset group. For each word
-in our current collection, we replace it with its respective synset.
-
-The addition of synsets into the vocabulary gave us a comprehensive number of
-keywords, however it also created undesirable noises. Manual examination of data
-sample reveals that there are still disconnects between the dictionary
-vocabulary and real world vocabulary. The next section we will describe how we
-overcome these issues.
-
-    % ===== Figure =====
-	\begin{figure}
-	   \centering  
-	   \includegraphics[width=\columnwidth]{meronomy.png}
-	   \caption{An example of the meronomy plus synset structure}
-	   \label{figure:meronomy}
-	\end{figure}
-	% ==================
-
-\subsection{Stage 1: Manual Processing}
-As an additional step to augment our keyword vocabulary, we perform two manual
-steps:
-\begin{itemize} [noitemsep]
-  \item Removal of nouns that are too generic from the vocabulary.
-  \item Preprocess the documents and mine for any missing nouns.
-\end{itemize}
-The first step deals with the removal of keywords that are not considered to be
-physical objects under typical usage, for example WordNet hierarchy of a
-vehicle contains ``first'', ``second'', ``third'' and ``fourth'', which
-describes the first, second, third and fourth gears respectively. Including
-these words will likely result in over-counting the number of occurrences of
-gears because they are used in every day speech. We also removed several
-acronyms that will likely cause ambiguities, for example ``ice'', which is short for internal-combustion-engine,
-will cause issues if the document is about ice, the solid state of water. They
-are therefore removed from the keyword dictionary. 
-
-The second step deals with any possible missing keywords that are not in WordNet
-meronyms. We attempted to detect these semi-automatically with natural language 
-processing techniques. We first perform part-of-speech (POS) tagging on our document 
-corpus. POS taggers look at the grammatical structures of text and break down 
-sentences into lexical categories such as nouns, verbs and adjectives. We use the 
-POS output and tie them back to the original text, extracting the nouns and 
-compound-nouns. We perform this step for all the documents in the corpus and 
-count the number of occurrences for the nouns and compound-nouns. We then manually 
-exam the top occurring nouns and add them into the hierarchy where we believe 
-would be appropriate.
-
-\subsection{Stage 1: Limitations}
-While we believe this extract process is a plausible method for building the
-vocabulary, we acknowledge that WordNet is not the definitive authority for our 
-problem domain, nor would it be for any specific domain. The automatic
-extraction can be used as a starting point. The keywords vocabulary should be
-extended and further refined by consulting experts that works in the problem field. 
-
-\subsection{Stage 2: Tagging}
-For the actual matching, we use an open source, off the shelf snowball
-stemmer\footnote{http://snowball.tartarus.org/} before any matching takes
-place. Stemming is a process of reducing the words to their root forms. Finding the root is important because it unifies the singular 
-and plural forms, as well, it converges various forms without the need to add 
-additional vocabulary to our keywords. For the purpose of string matching, we 
-perform stemming on both documents and key word vocabularies.
-
-For the document text, stemming is performed on all string tokens and not
-limited to nouns. This has both positive and negative effects. In our data, 
-there are many word tokens with both noun and verb forms, for example ``braking
-malfunction'' can be correctly associated with the keyword ``brake'' with
-stemming. On the other hand this also introduced false positives, the word
-``lock'', which refers to the component, is falsely picked up when the text describe components
-``locking up''.
-
-We have also looked at tagging explicit casual relations. Using the dependency
-parser extension, the output is a tree-like structure that can be used to infer
-word dependencies. In practice this did not work very well; informal languages,
-spelling mistakes and grammatical errors result in incorrect dependency parse
-trees. We ultimately opted to go for a more general approach, where we tag each
-physical entities as well as co-occurring entities within the same document.
-
-
-\subsection{Stage 2: Scoring Scheme}
-Once we have identified the entities in each document, we can compute each
-entity’s importance score. We denote the importance score of a physical entity 
-as the number of times it is mentioned within the document corpus. We have two 
-variations of importance score: occurrence  and co-occurrence. Within our
-problem context, the occurrence scores denotes the components that are most prone to failure, while 
-the co-occurrence suggest causal relationships among the objects.
-
-Let G be a (possibly empty) set of objects that are in the keyword hierarchy and
-c be a single object in the hierarchy. We define a scoring function S(c, G) to be 
-the total number of documents that have at least a single mention of c and G. Thus 
-when G is the empty set the score is the absolute occurrence score (every document 
-contains an empty set). When G is non-empty the score reflects the co-occurrence 
-strength among a set of components. For clarity we illustrate this with a few examples:
-\begin{itemize} [noitemsep]
-  \item $S(engine, \{\})$: The absolute strength of ``engine'' component in all
-  documents
-  \item $S(engine, \{engine\}$): The strength of ``engine'' relative to
-  ``engine'', thus the same as the above
-  \item $S(engine, \{brake\})$: The number of times engine keyword is mentioned
-  when brake keyword is mentioned as well. Thus, mathematically,  $S(brake,
-  \{\}) \geq S(engine, \{brake\})$
-\end{itemize}
-
-Each document is only counted once per physical entity, this was done to
-discourage biases coming from longer documents where the entities are
-repetitively mentioned.
-
-
-\subsection{Stage 2: Limitations}
-For this prototype, we gave the same score weighting to each objects. This is a 
-subjective measure because not all parts are created equal. For example: if window 
-is mentioned 10 times and the engine mentioned a single time, does that mean we 
-should pay more attention to the window component? An extension to this work
-would be to devise an appropriate weighting scheme for our problem domain.
-
-Another limitation is the vocabulary set itself, while we are only storing nouns 
-as keywords, it would be interesting to look at verbs as well. For example, 
-``stalled'', ``stalling'' are typically associated with engine object. Adding
-verbs into our dictionary would give more flexibility and accurate results.
-
-\subsection{Stage 3: Model Segmentation}
-We use geometric models that compose of triangular mesh groups, where each mesh 
-group can be uniquely identified and semantically mapped to our keyword ontology. 
-The segmentation is done manually, with consultation of car schematics when it 
-was not clear where the parts located. Where the model is missing parts, 
-we add placeholder geometries.
-
-We have chosen to use a sedan model as the starting point of our visualization. 
-This was chosen based on the fact that sedans are the most common class of 
-vehicles and best represent our data. We acknowledge that different types of 
-vehicles may have different spatial arrangement of their components, we hope to 
-remedy this as more vehicle models are processed.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Visual Design}
-The following sections discuss our user interface and design decisions. In
-summary, our interface is composed of four major components as seen in
-\ref{figure:overview}
+decisions. Our main interface, as shown in \ref{figure:overview}, is composed
+of four major components:
 
 \begin{itemize} [noitemsep]
   \item Stylized Visualization: The central point of the visualization system is
@@ -277,7 +69,8 @@ In the following subsections we will describe each visualization components in
 more detail, the trade offs and choices we made and our justifications.
 
 
-\subsection{Design Rational}
+\section{3D Visualization}
+\subsection{Rationale}
 A major part of our design for this thesis is the mapping of abstract semantics
 onto realistic looking, \threed models. But this can also be a source of
 complication, we have to deal with the additional difficulties of navigating in
@@ -455,100 +248,48 @@ we may use distortion to visually paint the action words, testing this will be
 part of our future work.
 
 
-\subsection{Hierarchy Filter Widget}
-The hierarchy widget is designed to model inclusive relationship, in particular,
-it is specifically designed to address the need to for comparison(R2) and trend
-finding(R3). For our problem domain, this relationship is represented as the
-organizational hierarchy. Our data contains four such fields: manufacturer,
-make, model and model year. For example: Civic (Make) belongs to Honda
-(Manufacturer). These filters are shown as a variant of the combo boxes which
-supports single selection, each item in the filter shows the name and the number
-of documents associated with this organizational level. Rather than having the
-readers comparing items by reading the numbers in text format, we double-encoded
-the number of document as a horizontal histogram in similar style as the scented
-widget approach in \cite{Willett2007}. The histogram bars are shaded in light
-grey so they are visible but not overly distracting. The histogram makes it very
-clear any outlier items, and allows reader to make relative comparison among
-items. We capped the number of items that can be displayed at once, as such,
-scrolling is required to navigate long list of items. When an item is selected,
-we change the selected item's font type to bold and change its bar to the
-selected colour(blue).
+\subsection{Entity Selection}
+Entity objects can be acquired in two ways: One can directly select the entity
+by performing the tap gesture on the \threed representation, or tapping the
+heatmap through the lens widget. In the case where objects occlude each other
+in \threed space, direct selection will return the object that is closest to
+viewing point. In order to select occluded objects, the scene can be
+rotated to reveal hidden entities. Alternatively, we can use the lens’ depth
+functionality to cut away occluding geometries, or directly clicking on the
+heatmap representations which are always available.
 
-
-
-% Choose to leave the list open on selection to allow simpler selection of
-% outher types ???
-
-Each level of the hierarchy is shown in individual filters. We position the
-filters left-to-right across the display space, from the most general to most
-specific classification. Each filter's content is 
-dependent on the selection made on its parent. For example, the ``make''
-selection widget will contain different makes if ``GM'' is the selected manufacturer than
-it would for ``Chrysler''.  Non-top level hierarchy widgets remain hidden from view 
-until it has selectable content, thus at the start, only the top level 
-(manufacturer) filter widget is visible.
-
-The hierarchical content is dependent on the currently selected time. Our
-application queries the document collection and reconstructs the hierarchy. Previous 
-selected items are persisted if the items are available within the new selection 
-criteria. In the case where the items do not exist, the widgets, and all their 
-children widgets are hidden from view and we clear the corresponding selections.
-
-\subsection{Time Filter Widget}
-The time dimension is encoded as a histogram, with the height of each bar denoting 
-the volume of unique complaints for that time period. There are several granularity 
-options with our document collection: daily, weekly, monthly or yearly. From a 
-preliminary analysis of the incoming volume of complaint documents, we found that 
-daily and weekly granularity resulted in too much noises, there are insufficient
-amount of data at that level to form visually detectable trends and other
-interesting patterns. Thus we selected to use month and year as our base time
-periods. The widget is made up of two sliders. The top slider represents time
-period in years, and the bottom slider represent time periods in months. Text
-labels at the top of each bar give the numerical representation of the volume of
-documents.
-
-Time selection is not continuous, but rather in a block like manner. Multiple
-years and multiple months can be selected simultaneously; when more than one
-year is selected, the values on the month's histogram become the accumulated sum
-of the month across the selected years. There were two motivations for this
-design approach: One, this allows us to analyze a large time frame without
-sacrificing too much screen real estate. Two, because the number of months is
-static, viewers can compare month-to-month or season-to-season without
-difficulty,  this follows up on our requirement to allow analysis of seasonal
-trends (Requirement R2). We illustrate with an example, suppose we want to
-compare the number of incidents in January versus June from 2000 to 2005, we
-select 2000 to 2005 on the year slider, we can then compare the January volume
-and June volume directly, furthermore, each month can be selected for further
-analysis.
-
-User interaction is done through click/tapping the individual histogram bars, or
-by dragging each slider's respective markers. A short cut for selecting an
-entire year is provided by double clicking/tapping any non-zero bar on the year
-range slider. An animated transition is used to interpolate the height of the
-histogram bars from their current volume to their new volume.
-
-    % ===== Figure =====
+    % === Figure ===
 	\begin{figure}
 	 \centering  
-	 \includegraphics[width=\columnwidth]{filter_full.png}
-	 \caption[Interactive Filters]{Time Slider Widget and Hierarchy Widget in
-	 interactive mode}
-	 \label{figure:filterFull}
+	 \includegraphics[width=\columnwidth]{interaction_select.png}
+	 \caption[Interactive Selection]{The visualization changes based on the
+	 currently selected entities.}
+	 \label{figure:selection}
 	\end{figure}
-    % ===================
-    
+	% ==============
 
-    % ===== Figure =====
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{filter_compact.png}
-	 \caption[Compact Filters]{Time Slider Widget and Hierarchy Widget in compact
-	 mode}
-	 \label{figure:filterCompact}
-	\end{figure}
-    % ===================
+
+Selection is toggle based. When an entity is selected, we apply a blue borderb
+to the associated heatmap and the line segments that links the heatmap back to
+the visualization. To visually accentuate the selection in \threed
+space, we employ a halo like effect around the hull of the mesh objects. Both
+selection and deselection of any entity triggers an event to recalculate the
+entity scores, an animated sequence then starts to interpolate the colour of
+each \threed object to reflect the scoring change.
+
+The re-evaluation of the entity scores are based on current selection,
+specifically they are recalculated based on their co-occurrence relation with
+the current selection. Thus, highly co-occurring entities will score higher and
+be more visible than lowly co-occurring entities.
+
+Selection of an entity with zero score is considered invalid, instead, the
+system will propagate the selection event through the zero scored entities.
+
+
+
+
 
-\subsection{Lens Widget}
+\section{Lens Widget}
 Using a metaphor of looking through a magnifying glass to reveal better details
 about a specific subject, we created an interactive widget to extract and show 
 detailed information about entities in the text. With respect to the information
@@ -634,8 +375,42 @@ has no defined behaviour when it is overlapped with another lens.
 %the tower. However we have not defined any semantics for the lens to overlap, thus 
 %each lens should be used individually.
 
+\subsection{Spatial Interaction}
+Traditional systems, particularly databases use explicit queries as a mean to
+communicate with the underlying data. While this works well for task analysis,
+it has an implicit assumption that the person knows something about how the
+system works, and how the data is structured. Thus it can be a limiting factor
+that prevents a wider audience from using applications without prior training.
 
-\subsection{Heatmap Widget}
+Here we take a different approach, the lens widget allows people to demand and
+filter detailed information by means of a visual query. Unlike explicit queries,
+visual query is done more passively by moving the lens widget about the screen
+to inspect different spatial areas that appear interesting to the viewer. This
+is the key difference, as the focus selection is done visually, rather than
+through explicit selection, this means the viewers do not need to know what the
+entities are called to select them, reducing the need to have prior knowledge
+about the data. This type of interaction is more playful and open-ended, people
+are free to explore the visualization on their on terms which may lead to
+unknown or unexpected discoveries.
+
+In addition of the freedom to explore the visualization, the spatial
+interaction has two other advantages: proximal relationship and reduced effort
+in query construction. First, with most complex objects, incidents relating to
+an entity is rarely in isolation, neighbouring objects are often impacted as
+well. The lens widget allows selection of a volume range, which easily
+facilitate bringing back entities close to the one we want to focus on. Second,
+the visual query allows us to form queries that can be difficult to construct in
+conventional systems. Imaging a case where we want to know how many vehicle
+complaints are related to the ``front'' of the vehicle, traditional query would
+require knowledge of the parts that belong to the front of the car, then follow
+by an aggregation step of constructing a query that includes all these parts.
+Our visual query simplifies this step by taking advantage of the familiar form
+factor, a lens widget can be over the ``front'' of the vehicle visualization,
+automatically pulling out all the relevant entities.
+
+
+
+\section{Heatmap Widget}
 The heatmap is an interactive widget that shows entity specific information over
 the selected time frame. Each heatmap is designed to communicate how the volume
 of complaints changed over time for individual entity components by fitting a
@@ -715,7 +490,7 @@ total, as well as the spatial placement of these entities. We found N=8 works
 well with our vehicle complaint corpus.
 
 
-\subsection{Document Widget}
+\section{Document Widget}
 The document widget is the final stage of our drill-down process by providing links 
 to the raw text (Requirement R4). Each document is divided into two sections,
 the header section shows each document’s fixed attributes and the content
@@ -743,13 +518,134 @@ visible, a person can reposition the panel to move it to the desired location.
 
 
 
+
+
+\section{Data Filters}
+In this section, we describe the time and hierarchy widgets. These are used to
+model the fixed fields (date, make, model, etc.) in the complaint documents.
+They provide domain specific functions to filter the dataset into logical
+partitions.
+
+    % ===== Figure =====
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{filter_full.png}
+	 \caption[Interactive Filters]{Time Slider Widget and Hierarchy Widget in
+	 interactive mode}
+	 \label{figure:filterFull}
+	\end{figure}
+    % ===================
+    
+
+    % ===== Figure =====
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{filter_compact.png}
+	 \caption[Compact Filters]{Time Slider Widget and Hierarchy Widget in compact
+	 mode}
+	 \label{figure:filterCompact}
+	\end{figure}
+    % ===================
+    
+\subsection{Hierarchy Filter Widget}
+The hierarchy widget is designed to model inclusive relationship, in particular,
+it is specifically designed to address the need to for comparison(R2) and trend
+finding(R3). For our problem domain, this relationship is represented as the
+organizational hierarchy. Our data contains four such fields: manufacturer,
+make, model and model year. For example: Civic (Make) belongs to Honda
+(Manufacturer). These filters are shown as a variant of the combo boxes which
+supports single selection, each item in the filter shows the name and the number
+of documents associated with this organizational level. Rather than having the
+readers comparing items by reading the numbers in text format, we double-encoded
+the number of document as a horizontal histogram in similar style as the scented
+widget approach in \cite{Willett2007}. The histogram bars are shaded in light
+grey so they are visible but not overly distracting. The histogram makes it very
+clear any outlier items, and allows reader to make relative comparison among
+items. We capped the number of items that can be displayed at once, as such,
+scrolling is required to navigate long list of items. When an item is selected,
+we change the selected item's font type to bold and change its bar to the
+selected colour(blue).
+
+Each level of the hierarchy is shown in individual filters. We position the
+filters left-to-right across the display space, from the most general to most
+specific classification. Each filter's content is 
+dependent on the selection made on its parent. For example, the ``make''
+selection widget will contain different makes if ``GM'' is the selected manufacturer than
+it would for ``Chrysler''.  Non-top level hierarchy widgets remain hidden from view 
+until it has selectable content, thus at the start, only the top level 
+(manufacturer) filter widget is visible.
+
+The hierarchical content is dependent on the currently selected time. Our
+application queries the document collection and reconstructs the hierarchy. Previous 
+selected items are persisted if the items are available within the new selection 
+criteria. In the case where the items do not exist, the widgets, and all their 
+children widgets are hidden from view and we clear the corresponding selections.
+
+\subsection{Time Filter Widget}
+The time dimension is encoded as a histogram, with the height of each bar denoting 
+the volume of unique complaints for that time period. There are several granularity 
+options with our document collection: daily, weekly, monthly or yearly. From a 
+preliminary analysis of the incoming volume of complaint documents, we found that 
+daily and weekly granularity resulted in too much noises, there are insufficient
+amount of data at that level to form visually detectable trends and other
+interesting patterns. Thus we selected to use month and year as our base time
+periods. The widget is made up of two sliders. The top slider represents time
+period in years, and the bottom slider represent time periods in months. Text
+labels at the top of each bar give the numerical representation of the volume of
+documents.
+
+Time selection is not continuous, but rather in a block like manner. Multiple
+years and multiple months can be selected simultaneously; when more than one
+year is selected, the values on the month's histogram become the accumulated sum
+of the month across the selected years. There were two motivations for this
+design approach: One, this allows us to analyze a large time frame without
+sacrificing too much screen real estate. Two, because the number of months is
+static, viewers can compare month-to-month or season-to-season without
+difficulty,  this follows up on our requirement to allow analysis of seasonal
+trends (Requirement R2). We illustrate with an example, suppose we want to
+compare the number of incidents in January versus June from 2000 to 2005, we
+select 2000 to 2005 on the year slider, we can then compare the January volume
+and June volume directly, furthermore, each month can be selected for further
+analysis.
+
+User interaction is done through click/tapping the individual histogram bars, or
+by dragging each slider's respective markers. A short cut for selecting an
+entire year is provided by double clicking/tapping any non-zero bar on the year
+range slider. An animated transition is used to interpolate the height of the
+histogram bars from their current volume to their new volume.
+
+
+
+
+\subsection{Compact View}
+We provided a compact panel that encapsulates the legend, time and hierarchy
+widgets as a work around to create more screen spaces for the main
+visualization. The compact view removes much of the interactive GUI elements and
+replaces them with textual summaries placed across the top of the display. It
+allows viewers to zoom in closer and place interactive widgets in spatial
+positions that would have otherwise cause occlusion issues. The compact view is hidden by
+default, performing a left-swipe gesture will activate the compact view,
+conversely a subsequent right-swipe gesture will restore the default. As with
+all other display changes, we use an animated transition to facilitate the state
+change.
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Interaction}
-In this section we describe in greater detail how a person interacts with the
-visualization by changing the underlying filters and using the widget to create
-visually based queries. We also describe here our design for touch based
-gestures, and visual feedback system for help people in their orientation of the
-application.
+\section{Touch Display}
+Touch enabled system can be deployed in situations that is otherwise cumbersome
+for systems that uses mouse/keyboard input. For example, in a
+walk-up-and-use scenario in a public place, or within a meeting in an office
+setting. Our visualization is designed for these settings where traditional input devices may
+not be available, in particular our visualization system is suited for large
+displays. In this section we describe how we came up with our touch interaction
+designs.
+
+% In this section we describe in greater detail how a person interacts with the
+% visualization by changing the underlying filters and using the widget to create
+% visually based queries. We also describe here our design for touch based
+% gestures, and visual feedback system for help people in their orientation of the
+% application.
 
 %Interaction with the \threed model and interactive widgets dynamically update
 %the visualization to reflect any changes. The change of visualization state is carried 
@@ -758,31 +654,6 @@ application.
 %support common tasks.
 
 % This needs some work, it sounds kind of weird at places
-\subsection{Entity Selection}
-Entity objects can be acquired in two ways: One can directly select the entity
-by performing the tap gesture on the \threed representation, or tapping the
-heatmap through the lens widget. In the case where objects occlude each other
-in \threed space, direct selection will return the object that is closest to
-viewing point. In order to select occluded objects, the scene can be
-rotated to reveal hidden entities. Alternatively, we can use the lens’ depth
-functionality to cut away occluding geometries, or directly clicking on the
-heatmap representations which are always available.
-
-Selection is toggle based. When an entity is selected, we apply a blue borderb
-to the associated heatmap and the line segments that links the heatmap back to
-the visualization. To visually accentuate the selection in \threed
-space, we employ a halo like effect around the hull of the mesh objects. Both
-selection and deselection of any entity triggers an event to recalculate the
-entity scores, an animated sequence then starts to interpolate the colour of
-each \threed object to reflect the scoring change.
-
-The re-evaluation of the entity scores are based on current selection,
-specifically they are recalculated based on their co-occurrence relation with
-the current selection. Thus, highly co-occurring entities will score higher and
-be more visible than lowly co-occurring entities.
-
-Selection of an entity with zero score is considered invalid, instead, the
-system will propagate the selection event through the zero scored entities.
 
 
 
@@ -808,49 +679,9 @@ system will propagate the selection event through the zero scored entities.
 %By this convention, the selected objects will always have the maximal score after 
 %normalization, and will be coloured with the deepest shade on our colouring scale.
 
-    % === Figure ===
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{interaction_select.png}
-	 \caption[Interactive Selection]{The visualization changes based on the
-	 currently selected entities.}
-	 \label{figure:selection}
-	\end{figure}
-	% ==============
 
  
-\subsection{Spatial Interaction}
-Traditional systems, particularly databases use explicit queries as a mean to
-communicate with the underlying data. While this works well for task analysis,
-it has an implicit assumption that the person knows something about how the
-system works, and how the data is structured. Thus it can be a limiting factor
-that prevents a wider audience from using applications without prior training.
 
-Here we take a different approach, the lens widget allows people to demand and
-filter detailed information by means of a visual query. Unlike explicit queries,
-visual query is done more passively by moving the lens widget about the screen
-to inspect different spatial areas that appear interesting to the viewer. This
-is the key difference, as the focus selection is done visually, rather than
-through explicit selection, this means the viewers do not need to know what the
-entities are called to select them, reducing the need to have prior knowledge
-about the data. This type of interaction is more playful and open-ended, people
-are free to explore the visualization on their on terms which may lead to
-unknown or unexpected discoveries.
-
-In addition of the freedom to explore the visualization, the spatial
-interaction has two other advantages: proximal relationship and reduced effort
-in query construction. First, with most complex objects, incidents relating to
-an entity is rarely in isolation, neighbouring objects are often impacted as
-well. The lens widget allows selection of a volume range, which easily
-facilitate bringing back entities close to the one we want to focus on. Second,
-the visual query allows us to form queries that can be difficult to construct in
-conventional systems. Imaging a case where we want to know how many vehicle
-complaints are related to the ``front'' of the vehicle, traditional query would
-require knowledge of the parts that belong to the front of the car, then follow
-by an aggregation step of constructing a query that includes all these parts.
-Our visual query simplifies this step by taking advantage of the familiar form
-factor, a lens widget can be over the ``front'' of the vehicle visualization,
-automatically pulling out all the relevant entities.
 
 
 \subsection{Surface Based Interaction}
@@ -968,6 +799,16 @@ below, group by by functional areas:
   
 \end{itemize}
 
+    % === Figure ===
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{feedback.png}
+	 \caption[Visual Feedback]{Clockwise from top left: normal touch point
+	 gestures, touch point in movement transition, unrecognized touches,
+	 transition to hold gestures.}
+	 \label{figure:feedback}
+	\end{figure}
+	% =============== 
 
 
 \subsection{Visual Feedback}
@@ -1020,215 +861,9 @@ Figure \ref{figure:feedback}.
 \end{itemize}
  
  
-    % === Figure ===
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{feedback.png}
-	 \caption[Visual Feedback]{Different visual feedback to help viewers
-	 differentiate different system states}
-	 \label{figure:feedback}
-	\end{figure}
-	% ===============
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Viewing Modes}
-A comprehensive analytic system requires a variety of ways to manipulate and
-looking at data. In this section we describe our solutions for trend detection,
-making comparisons and high level overview.
-
-% TODO: Maybe illustrate with an example
-\subsection{Heatmap Perspective}
-The heatmap’s data, in essence, is a time series data. There are multiple ways
-we can view this time series to derive interesting patterns and trends. For this 
-prototype we want to concentrate on comparability across different components
-and time. For example, we want to ask: which vehicle component had more
-complaints? which month had more complaints out of the year? 
-To do this, we need to have multiple perspectives where data can be viewed from
-different functional needs. We have provided the following perspectives in our
-prototype:
-\begin{itemize} [noitemsep]
-  \item Month-Max: A monthly perspective where the importance score of each
-  month is divided by the maximum monthly importance score over all components
-  in the selected time.
-  \item Component-Max: An object component perspective where the importance
-  score of each month is divided by the maximum component score over the selected time.
-  \item Global-Max: A global perspective where the month score is divided by the
-  maximum score of all components over the selected time. 
-\end{itemize}
-
-We illustrate how the perspective scoring works with an example of a time over a
-period of three month in table \ref{table:perspective}.
- 
- 
-    % === Table ===
-    \begin{table}[h]
-	\begin{tabular}{| l | lll | lll | lll | lll | } 
-	   % Column Heading
-	   \hline
-	   & \multicolumn{3}{|c|}{Score} & \multicolumn{3}{|c|}{Month} &
-	   \multicolumn{3}{|c|}{Component} & \multicolumn{3}{|c|}{Global} \\
-	   
-	   % Data 
-	   \hline
-	   Engine & 1 & 10 & 100 &       % Original
-	            10 & 15 & 100 &      % Month
-	            100 & 100 & 100 &    % Component
-	            100 & 100 & 100 \\   % Global
-	            
-	   Brake &  10 & 15 & 20  &      % Original
-	            10 & 15 & 100 &      % Month
-	            20 & 20 & 30  &      % Component
-	            100 & 100 & 100 \\   % Global
-	   \hline
-	\end{tabular} \caption{Sample perspective
-	based scores} \label{table:perspective}
-	\end{table}
-	% ============
-  
-
-Each of the perspectives above answers different questions and has its own
-advantages and disadvantages. The month-max perspective allows us to compare 
-component-to-component by month, but comparison against adjacent cells are 
-meaningless because each cell uses a different base value. The component-max 
-perspective is the opposite, it allows us to see trends with a single entity, 
-but it does not allow comparison across components. Lastly, the global-max 
-perspective is good at showing the outliers and supports both month-to-month 
-and component-to-component comparisons, but it is difficult to see overall
-trends because the outliers, if any, will dominate and push all non-outliers
-into the same scoring bin.
-
-To put the different perspectives in better context, we list sample 
-questions that can be answered with these different perspective views:
-\begin{itemize} [noitemsep]
-  \item Month-Max: In month X, which vehicle component had the most complaints?
-  \item Component-Max: Are there more braking problems in the summer months or
-  the winter month?
-  \item Global-Max: What are the most unreliable vehicle components?
-\end{itemize}
-
-The heatmap viewing perspective is at a global scope, thus a change in
-perspective will affect all visible heatmaps. This keeps the interface
-consistent and avoid viewers from switching to different modalities when they
-shift their attention from one heatmap to another. The view switching mechanism
-is realized as a drop-down control sitting atop the hierarchy filters and shows
-the currently selected viewing mode.
 
 
-    % === Figure === 
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{heatmap.png}
-	 \caption[Heatmap Perspectives]{Showing the different heatmap perspectives. Left
-	 displays the monthly perspective, centre displays the component perspective, and right displays the
-	 global perspective}
-	 \label{figure:heatmap}
-	\end{figure}
-	% ==============
 
-\subsection{Comparison}
-Comparison mode allows people to compare two different types of the same
-physical product specified by two different query sets Q1 and Q2. Every entity
-from a query set is matched against the same named entity in the other query
-set, producing an entity level based comparison. For example, we can compare how
-each car component fared against each other in a comparison of Honda Civic
-versus Toyota Corolla, or comparing Ford Focus against the industry form.
-
-Two separate measures are used for the comparison view. A contribution sum and a
-percentage difference. The contribution sum is the aggregated entity score from
-the two query sets, it reflects the overall importance of the entity by
-emphasizing the frequently occurring entities in one or both query set. The
-percentage difference describes the relative frequencies of an entity, whether
-it occurs more frequently under Q1 or Q2 relative to the total contributions
-from Q1 and Q2 respectively. The percentage score is calculated as entity score
-divided by the total contribution. Then the percentage difference follows as
-percentage score Q1 minus percentage score Q2, with the sign and magnitude
-indicating  which query set has the stronger presence. We made the decision to
-use percentage based comparisons because it enables as to compare query results
-of different sizes.
-
-We encode the sum score as the colour of the \threed component, based on the
-default colour scale. For the difference score, we render the measure as an
-outline around the object. The sign of the difference is encoded as one of two diverging
-colours, one for positive and one for negative values. The magnitude of the
-difference is encoded as the transparency of the outline, larger magnitude have
-more distinct, solid outlines compared to smaller values. Thus, a highly
-problematic object from both side will have a strong presence overall but with a
-faint outline, while a lopsided but infrequent problem will have strong outline
-but barely visible interior colour.
-
-As an example, see Figure \ref{figure:comparison}, where we compared Plymouth
-against both the Jeep and Chrysler. At a glance most parts remain the same
-with the exception of two outliers, Jeep appear to have a higher failure rate
-than Plymouth, and Dodge has a higher failure rate in brakes component. The
-overview could suggest that Plymouth is more reliable than both vehicles.
- 
-    % === Figure ===
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{comparison.png}
-	 \caption[Comparison View]{Left: Plymouth versus Chrysler, the brake appears to
-	 be the dominant issue and Make 14 has the higher rate of complaints. Right:
-	 Plymouth versus Jeep, the engine is the dominant issue and Make 1 has higher
-	 rate of complaints.}
-	 \label{figure:comparison}
-	\end{figure}
-	% ==============
- 
-By default, comparison mode is turned off. It is activated when the viewer
-switches the second hierarchy filter from the ``None'' position to a valid
-selection. Subsequent query modifications are carried out in comparison mode
-until the selection is turned to ``None'' again.
-
-One limitation with this approach is our current usage of the total
-contributions to calculate the percentage scores. Our total contribution is in
-relations to the number of documents in the corpus, which may or may not be a
-good indication of the overall contribution. 
-
-
-\subsection{Aggregation}
-By default, the system treats each object individually rather than object
-groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all scored
-separately, even though they are logically under the group ``seat''. This
-setting allows people to isolate and identify unique problems accurately. There
-are times, however, when this level of information is unnecessarily detailed and
-a higher level of abstraction is desirable.
-
-Aggregation mode mimics the type of high level rating system found on consumers
-review websites. When aggregation mode is enabled, individual objects, and their
-scores are aggregated up to the first level entities. In our specific case, the 
-first level are the major sub-systems in a vehicle. The visualization responds
-by making all child objects referencing the aggregated score of their parent
-subsystem. 
-
-Aggregation mode is enabled/disabled by a toggle switch located at the top
-portion of the interface. Aggregation mode works in
-conjunction with comparison mode, allow people to make comparison of major systems.
-
-An example is shown in Figure \ref{figure:aggregation}. A default rendering is
-shown in the top portion, one can see that brake is the most severe out of all
-components. The bottom shows the aggregated view, one can observe that on a
-higher level, the engine and seat subsystems are quite problematic.
- 
-    % === Figure === 
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{aggregation.png}
-	 \caption[Aggregation View]{Top: Aggregation mode disabled. Bottom: Aggregation
-	 mode enabled, note that the seat and engine now appears more prominent in the visualization.}
-	 \label{figure:aggregation}
-	\end{figure}
-	% ==============
-
-\subsection{Compact View}
-We provided a compact panel that encapsulates the legend, time and hierarchy
-widgets as a work around to create more screen spaces for the main
-visualization. The compact view removes much of the interactive GUI elements and
-replaces them with textual summaries placed across the top of the display. It
-allows viewers to zoom in closer and place interactive widgets in spatial
-positions that would have otherwise cause occlusion issues. The compact view is hidden by
-default, performing a left-swipe gesture will activate the compact view,
-conversely a subsequent right-swipe gesture will restore the default. As with
-all other display changes, we use an animated transition to facilitate the state
-change.
