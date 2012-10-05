@@ -1,3 +1,8 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This chapter summarizes the thesis work 
+%
+% - Some kind of graphics would be nice? showing taking text to final image?
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
 The amount of data available today is staggering. With advanced technologies,
 data are constantly been created and archived. Understand large quantities of data is
@@ -14,61 +19,85 @@ into account. Many of these missing context are concrete ideas about objects and
 space relations that do not naturally lend themselves to be mapped against
 abstract representations.
  
-In this work, we explore an alternative approach for summarizing text documents.
-by preserving the physical entities in the text as they would appear in the real
-world. We realize these entities as \threed geometries and encode additional
-semantics as graphical effects. We then design interactions to navigate and
-explore the \threed visualization space.
-   
+In this work, we introduce descriptive non-photorealistic rendering, a hybrid
+approach for text analytics by preserving both abstract and spatial semantics in
+a single visualization. This process, creates information rich visuals such that
+significant parts of the model appear to “popout” to the viewers, while
+retaining their easily recognizable shapes and forms. 
+
+ 
    
 \section{Motivation}
-Illustrations found in technical or medical materials are often drawn in a way
-to attract the viewer's attention to specific parts of the illustration. This
-stylistic approach, known as Non-Photorealistic Rendering (NPR) outshines
-traditional photographic pictures in its capability to carry a specific
-message to the viewers, for example, putting emphasis on sub sections of the
-image such that they \emph{pop-out} to the viewers. While the idea of using 
-NPR is fairly common in the field of Scientific Visualization; from the 
-InfoVis side, we have seen few example usages of NPR techniques to  highlight
-interesting data other than the ones dealing specifically with geo data.
- 
-Motivated by the lack of coverage in this area, we want to investigate how an
-integrated approach of using both InfoVis and NPR graphics can enhance visual
-exploration of data.
+There are many text collection about physical things, and information
+visualization generally summarizes these documents with an abstract
+representation. While these visualization are easy to understand, they are
+typically disconnected from the real world and the presented
+visualizations have no physical resemblance to the subject matter in the text.
+In another words, we don't seem to be taking advantage of existing familiarity of
+the subject matter. Creating this link may have several benefits; first it is
+immediately obvious what the text documents are about; and second, it opens up a
+wide array of exploration opportunities because the physical/spatial dimension
+becomes available. Many applications already exhibit these properties, though
+not necessarily for text visualization, for example consider map applications
+with a point-of-interests overlay, the map exposes the spatial attributes while
+the point-of-interests provides the abstract semantics.
 
-We foresee several benefits for applying NPR techniques for InfoVis based
-systems, especially those systems that explores real world entities. Foremost,
-NPR based illustrations preserve a sense of realism, objects under NPR are
-recognizable to the viewers based on their past experiences, without the need to
-interpret text or abstract visual encoding. Location based patterns are also
-perceivable as they are positioned relative to their actual spatial locations.
-Together, we think this can enhance the user experiences in visually exploring
-the underlying data.
+The second part of our motivation came from illustrations of objects found in
+technical or medical materials are often drawn in a way to attract the viewer's
+attention to specific parts of the illustration. This stylistic approach, known as
+Non-Photorealistic Rendering (NPR) outshines traditional photographic pictures
+in its capability to carry a specific message to the viewers. For example,
+putting emphasis on sub sections of the image such that they \emph{pop-out}
+visually, thus making the region more salient while retaining recognition. This
+type of technique is fairly common in the Scientific Visualization community
+where volumetric data are often differentiated with colour and texture.
+However, such techniques are less commonly used in InfoVis as most illustrations
+do not depict physical objects. 
+
+In this work, we want to explore ways of combining our two motivations together
+into a single interactive visualization: a system that can be used to summarize
+text documents pertaining to physical artifacts by means of NPR techniques. 
+
+
+ 
+%Motivated by the lack of coverage in this area, we want to investigate how an
+%integrated approach of using both InfoVis and NPR graphics can enhance visual
+%exploration of data.
+
+%We foresee several benefits for applying NPR techniques for InfoVis based
+%systems, especially those systems that explores real world entities. Foremost,
+%NPR based illustrations preserve a sense of realism, objects under NPR are
+%recognizable to the viewers based on their past experiences, without the need to
+%interpret text or abstract visual encoding. Location based patterns are also
+%perceivable as they are positioned relative to their actual spatial locations.
+%Together, we think this can enhance the user experiences in visually exploring
+%the underlying data.
 
  
 \section{Approach}
-There are three main problems that should be addressed here: how to handle the
-text document, how to visualize the document, and lastly how to interact with
-the visualization data.
+There are several challenges that need to be addressed to successfully merge
+abstract text visualization with NPR illustrations: finding a way to formally
+define the subject matter, encode the NPR graphics, and finally create
+interactions. 
 
-For the first problem, our system analyzes collections of descriptive text,
-extracting entities that forms a \emph{part-of} relationship known as meronomy
-relationship. We then construct a scoring function that tells us how frequently
-entity occurs in the document, as well as their relative occurrence to each
-other. 
- 
-In the second problem, we built a virtual representation of the document
-entities. We start with a segmented \threed geometric model that is mapped onto
-our meronomy ontology. We then encode the scores above onto each segments, 
-using colour, transparency and other stylization styles to put emphasis on  an
-entity. We render the model as precisely as possible to retain the familiarity
-one would have with the entities in the real world.
- 
+For the first problem, we extract from the text documents the physical nounsu
+that make up the subject matter. A meronomy relationship is used to link the
+noun entities together to from a hierarchy representing the physical parts of
+the subject. We then segmented \threed models that represents the subject into
+different groups to match our hierarchy, creating a 1-to-1 mapping.
+
+Second, we defined the semantic relations that we want to visualize, which are
+occurrence and co-occurrence relations of the physical entities. We created a
+mapping function that takes the entity relations as parameters and output a
+stylized graphical effect which is applied to the entity, denoting the level or
+severity of the semantic relation. The subject matter can then be reconstructed
+with the aforementioned hierarchy of parts, creating the main part of our
+visualization that showcases the entities with highly scored relations.
+
 Lastly, to enable exploration of data, we designed a set of widgets to perform
-filter and drill-down operations. In particular we allow queries to be executed
-visually via a widget that embodies the lens metaphor. We then mapped simple
-touch gestures onto our user interface, to enable our visualization to run on a
-large display in a walk-up-and-use case scenario.
+filter and drill-down operations. The widget are built to take advantage of the
+exposed spatial dimensions, by operating over spatial regions as well as
+individual entity objects.
 
 We call our approach \emph{descriptive non-photorealistic rendering}, as we combined
 the summarization of thousands of documents with the message carrying nature of 
@@ -79,6 +108,44 @@ to analyze a text corpus of vehicle complaint documents from the US National
 Highway Traffic Safety Administration (NHTSA). We conducted an user evaluation 
 study with 12 participants. In particular we assess their ability to accurately
 interpret the visualization and how they perform open-ended tasks.
+
+
+%In particular we allow queries to be executed
+%visually via a widget that embodies the lens metaphor. We then mapped simple
+%touch gestures onto our user interface, to enable our visualization to run on a
+%large display in a walk-up-and-use case scenario.
+% There are three main problems that should be addressed here: how to handle the
+% text document, how to visualize the document, and lastly how to interact with
+% the visualization data.
+% 
+% For the first problem, our system analyzes collections of descriptive text,
+% extracting entities that forms a \emph{part-of} relationship known as meronomy
+% relationship. We then construct a scoring function that tells us how frequently
+% entity occurs in the document, as well as their relative occurrence to each
+% other. 
+%  
+% In the second problem, we built a virtual representation of the document
+% entities. We start with a segmented \threed geometric model that is mapped onto
+% our meronomy ontology. We then encode the scores above onto each segments, 
+% using colour, transparency and other stylization styles to put emphasis on  an
+% entity. We render the model as precisely as possible to retain the familiarity
+% one would have with the entities in the real world.
+%  
+% Lastly, to enable exploration of data, we designed a set of widgets to perform
+% filter and drill-down operations. In particular we allow queries to be executed
+% visually via a widget that embodies the lens metaphor. We then mapped simple
+% touch gestures onto our user interface, to enable our visualization to run on a
+% large display in a walk-up-and-use case scenario.
+% 
+% We call our approach \emph{descriptive non-photorealistic rendering}, as we combined
+% the summarization of thousands of documents with the message carrying nature of 
+% non-photorealistic illustrations.
+% 
+% To demonstrate our application in a realistic context, we applied our methods
+% to analyze a text corpus of vehicle complaint documents from the US National
+% Highway Traffic Safety Administration (NHTSA). We conducted an user evaluation 
+% study with 12 participants. In particular we assess their ability to accurately
+% interpret the visualization and how they perform open-ended tasks.
 
 
 \section{Contribution}
