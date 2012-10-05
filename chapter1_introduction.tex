@@ -5,8 +5,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
 The amount of data available today is staggering. With advanced technologies,
-data are constantly been created and archived. Understand large quantities of data is
-a difficult challenge in terms of sheer volume and the time effort needed to
+data are constantly been created and archived. Understanding large quantities of data is
+a difficult challenge in terms of the sheer volume and the time effort needed to
 sift through the data to find salient information. Information Visualization
 (InfoVis), is a field that deals with this data overload by using visual
 representations of data to amplify human cognition \cite{Card1999}. While there
@@ -30,25 +30,26 @@ retaining their easily recognizable shapes and forms.
 \section{Motivation}
 There are many text collection about physical things, and information
 visualization generally summarizes these documents with an abstract
-representation. While these visualization are easy to understand, they are
+presentation. While these visualization are easy to understand, they are
 typically disconnected from the real world and the presented
 visualizations have no physical resemblance to the subject matter in the text.
 In another words, we don't seem to be taking advantage of existing familiarity of
 the subject matter. Creating this link may have several benefits; first it is
-immediately obvious what the text documents are about; and second, it opens up a
-wide array of exploration opportunities because the physical/spatial dimension
+immediately obvious upon viewing what the text documents are about; and second, 
+it opens up a wide array of exploration opportunities because the physical/spatial dimension
 becomes available. Many applications already exhibit these properties, though
 not necessarily for text visualization, for example consider map applications
 with a point-of-interests overlay, the map exposes the spatial attributes while
 the point-of-interests provides the abstract semantics.
 
 The second part of our motivation came from illustrations of objects found in
-technical or medical materials are often drawn in a way to attract the viewer's
-attention to specific parts of the illustration. This stylistic approach, known as
-Non-Photorealistic Rendering (NPR) outshines traditional photographic pictures
-in its capability to carry a specific message to the viewers. For example,
-putting emphasis on sub sections of the image such that they \emph{pop-out}
-visually, thus making the region more salient while retaining recognition. This
+technical or medical materials, these illustrations are often drawn in a way 
+to attract the viewer's attention to specific parts of the illustration. This 
+stylistic approach, known as Non-Photorealistic Rendering (NPR) outshines 
+traditional photographic pictures in its capability to carry a specific message 
+to the viewers. For example, putting emphasis on sub sections of the image such 
+that they \emph{pop-out} visually, thus making the region more salient while 
+retaining enough visual information that the object is easily recognizable. This
 type of technique is fairly common in the Scientific Visualization community
 where volumetric data are often differentiated with colour and texture.
 However, such techniques are less commonly used in InfoVis as most illustrations
@@ -78,26 +79,27 @@ text documents pertaining to physical artifacts by means of NPR techniques.
 There are several challenges that need to be addressed to successfully merge
 abstract text visualization with NPR illustrations: finding a way to formally
 define the subject matter, encode the NPR graphics, and finally create
-interactions. 
+interactions to navigate and to explore the underlying dataset. 
 
-For the first problem, we extract from the text documents the physical nounsu
-that make up the subject matter. A meronomy relationship is used to link the
+For the first problem, we extract from the text documents the physical noun
+keywords that make up the subject matter. A meronomy relationship is used to link the
 noun entities together to from a hierarchy representing the physical parts of
 the subject. We then segmented \threed models that represents the subject into
-different groups to match our hierarchy, creating a 1-to-1 mapping.
+different geometric groups to match our hierarchy, creating a 1-to-1 mapping 
+between keywords ontology and the \threed model components.
 
 Second, we defined the semantic relations that we want to visualize, which are
 occurrence and co-occurrence relations of the physical entities. We created a
 mapping function that takes the entity relations as parameters and output a
-stylized graphical effect which is applied to the entity, denoting the level or
-severity of the semantic relation. The subject matter can then be reconstructed
-with the aforementioned hierarchy of parts, creating the main part of our
-visualization that showcases the entities with highly scored relations.
+stylized graphical effect which is applied to the geometric components, this is used to 
+denoting the level or severity of the semantic relations. The subject matter can 
+then be reconstructed with the aforementioned hierarchy of parts, creating the 
+main part of our visualization that showcases the entities with highly scored relations.
 
 Lastly, to enable exploration of data, we designed a set of widgets to perform
 filter and drill-down operations. The widget are built to take advantage of the
-exposed spatial dimensions, by operating over spatial regions as well as
-individual entity objects.
+exposed spatial dimensions, by operating over regions of space as well as over individual
+entity elements.
 
 We call our approach \emph{descriptive non-photorealistic rendering}, as we combined
 the summarization of thousands of documents with the message carrying nature of 
@@ -162,16 +164,15 @@ single view,  we created an engaging visualization that can be related to the re
 
  
 \section{Organization}
-The remainder of the these is organized as follows:
+The remainder of the thesis is organized as follows:
  
-\noindent Chapter 2 discusses related researches and other inspirational works
-from research literature.
+\noindent Chapter 2 is a literature review that discusses the relevant works and works that 
+formed basis of our inspirations.
  
-\noindent Chapter 3 discusses the problem and our solution in brief. It also
-introduces our usage scenario that we use for the remainder of this work.
+\noindent Chapter 3 discusses the problem and our solution. It also
+introduces a problem scenario which we used to frame our discussions for the remainder of this thesis.
  
-\noindent Chapter 4 describes our document processing steps and introduces our
-semantic scoring algorithm.
+\noindent Chapter 4 describes our data processing steps and how we tag and score our documents.
  
 \noindent Chapter 5 describes our visual and interaction design. 
  
