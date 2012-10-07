@@ -2,39 +2,16 @@
 % This chapter describes the text processing steps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Data Processing}
-The data is received a a textual list of records consisting of meta data about
+Data is received in a textual list of records consisting of meta data about
 the complain and the text description of the complaint. We apply several
-processing steps to each document to first extract the physical entities
+processing steps to each document to first extract the physical entity
 keywords, and then to calculate the semantic scores. For this dataset, we have
 chosen the semantics of occurrence relations and co-occurrence relations. Finally we
 segment \threed models to match our keyword ontology. Each of the steps are
 explained in greater detail below.
 
 
-\section{Creating Entity Keywords}
-Our entity extraction process leverages the WordNet database, a lexical English
-database that stores nouns, verbs, adjectives and their relations among each
-other \cite{WORDNET}. In order to get a comprehensive list of physical entities, we use the meronym 
-relation in WordNet. A meronym describes a ``part-of'' relationship between two 
-nouns, for example, a brake is a part of a wheel, and a wheel is a part of the 
-automotive vehicle. All together, the meroynomy relationship forms a hierarchical 
-structure where the most general part forms the root node, while the most specific 
-parts form the leaf nodes. We use two common words pertaining to cars to bootstrap 
-the hierarchy : ``car'' and ``vehicle''. From this we extracted two tree
-structures rooted at ``car'' and ``vehicle'' respectively, we then merge the two
-hierarchies, assuming that ``car'' and ``vehicle'' are equivalent. 
-
-\subsection{Formulation}
-Before any logical processing can take place, we spent some time doing
-preliminary analysis, looking at the data text, their format and how they have
-evolved over the life span of the data repository. We performed several
-normalization tasks: One, we used regular expressions to convert the text, which
-is call caps, to regular case format. Secondly, we remove suffix characters that
-appear at the end of the text paragraph, that, as far as we know contributes
-nothing to the incident context. Although we changed the underlying text, the
-normalization process improves readability, and allows us receive meaningful
-output from natural language parsers.
-
+\section{Entity Vocabulary}
 The first issue was to devise a method for extracting physical entities; a
 document can contain multiple entities, but not all of which are related to the 
 subject matter. On top of that, many entities can have implicit hierarchical 
@@ -42,21 +19,40 @@ relations, such as relation between component and its subcomponents. This
 relation is important because it enables logical groupings which are useful for
 high level overviews.
 
-While this process extracts a fair amount of physical entities, an analysis of
-sample dataset showed that it is not representative of the entities being
-mentioned in the documents. The primary reason for this is due to the use of synonyms in the documents, 
-where the entity words in question are using an alternative names. To alleviate
-some of these confusion, we additionally extract the synset relations from WordNet. A
-synset is a set relationship that describes words that are semantically
-equivalent of one another, for example ``limo'' and ``limousine'' both describe
-the same type of object and thus belongs to the same synset group. For each word
-in our current collection, we replace it with its respective synset.
+Before any semantic processing can take place, we spent some time doing
+preliminary analysis, looking at the data text, their format and how they have
+evolved over the life span of the data repository. We performed several
+normalization tasks: One, we used regular expressions to convert the text from
+all capital cases to normal case format. Second, we remove suffix characters that
+appear at the end of the text paragraph, that, as far as we know contributes
+nothing to the incident context. Although we changed the underlying text, the
+normalization process improves readability, and allows us receive more
+meaningful output from natural language parsers.
 
-The addition of synsets into the vocabulary gave us a comprehensive number of
-keywords, however it also created undesirable noises. Manual examination of data
-sample reveals that there are still disconnects between the dictionary
-vocabulary and real world vocabulary. The next section we will describe how we
-overcome these issues.
+\subsection{Keyword Hierarchy}
+Our entity extraction process leverages the WordNet database, a lexical English
+database that stores nouns, verbs, adjectives and their relations among each
+other \cite{WORDNET}. In order to get a comprehensive list of physical entities, we use the meronym 
+relation in WordNet. A meronym describes a ``part-of'' relationship between two 
+nouns, for example, a brake is a part of a wheel, and a wheel is a part of the 
+automotive vehicle. All together, the meroynomy relationship forms a hierarchical 
+structure where the most general part forms the root node, while the most specific 
+parts form the leaf nodes. We use two common words pertaining to the subject
+matter of our dataset to bootstrap the creation of the hierarchy hierarchy:
+``car'' and ``vehicle''. From this, we recursively extracted children entities
+using the meronomy relationship until we have two tree structures, which we then
+merged together.
+
+While this process extracts a fair amount of physical entities, an analysis of
+sample dataset showed that it is not a representative of the entities mentioned
+in the documents. The primary reason for this is due to the use of synonyms
+names in the document text. To alleviate this situation, we additionally extract
+the synset relations from WordNet for each keyword. A synset is a set
+relationship that describes words that are semantically equivalent of one
+another, for example ``limo'' and ``limousine'' both describe the same type of
+object and thus belongs to the same semantic group. For each word in our current
+vocabulary, we replace it with the its synset equivalent.
+
 
     % ===== Figure =====
 	\begin{figure}
@@ -68,9 +64,13 @@ overcome these issues.
 	% ==================
 
 
-\subsection{Enhancement}
-As an additional step to augment our keyword vocabulary, we perform two manual
-steps:
+\subsection{Refinement}
+The addition of synsets into the vocabulary gave us a comprehensive number of
+keywords, however it also created undesirable noises. Manual examination of data
+sample reveals that there are still disconnects between the dictionary
+vocabulary and real world vocabulary. As an additional step to augment our
+keyword vocabulary, we perform two manual steps:
+
 \begin{itemize} [noitemsep]
   \item Removal of nouns that are too generic from the vocabulary.
   \item Preprocess the documents and mine for any missing nouns.
@@ -83,7 +83,7 @@ these words will likely result in over-counting the number of occurrences of
 gears because they are used in every day speech. We also removed several
 acronyms that will likely cause ambiguities, for example ``ice'', which is short for internal-combustion-engine,
 will cause issues if the document is about ice, the solid state of water. They
-are therefore removed from the keyword dictionary. 
+are therefore removed from the keyword vocabulary. 
 
 The second step deals with any possible missing keywords that are not in WordNet
 meronyms. We attempted to detect these semi-automatically with natural language 
@@ -115,7 +115,7 @@ with another entity in the same document, indicating possible causal relations.
 For example: ``Engine failed because radiator overheated'' has a co-occurrence
 relation between engine and radiator.
 
-Semantic relations are document-entity pairs, that is to say, there is a
+Semantic relations are defined document-entity pairs, that is to say, there is a
 one-to-many relation between a document and our keyword ontology. Detection of
 keywords in document is done through a tagging process. In the sections below we
 describe this process in detail, as well as formalizing the semantic scoring
@@ -128,8 +128,8 @@ text is segmented into word tokens, then for each token we perform a string
 match against the entity keywords. When a match is found, we store a triple
 that describes the document identifier, the keyword and the position of the word
 in the document. In the aforementioned example above, we would store (Doc0,
-engine, 0) for the engine entity, and (Doc0, radiator, 3) for the entity
-radiator.
+engine, 0) for the engine entity, and (Doc0, radiator, 3) for the radiator
+entity.
 
 In the actual string matching, we use an open source, off the shelf snowball
 stemmer\footnote{http://snowball.tartarus.org/} to normalize each word token. 

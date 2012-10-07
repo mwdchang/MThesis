@@ -18,18 +18,27 @@ of four major components:
   its importance, we explore different rendering styles to take advantage of
   viewers' preattentive perception, allowing them to quickly uncover the
   important subject matters.
-  
 
-  \item Lens Widget: The lens widget is used for exploration and
-  visually querying the visualization. When the lens is hovered over the
-  \threed visualization, additional information of the objects underneath the
-  lens are displayed as heatmap charts placed around the lens circumference.
+   \item Lens Widget: The lens widget is a detail-on-demand tool. It is used
+   to specify spatial regions on the \threed visualization. Entities under the
+   specified space are considered to be in focus, and more information about
+   these entities are shown beside the lens as heatmaps.
+%  \item Lens Widget: The lens widget is used for exploration and
+%  visually querying the visualization. When the lens is hovered over the
+%  \threed visualization, additional information of the objects underneath the
+%  lens are displayed as heatmap charts placed around the lens circumference.
 
-  \item Heatmap Widget: The heatmap widget displays time-series data, it
-  is similar in function to the histogram of the Time Filter widget, but
-  at a component level. Volume for each period is encoded as a shaded square and
-  arranged into a grid pattern to match the selected time range. The heatmap
-  offers the viewer several different perspectives to see trends and find outliers in the data.
+   \item Heatmap Widget: The heatmap displays time series data at the lowest
+   granularity level in order to provide trend and pattern analysis. It is
+   organized into a grid, each cell is shaded in accordance with its score of
+   that time period. In addition, the heatmap identifies the entity name and its
+   raw numerical scores.
+   
+%  \item Heatmap Widget: The heatmap widget displays time-series data, it
+%  is similar in function to the histogram of the Time Filter widget, but
+%  at a component level. Volume for each period is encoded as a shaded square and
+%  arranged into a grid pattern to match the selected time range. The heatmap
+%  offers the viewer several different perspectives to see trends and find outliers in the data.
   
   \item Document Widget: The document widget displays the source text documents.
   The panel displays documents relating to the current selected objects and 
@@ -70,27 +79,33 @@ more detail, the trade offs and choices we made and our justifications.
 
 
 \section{3D Visualization}
+This section describes how to perceive the \threed visualization, how it was
+designed and discusses various design trade-offs.
+
 \subsection{Rationale}
 A major part of our design for this thesis is the mapping of abstract semantics
 onto realistic looking, \threed models. But this can also be a source of
 complication, we have to deal with the additional difficulties of navigating in
 three dimensional space,  as well as work around perceptual limitations. So why
-use \threed models in the first place? We hypothesize that the additional sense of
-realism helps people see and communicate better then when they are working with
-raw text or data in abstract forms. The familiarity with how the physical
-entities look means people do not have to learn additional visual mappings. Communication may
-be eased because there is a shared common ground among the different parties.
-Proximal relationships are also easily perceived if they have realistic spatial
-mappings and can encourage more thorough exploration of the dataset. These
-advantages are not readily present in abstract representations, while with
-careful design it is possible to overcome the pitfalls of perceiving \threed graphics.
+use \threed models in the first place? Familiarity with the models and varied
+exploration methods were key motivations. The familiarity with how the physical
+entities look in real life means people do not have to learn additional visual
+mappings. Communication may be easier because there is a shared common ground
+among the different parties involved. Proximal relationships are also easily
+perceived if they have realistic spatial mappings and can encourage more
+thorough exploration of the dataset. These advantages are not readily present in
+abstract representations, while with careful design it is possible to overcome
+many of the pitfalls of perceiving \threed graphics. Lastly, we are not merely
+mimicking \threed objects, our visualization goes further to facilitate user
+oriented tasks~\cite{Shneiderman2003}. We enhanced the rendering process with
+NPR techniques, along with interactions to explore the \threed space in an intuitive manner. 
 
 Yet another argument is that the use of a set of \twod images can also convey
 realism, our opinion is that they lack the expressive power and playfulness of a
 fully rendered \threed model. Flat image representation would likely result in
-multiple images, to cover different sections of the entities and viewing angles,
-this can result in more cognitive load due to the viewers switching between
-images to get an overview.
+multiple images, used to cover different viewing perspectives, this can result
+in more cognitive load due to the viewers switching between images to see 
+different data.
 
 
 \subsection{Visual Mapping}
@@ -108,7 +123,8 @@ and value variables are not used to represent the virtual model, in the sense th
 they are not a part of the  basic geometry building blocks of vertices, line-segments 
 and polygons. We found colour and value to be appropriate for our visualization, 
 while they do not provide a sense of quantitative measure, the capability to see order, 
-selective and associative characteristics makes them a logical choice for an overview visualization. 
+selective and associative characteristics makes them a logical choice for an
+overview visualization.
 
 Lastly, textures present an interesting option, textures can carry additional 
 characteristics, particularly descriptive attributes. It may be possible to use 
@@ -132,28 +148,133 @@ visualizing individual document, we leave this idea as future work.
 In order to enhance the message carrying capacity of the visualization, we
 considered several NPR techniques as a medium to created a more expressive
 illustrations. We associate the entity score with either a NPR technique, or use
-the score as a parameter into a NPR function. In accordance with our requirement, the encoding
-scheme should be clear and distinguishable by visual examination (Requirement
-R1) while maintaining the real world aspects. Our effects include varying
-stroke, halo/glow, colour variations, and transparency effects. 
+the score as a parameter into a NPR function. In accordance with our
+requirement, the encoding scheme should be clear and distinguishable by visual
+examination (R1) while maintaining the real world aspects. Our effects include
+varying stroke, halo/glow, colour variations, and transparency effects.
 
 We chose colour mappings as our primary visual encoding which denotes the
-strength of non-zero scored components, and use other techniques to denote
+strength of non-zero score entities, and use other techniques to denote
 selection and overall context.
+
 
 Designing a colour scheme for the encoding of the virtual component objects
 presented several design trade-offs. We colour each object by mapping its score 
 to a linear diverging yellow-orange-red hue scale, which is further divided into 
-six discrete scoring bins. This has both advantages and disadvantages. The
-advantage is that it is much easier to distinguish a small number of hues than a
-continuous hue scale. The disadvantage being that we lose the ability to compare
-the relative distance between the buckets. For example, imagining the case were
-we have low value in bucket 1 and high value in bucket 2, this is equivalent
-to high value in bucket 1 and low value in bucket 2. We partially mitigate
-the ambiguity by allowing the viewers to extract exact numerical values with the
-heatmap widgets, we will discuss this further down. We display the discrete hue
-scale as an on-screen legend located near the top of the display.
+six discrete scoring bins. While this setup has a limited granularity, it is
+easier to perceive a small number of discrete colours than viewing a continuous
+scale. We mitigate any ambigiouties that may arise with the discrete scale by
+providing numerical figures with the lens and heatmap widget, which we discuss
+further down.
 
+% == Removed from colour scheme: explanation is weird, and perhaps obvious
+%
+%This has both advantages and disadvantages. The
+%advantage is that it is much easier to distinguish a small number of hues than a
+%continuous hue scale. The disadvantage being that we lose the ability to compare
+%the relative distance between the buckets. For example, imagining the case were
+%we have low value in bucket 1 and high value in bucket 2, this is equivalent
+%to high value in bucket 1 and low value in bucket 2. We partially mitigate
+%the ambiguity by allowing the viewers to extract exact numerical values with the
+%heatmap widgets, we will discuss this further down. We display the discrete hue
+%scale as an on-screen legend located near the top of the display.
+
+\threed geometries may not be visible due to occlusion or containment.
+The first case can be partially solved by altering
+the viewing distance and viewing perspective on the visualization, whereas in
+the second case no amount of viewing adjustment will solve the occlusion issue.
+To address this problem, we double-encoded the importance score as both the
+colour and transparency values. The transparency value of each object is
+proportional to the object’s score, such that the higher scored entities appear
+more opaque, while the lower scored entities appear more transparent. The
+maximum and minimum transparency values are capped between 0.4 and 0.8 such that
+no objects are completely opaque or completely transparent. Our transparency scale
+is slightly weighted to give more emphasis for more frequently occurring
+entities. One challenge of rendering translucent geometries in \threed space is
+that ordering of geometries becomes important for blending to work correctly,
+out-of-sequence geometries appear to lose their depth cues when blended
+together. We discuss this effect, and solutions in further detail in the
+implementation chapter.
+
+
+The zero score has a special semantic in the visualization. When an entity's
+score is zero, this indicates that there are no known references of the entity
+in the documents. Not rendering them would reduce visual clutter, but comes at a
+cost of not having a background reference, which gives visual cues to not only
+what viewers are looking at, but also the placement and relative position among
+other entity objects. To show that these components are semantically different
+than others, we rendering them in silhouette styled edges with a just
+noticeable colour so they are visible but not overly
+distracting~\cite{BAR2007a}. It is important to note that 0 scored objects only
+provides graphical context, they do not partake in any user interactions.
+
+
+
+
+\subsection{Selection}
+Selection of entities is used to refine the visualization scope, for example
+selecting the windows entity tells the system to only visualize documents that
+refer to windows. The system provides several methods for selecting entities,
+selections can be made by directly interacting with the \threed visualization,
+or through interaction with the heatmap widget.
+
+
+By default the application has no entities selected, thus the visualization
+reflects the absolute number of occurrences of each entity. As
+selections are made, each entity’s score is recomputed to show co-occurrence
+relations with the selection, note since selected objects
+fully co-occurs with themselves, they are promoted to the highest bin.
+In this manner, high correlations are red and highly opaque, while low
+correlations are yellow and highly transparent. For example, if we select
+the windshield wiper, the visualization is rerendered to show entities
+that co-occur with the wiper component and the strength of this
+relation. If we also select the windows, the visualization will show
+co-occurring relation to both windshield wiper and windows. 
+
+%This example
+%is reflected in Figure 1. The rerendering process is facilitated
+%by an animated transition that interpolates the graphical effects.
+
+
+% Entity objects can be acquired in two ways: One can directly select the entity
+% by performing the tap gesture on the \threed representation, or tapping the
+% heatmap through the lens widget. In the case where objects occlude each other
+% in \threed space, direct selection will return the object that is closest to
+% viewing point. In order to select occluded objects, the scene can be
+% rotated to reveal hidden entities. Alternatively, we can use the lens’ depth
+% functionality to cut away occluding geometries, or directly clicking on the
+% heatmap representations which are always available.
+% 
+%     % === Figure ===
+% 	\begin{figure}
+% 	 \centering  
+% 	 \includegraphics[width=\columnwidth]{interaction_select.png}
+% 	 \caption[Interactive Selection]{The visualization changes based on the
+% 	 currently selected entities.}
+% 	 \label{figure:selection}
+% 	\end{figure}
+% 	% ==============
+% 
+% Selection is toggle based. When an entity is selected, we apply a blue borderb
+% to the associated heatmap and the line segments that links the heatmap back to
+% the visualization. To visually accentuate the selection in \threed
+% space, we employ a halo like effect around the hull of the mesh objects. Both
+% selection and deselection of any entity triggers an event to recalculate the
+% entity scores, an animated sequence then starts to interpolate the colour of
+% each \threed object to reflect the scoring change.
+% 
+% The re-evaluation of the entity scores are based on current selection,
+% specifically they are recalculated based on their co-occurrence relation with
+% the current selection. Thus, highly co-occurring entities will score higher and
+% be more visible than lowly co-occurring entities.
+% 
+% Selection of an entity with zero score is considered invalid, instead, the
+% system will propagate the selection event through the zero scored entities.
+
+\daniel{Stopping here.}
+ 
+
+\subsection{Trade-offs}
 We recognize that blending different hues in \threed space does not necessarily
 produce a result which preserves the original hues, and can potentially lead to
 distracting visual artifacts. Different hue preservation schemes
@@ -198,38 +319,8 @@ can be seen in Figure \ref{figure:visualEncoding}.
 	% ==================
 
 
-In our design, we want to make all important objects visible (See requirement
-R1), these includes objects partially or fully occluded by another object, and 
-objects that are contained within others. The first case can be partially solved 
-by altering the viewing distance and viewing perspective on the visualization,
-whereas in the second case no amount of viewing adjustment will solve the
-occlusion issue. To address this problem, we double-encoded the importance score
-as both the colour and transparency values. The transparency value of each
-object is proportional to the object’s score, such that the higher scored
-entities appear more opaque, while the lower scored entities appear more
-transparent. The maximum and minimum transparency values are capped at both ends
-such that no objects are completely opaque or completely transparent. Our
-transparency scale is slightly weighted to give more emphasis for more
-frequently occurring entities. One caveat of rendering translucent geometries in
-\threed space is that ordering of geometries becomes important for blending to
-work correctly, out-of-sequence geometries appear to lose their depth cues when
-blended together. We will discuss this effect, and solutions in further detail
-in the implementation section.
 
 
-The zero score has a special semantic in our prototype. When an entity's score
-is zero, this indicates that there are no known references of the entity that 
-matches the query. We could choose to not render this object at all, which
-would remove visual clutters. However, these zero scored objects are still
-valuable because they provide background context for the non-zero entities.
-Without them it may be difficult for the viewers to understand what they are
-looking at. Thus, in this instance we want to denote that these entities are not
-important, while at the same time minimize occlusion. Rather than using colour
-and transparency as our graphical effects, we extract edge information from
-their corresponding geometries and rendering them in a faint, ghostly-looking
-outlines. We use just-noticeable colour in order to provide context without
-distractions \cite{BAR2007a}. It is important to note that zero objects are
-purely graphical artifacts and they do not partake in any user interactions.
 
 
 Since we are dealing with \threed geometry, it can be tempting to apply other
@@ -248,42 +339,6 @@ we may use distortion to visually paint the action words, testing this will be
 part of our future work.
 
 
-\subsection{Entity Selection}
-Entity objects can be acquired in two ways: One can directly select the entity
-by performing the tap gesture on the \threed representation, or tapping the
-heatmap through the lens widget. In the case where objects occlude each other
-in \threed space, direct selection will return the object that is closest to
-viewing point. In order to select occluded objects, the scene can be
-rotated to reveal hidden entities. Alternatively, we can use the lens’ depth
-functionality to cut away occluding geometries, or directly clicking on the
-heatmap representations which are always available.
-
-    % === Figure ===
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{interaction_select.png}
-	 \caption[Interactive Selection]{The visualization changes based on the
-	 currently selected entities.}
-	 \label{figure:selection}
-	\end{figure}
-	% ==============
-
-
-Selection is toggle based. When an entity is selected, we apply a blue borderb
-to the associated heatmap and the line segments that links the heatmap back to
-the visualization. To visually accentuate the selection in \threed
-space, we employ a halo like effect around the hull of the mesh objects. Both
-selection and deselection of any entity triggers an event to recalculate the
-entity scores, an animated sequence then starts to interpolate the colour of
-each \threed object to reflect the scoring change.
-
-The re-evaluation of the entity scores are based on current selection,
-specifically they are recalculated based on their co-occurrence relation with
-the current selection. Thus, highly co-occurring entities will score higher and
-be more visible than lowly co-occurring entities.
-
-Selection of an entity with zero score is considered invalid, instead, the
-system will propagate the selection event through the zero scored entities.
 
 
 
