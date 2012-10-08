@@ -229,11 +229,9 @@ correlations are yellow and highly transparent. For example, if we select
 the windshield wiper, the visualization is rerendered to show entities
 that co-occur with the wiper component and the strength of this
 relation. If we also select the windows, the visualization will show
-co-occurring relation to both windshield wiper and windows. 
-
-%This example
-%is reflected in Figure 1. The rerendering process is facilitated
-%by an animated transition that interpolates the graphical effects.
+co-occurring relation to both windshield wiper and windows. This example
+is reflected in Figure \ref{figure:???}. The rerendering process is facilitated
+by an animated transition that interpolates the graphical effects.
 
 
 % Entity objects can be acquired in two ways: One can directly select the entity
@@ -271,7 +269,6 @@ co-occurring relation to both windshield wiper and windows.
 % Selection of an entity with zero score is considered invalid, instead, the
 % system will propagate the selection event through the zero scored entities.
 
-\daniel{Stopping here.}
  
 
 \subsection{Trade-offs}
@@ -279,19 +276,25 @@ We recognize that blending different hues in \threed space does not necessarily
 produce a result which preserves the original hues, and can potentially lead to
 distracting visual artifacts. Different hue preservation schemes
 exist\cite{Chuang2009} but were not implemented for this prototype due to the
-added performance complexity (Hue adjustments are done at per pixel levels).
-Due to known issues with blending, we have tried to use a single hue grey scale 
-with varying brightness, but we found that it was somewhat difficult to distinguish 
-overlapping or contained objects. Subjectively speaking, single-hue also looks
-less aesthetically pleasing, the entities did not have the ``pop-out'' effect
-as we seen with multi-hue schemes. Thus we decided that using  a multi-hue
-scheme was more appropriate, despite the potential blending artifacts.
+added performance complexity (Hue adjustments are done at per pixel levels). Subjectively, 
+we did not find any visual distractors and thus decided that this was not necessary. A 
+single-hue scheme with varying saturation and opacity was tried, but we found it less 
+eye-pleasing and lacks the \emph{pop-out} effect that is more prominent on multi-hue 
+colour schemes. 
+
+
+%Due to known issues with blending, we have tried to use a single hue grey scale 
+%with varying brightness, but we found that it was somewhat difficult to distinguish 
+%overlapping or contained objects. Subjectively speaking, single-hue also looks
+%less aesthetically pleasing, the entities did not have the ``pop-out'' effect
+%as we seen with multi-hue schemes. Thus we decided that using  a multi-hue
+%scheme was more appropriate, despite the potential blending artifacts.
 
 A second design trade-off was whether lighting effects should be used. Lighting
 effects such as specular lighting can create distractions because it can create 
 highlights in places of little or no significance. Without any realistic
 or simulated lighting effects, the visible colour of the components exactly
-matches the colour assigned to the score (and as seen on the legend).
+matches the colour assigned to the score and as seen on the legend.
 However, without any sort of lighting, particularly some type of diffuse lighting, 
 the \threed nature of the model, and the details of various components are not
 sufficiently visible. Adjacent objects that share the same score appear to be glued together 
@@ -299,14 +302,18 @@ as a single component, adding boundary outlines helps but creates undesirable
 visual clutters. When lighting effects are enabled, the objects are easily
 distinguishable as lighting provides a clear silhouette. However, this type of lighting modifies 
 the colour based on the incidence angle of the light rays, thus it no longer matches 
-the assigned colour. Ultimately our design decision is that object recognition and 
-familiarity is important to us. Thus, by restricting the number of hues (6 buckets) 
-and using soft white light, we contend that the lighting effects do not disturb 
-the colour perception enough to obscure which hue-bin the component belongs to. 
-We made the design decision that the benefits of enabling lighting to visually 
-resolve the components outweighed the negative effect of shifting colours away 
-from those displayed in the onscreen legend. The results of our design choices
-can be seen in Figure \ref{figure:visualEncoding}.
+the assigned colour. Ultimately, we decided that the benefits of objects recognition and
+familiarity outweighs the colour offsets. The results of our design choices can be seen in
+Figure \ref{figure:visualEncoding}.
+
+%Ultimately our design decision is that object recognition and 
+%familiarity is important to us. Thus, by restricting the number of hues (6 buckets) 
+%and using soft white light, we contend that the lighting effects do not disturb 
+%the colour perception enough to obscure which hue-bin the component belongs to. 
+%We made the design decision that the benefits of enabling lighting to visually 
+%resolve the components outweighed the negative effect of shifting colours away 
+%from those displayed in the onscreen legend. The results of our design choices
+%can be seen in Figure \ref{figure:visualEncoding}.
  
 
     % ===== Figure =====
@@ -319,48 +326,52 @@ can be seen in Figure \ref{figure:visualEncoding}.
 	% ==================
 
 
-
-
-
-
 Since we are dealing with \threed geometry, it can be tempting to apply other
 types of techniques. For example we attempted to encode the importance and other 
 numerical semantics into a geometrical distortion function that can be applied
 directly onto a \threed mesh. In practice, this does not work well for visual evaluation:
 in general, objects are of different shapes and sizes, applying a small distortion 
 is not entirely obvious while a large distortion can destroy the familiarity of 
-the form. Yet another problem is that it is not possible to order or quantify by 
-shape \cite{BER1983a}, which makes the distortion a qualitative measure instead
-of a quantitative one. In addition, the ability to read quantitative value from a 
-distortion field presumes that the viewer has a mental model of what the object 
-looks like without any distortions, an assumption that we cannot make with our 
-intended audiences.  However distortion remains an interesting possibility because 
-we may use distortion to visually paint the action words, testing this will be 
-part of our future work.
+the form. It is also more difficult to recognize objects under distortion and to 
+compare the degree of distortion among objects.
 
 
-
-
+%Yet another problem is that it is not possible to order or quantify by 
+%shape \cite{BER1983a}, which makes the distortion a qualitative measure instead
+%of a quantitative one. In addition, the ability to read quantitative value from a 
+%distortion field presumes that the viewer has a mental model of what the object 
+%looks like without any distortions, an assumption that we cannot make with our 
+%intended audiences.  However distortion remains an interesting possibility because 
+%we may use distortion to visually paint the action words, testing this will be 
+%part of our future work.
 
 
 
 \section{Lens Widget}
 Using a metaphor of looking through a magnifying glass to reveal better details
 about a specific subject, we created an interactive widget to extract and show 
-detailed information about entities in the text. With respect to the information
-seeking process, this approach combines both filter and detail on demand phase.
+detailed information about entities in the text documents. With respect to the information
+seeking process, this approach combines both filter and detail-on-demand phases.
 
 The lens widget operates in a hybrid \twod/\threed space, the lens itself exists
-on a flat \twod plane, it casts a cylindrical query volume into the scene. To be
-able to query different entities, each entity object is tested to see if their
-corresponding meshes are in the querying volume. In this project, we use the
-centroid of the mesh as our test criteria, more advanced techniques do exist
-and would make detection more accurate \cite{Ali2005}, though this comes with
-higher performance implications. Entity objects in the lens activate their
-heatmap charts, which are displayed alongside the widget's circumferences in a
-flush-right/flush-left manner. To make the associate between the \threed mesh
-and the heatmap chart, we make use of line segments to connect the chart back to
-the entity's centroid location in screen space.
+on a flat \twod plane, it casts a cylindrical query volume into the scene. When the
+lens is positioned over the visualization, each entity object is tested to see if their
+corresponding meshes are in the lens' querying volume. We use the centroid to do the inclusion
+test, though more accurate, albeit slower methods exist~\cite{Ali2005}. Entities that are
+under the lens' area of focus have detailed information, shown as heatmaps on the left/right
+side of the lens widget. To create association between \threed entities and heatmaps, we connect 
+them together with line segments: first the heatmap is connected back to the lens' circumference,
+then from the circumference back to the entity's projected centroid.
+
+
+% In this project, we use the
+% centroid of the mesh as our test criteria, more advanced techniques do exist
+% and would make detection more accurate \cite{Ali2005}, though this comes with
+% higher performance implications. Entity objects in the lens activate their
+% heatmap charts, which are displayed alongside the widget's circumferences in a
+% flush-right/flush-left manner. To make the associate between the \threed mesh
+% and the heatmap chart, we make use of line segments to connect the chart back to
+% the entity's centroid location in screen space.
 
   
     % ===== Figure =====
@@ -385,29 +396,55 @@ the entity's centroid location in screen space.
 	\end{figure}
 	% ==================
 	
+	
+The lens widget utilizes its own rendering pipeline, object geometries
+are sent into the pipeline as normal, the rasterized result is
+then stored in an intermediate buffer and later combined in fragment
+shaders with the default rasterization scene. This is an independent
+process, and thus allows us to render the lens’ scene in different rendering
+styles and semantics. To visualize the lens widget itself, we
+draw a semi-transparent border around its circumference so viewers
+are aware of its existence. When interacting with the lens widget, the
+widget is active and we render the border in blue, otherwise we use
+the default grey colour. The semantics of the lens is not impacted by
+whether the lens is active or inactive.	
 
-The lens widget utilizes its own rendering pipeline, object geometries are
-sent into the pipeline as normal, the rasterized result is then stored in an
-intermediate buffer and later combined in fragment shaders with the default
-rasterization scene. This is an independent process, and thus allows us to
-render the lens' scene in different rendering styles and semantics. To visualize
-the lens widget itself, we draw a semi-transparent border around its
-circumference so viewers are aware of its existence. When interacting with the
-lens widget, the widget is active and we render the border in blue, otherwise we
-use the default grey colour. The semantics of the lens is not impacted by
-whether the lens is active or inactive.
+% The lens widget utilizes its own rendering pipeline, object geometries are
+% sent into the pipeline as normal, the rasterized result is then stored in an
+% intermediate buffer and later combined in fragment shaders with the default
+% rasterization scene. This is an independent process, and thus allows us to
+% render the lens' scene in different rendering styles and semantics. To visualize
+% the lens widget itself, we draw a semi-transparent border around its
+% circumference so viewers are aware of its existence. When interacting with the
+% lens widget, the widget is active and we render the border in blue, otherwise we
+% use the default grey colour. The semantics of the lens is not impacted by
+% whether the lens is active or inactive.
 
-Three different types of interactions can be performs on the lens widget. The
-position of the lens can be moved around the display, which impacts the
-currently selected filters and the heatmap charts. The lens can be resized,
-which increases or decreases its querying area. Lastly, a depth field can be
-adjusted, this field acts as a cutting plane that removes entity objects that
-comes before the plane. The depth field function provides a method for people to
-reduce occlusion, as all entities that are the cut by the plane drawn in
-an outline style that allows viewers to see into the object. Objects that are
-cut off are excluded from any scoring calculations, they also have their
-heatmaps hidden to reduce visual clutter. These three interactions can be
-combined together to create a rich, flexible query mechanism.
+
+The lens enables three different actions. The position of the lens
+can be moved by dragging within the lens, impacting the currently
+focused entities and the heatmap charts. The lens can be resized by
+dragging on the border of the lens, increasing or decreasing the query
+area. Lastly, the depth plane can be adjusted by rotating the depth
+selector tab around the circumference of the lens (see Figure \ref{figure:xxx}). The
+depth plane function provides a method for people to reduce occlusion,
+as all entities that are the cut by the plane are drawn in an outline style,
+allowing viewers to see through them and into the object. Objects that
+are cut off are excluded from any scoring calculations, they also have
+their heatmaps hidden to reduce visual clutter. These three interactions
+can be combined together to create a rich, flexible query mechanism
+
+%Three different types of interactions can be performs on the lens widget. The
+%position of the lens can be moved around the display, which impacts the
+%currently selected filters and the heatmap charts. The lens can be resized,
+%which increases or decreases its querying area. Lastly, a depth field can be
+%adjusted, this field acts as a cutting plane that removes entity objects that
+%comes before the plane. The depth field function provides a method for people to
+%reduce occlusion, as all entities that are the cut by the plane drawn in
+%an outline style that allows viewers to see into the object. Objects that are
+%cut off are excluded from any scoring calculations, they also have their
+%heatmaps hidden to reduce visual clutter. These three interactions can be
+%combined together to create a rich, flexible query mechanism.
 
 Multiple lens widget are allowed for simultaneous explorations of
 different parts of the visualization. For example, if the subject matter is of
