@@ -5,59 +5,93 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Enabling Analysis}
 A comprehensive analytic system requires a variety of ways to manipulate and
-looking at data. In this section we describe our solutions for trend detection,
+looking at data. In this section we describe solutions for trend detection,
 making comparisons and high level overview.
+ 
 
-% TODO: Maybe illustrate with an example
 \section{Heatmap Perspective}
-The heatmap’s data, in essence, is a time series data. There are multiple ways
-we can view this time series to derive interesting patterns and trends. For this 
-prototype we want to concentrate on comparability across different components
-and time. For example, we want to ask: which vehicle component had more
-complaints? which month had more complaints out of the year? 
-To do this, we need to have multiple perspectives where data can be viewed from
-different functional needs. We have provided the following perspectives in our
-prototype:
+The heatmap widget has generic support for visualizing a time series data. It 
+allows different time series to be interchanged within the heatmap itself, showing 
+different perspectives. This was done to support the different types of
+analytical tasks as we discussed in Chapter 3. These tasks, such as
+finding seasonal trends of a component and finding the worst performing
+component, are quite different, one requires a localized view showing how a
+single component performed over time, the other requires a very high level view
+designed to draw out outliers.
+
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{heatmap.png}
+	 \caption[Heatmap Perspectives]{Showing the different heatmap perspectives. Left
+	 displays the monthly perspective, centre displays the component perspective, and right displays the
+	 global perspective}
+	 \label{figure:heatmap}
+	\end{figure}
+	% ==============
+
+
+Our visualization provides several different perspective views as seen in
+Figure \ref{figure:heatmap}, all based on the occurrence score. The score of
+each entity of each month is normalized by a divisor, which determines the type of semantic we want to show. The available
+heatmap perspectives are listed below:
+
 \begin{itemize} [noitemsep]
-  \item Month-Max: A monthly perspective where the importance score of each
-  month is divided by the maximum monthly importance score over all components
+  \item Component-Max: An object component perspective where the score of each
+  month is divided by the maximum component score over the selected time. This
+  is the default perspective in the system.
+  
+  \item Month-Max: A monthly perspective where the score of each month is 
+  divided by the maximum monthly importance score over all components
   in the selected time.
-  \item Component-Max: An object component perspective where the importance
-  score of each month is divided by the maximum component score over the selected time.
+  
   \item Global-Max: A global perspective where the month score is divided by the
   maximum score of all components over the selected time. 
 \end{itemize}
-
-We illustrate how the perspective scoring works with an example of a time over a
-period of three month in table \ref{table:perspective}.
  
+Here we illustrate how the perspective scoring works with an example of a time
+over a period of three month: Suppose there are two entities, engine and brakes
+and their occurrences scores over the three month are (1, 10, 100) and (10, 15,
+20) respectively. In Table \ref{table:perspective} we show the entities' month
+score under each perspective.
+
+The monthly perspective draws out the
+highest scored entity of each month, thus they are 10, 15 and 100 over the 3
+months shown. Component view is localized for each entity, thus it is 100 for
+engine entity and 20 for the brake entity over the 3 months. Finally global
+perspective uses global maximum as the divisor, which is found in the engine
+entity in the third month. 
  
     % === Table ===
     \begin{table}[h]
-	\begin{tabular}{| l | lll | lll | lll | lll | } 
+	%\begin{tabular}{| l | lll | lll | lll | lll | 
+	\begin{tabular}{| l | lll | lll | lll | 
+	      } 
 	   % Column Heading
 	   \hline
-	   & \multicolumn{3}{|c|}{Score} & \multicolumn{3}{|c|}{Month} &
-	   \multicolumn{3}{|c|}{Component} & \multicolumn{3}{|c|}{Global} \\
+	   %& \multicolumn{3}{|c|}{Score} 
+	   & \multicolumn{3}{|c|}{Month} 
+	   & \multicolumn{3}{|c|}{Component} 
+	   & \multicolumn{3}{|c|}{Global} \\
 	   
 	   % Data 
 	   \hline
-	   Engine & 1 & 10 & 100 &       % Original
-	            10 & 15 & 100 &      % Month
-	            100 & 100 & 100 &    % Component
-	            100 & 100 & 100 \\   % Global
+	   Engine & %1 & 10 & 100 &       % Original
+	            1/10 & 10/15 & 100/100 &      % Month
+	            1/100 & 10/100 & 100/100 &    % Component
+	            1/100 & 10/100 & 100/100 \\   % Global
 	            
-	   Brake &  10 & 15 & 20  &      % Original
-	            10 & 15 & 100 &      % Month
-	            20 & 20 & 30  &      % Component
-	            100 & 100 & 100 \\   % Global
+	   Brake &  %10 & 15 & 20  &      % Original
+	            10/10 & 15/15 & 20/100 &      % Month
+	            10/20 & 15/20 & 20/20  &      % Component
+	            10/100 & 15/100 & 20/100 \\   % Global
 	   \hline
-	\end{tabular} \caption{Sample perspective
-	based scores} \label{table:perspective}
+	\end{tabular} 
+	\caption{Sample perspective based scores} 
+	\label{table:perspective}
 	\end{table}
 	% ============
   
-
 Each of the perspectives above answers different questions and has its own
 advantages and disadvantages. The month-max perspective allows us to compare 
 component-to-component by month, but comparison against adjacent cells are 
@@ -78,6 +112,18 @@ questions that can be answered with these different perspective views:
   \item Global-Max: What are the most unreliable vehicle components?
 \end{itemize}
 
+Going back to Figure \ref{figure:heatmap} as an example, one can some
+interesting observations. From the component view in the centre, a person can
+see that there are two distinct outliers in the second and third months of the
+second year, in particular, one can see the scores getting lower, then there is
+a resurgence around July and August in the second year. Switching to the monthly
+perspective, one can observe that during the two year period, the most
+significant components seem to alternate between the brake and engine component,
+with the sole exception of accelerator appearing in a single month. Lastly, the
+global perspective yields 3 outliers, February and March from the brake entity
+and February from accelerator entity, however note the rest of the cells are
+pushed into the lower brackets and not possible to detect any other trends.
+ 
 The heatmap viewing perspective is at a global scope, thus a change in
 perspective will affect all visible heatmaps. This keeps the interface
 consistent and avoid viewers from switching to different modalities when they
@@ -86,170 +132,72 @@ is realized as a drop-down control sitting atop the hierarchy filters and shows
 the currently selected viewing mode.
 
 
-    % === Figure === 
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{heatmap.png}
-	 \caption[Heatmap Perspectives]{Showing the different heatmap perspectives. Left
-	 displays the monthly perspective, centre displays the component perspective, and right displays the
-	 global perspective}
-	 \label{figure:heatmap}
-	\end{figure}
-	% ==============
 
 \section{Comparison}
-Comparison mode allows people to compare two different types of the same
-physical product specified by two different query sets Q1 and Q2. Every entity
-from a query set is matched against the same named entity in the other query
-set, producing an entity level based comparison. For example, we can compare how
-each car component fared against each other in a comparison of Honda Civic
-versus Toyota Corolla, or comparing Ford Focus against the industry form.
+Comparison mode allows people to compare entity occurrences across
+two different subsets of the data. To select data to compare, we provide
+two sets of filter widgets which can be used to specify manufacturer,
+make, model and model year. Each set of filters specifies a query,
+which we will call Q1 and Q2, and each query is assigned a colour,
+which is used in the visualization. For example, we can compare
+Honda Civic (Q1) to Toyota Corolla (Q2), or we can compare Ford
+Focus (Q1) against all other Ford vehicles (Q2), by not fully specifying Q2.
 
-Two separate measures are used for the comparison view. A contribution sum and a
-percentage difference. The contribution sum is the aggregated entity score from
-the two query sets, it reflects the overall importance of the entity by
-emphasizing the frequently occurring entities in one or both query set. The
-percentage difference describes the relative frequencies of an entity, whether
-it occurs more frequently under Q1 or Q2 relative to the total contributions
-from Q1 and Q2 respectively. The percentage score is calculated as entity score
-divided by the total contribution. Then the percentage difference follows as
-percentage score Q1 minus percentage score Q2, with the sign and magnitude
-indicating  which query set has the stronger presence. We made the decision to
-use percentage based comparisons because it enables as to compare query results
-of different sizes.
+Two separate measures are used to render the comparison view.
+The \emph{contribution sum is} the aggregated component score from the two
+query sets: it reflects the overall importance of the component by emphasizing
+the most frequently occurring components matching Q1 and
+Q2. The \emph{percentage difference} describes the relative frequencies of a
+component, whether it occurs more frequently under Q1 or Q2 relative
+to the total contributions from Q1 and Q2 respectively. The percentage
+score is calculated as the component score divided by the total
+contribution. Then the percentage difference follows as percentage
+score Q1 minus percentage score Q2, with the sign and magnitude indicating
+which query set has the stronger presence of that component.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Viewing Modes}
-A comprehensive analytic system requires a variety of ways to manipulate and
-looking at data. In this section we describe our solutions for trend detection,
-making comparisons and high level overview.
+We made the decision to use percentage based comparisons because it
+enables the comparison of query results of different sizes.
+These scores are used to render the 3D view. Using the percentage
+difference, the colour of the outline of a component indicates which
+query set has the higher rate of complaints, and the opacity of the outline
+indicates the strength of the difference. Using the contribution
+sum, the standard hue and opacity encoding is used to indicate the
+sum of the two query sets, giving an impression of the overall importance
+of that component. Thus, a highly problematic component from
+both queries will have a strong presence overall but with a faint outline,
+while a lopsided but infrequently mentioned component will have
+strong outline but barely visible interior colour.
 
-% TODO: Maybe illustrate with an example
-\subsection{Heatmap Perspective}
-The heatmap’s data, in essence, is a time series data. There are multiple ways
-we can view this time series to derive interesting patterns and trends. For this 
-prototype we want to concentrate on comparability across different components
-and time. For example, we want to ask: which vehicle component had more
-complaints? which month had more complaints out of the year? 
-To do this, we need to have multiple perspectives where data can be viewed from
-different functional needs. We have provided the following perspectives in our
-prototype:
-\begin{itemize} [noitemsep]
-  \item Month-Max: A monthly perspective where the importance score of each
-  month is divided by the maximum monthly importance score over all components
-  in the selected time.
-  \item Component-Max: An object component perspective where the importance
-  score of each month is divided by the maximum component score over the selected time.
-  \item Global-Max: A global perspective where the month score is divided by the
-  maximum score of all components over the selected time. 
-\end{itemize}
+% Comparison mode allows people to compare two different types of the same
+% physical product specified by two different query sets Q1 and Q2. Every entity
+% from a query set is matched against the same named entity in the other query
+% set, producing an entity level based comparison. For example, we can compare how
+% each car component fared against each other in a comparison of Honda Civic
+% versus Toyota Corolla, or comparing Ford Focus against the industry form.
+% 
+% Two separate measures are used for the comparison view. A contribution sum and a
+% percentage difference. The contribution sum is the aggregated entity score from
+% the two query sets, it reflects the overall importance of the entity by
+% emphasizing the frequently occurring entities in one or both query set. The
+% percentage difference describes the relative frequencies of an entity, whether
+% it occurs more frequently under Q1 or Q2 relative to the total contributions
+% from Q1 and Q2 respectively. The percentage score is calculated as entity score
+% divided by the total contribution. Then the percentage difference follows as
+% percentage score Q1 minus percentage score Q2, with the sign and magnitude
+% indicating  which query set has the stronger presence. We made the decision to
+% use percentage based comparisons because it enables as to compare query results
+% of different sizes.
+% 
+% We encode the sum score as the colour of the \threed component, based on the
+% default colour scale. For the difference score, we render the measure as an
+% outline around the object. The sign of the difference is encoded as one of two diverging
+% colours, one for positive and one for negative values. The magnitude of the
+% difference is encoded as the transparency of the outline, larger magnitude have
+% more distinct, solid outlines compared to smaller values. Thus, a highly
+% problematic object from both side will have a strong presence overall but with a
+% faint outline, while a lopsided but infrequent problem will have strong outline
+% but barely visible interior colour.
 
-We illustrate how the perspective scoring works with an example of a time over a
-period of three month in table \ref{table:perspective}.
- 
- 
-    % === Table ===
-    \begin{table}[h]
-	\begin{tabular}{| l | lll | lll | lll | lll | } 
-	   % Column Heading
-	   \hline
-	   & \multicolumn{3}{|c|}{Score} & \multicolumn{3}{|c|}{Month} &
-	   \multicolumn{3}{|c|}{Component} & \multicolumn{3}{|c|}{Global} \\
-	   
-	   % Data 
-	   \hline
-	   Engine & 1 & 10 & 100 &       % Original
-	            10 & 15 & 100 &      % Month
-	            100 & 100 & 100 &    % Component
-	            100 & 100 & 100 \\   % Global
-	            
-	   Brake &  10 & 15 & 20  &      % Original
-	            10 & 15 & 100 &      % Month
-	            20 & 20 & 30  &      % Component
-	            100 & 100 & 100 \\   % Global
-	   \hline
-	\end{tabular} \caption{Sample perspective
-	based scores} \label{table:perspective}
-	\end{table}
-	% ============
-  
-
-Each of the perspectives above answers different questions and has its own
-advantages and disadvantages. The month-max perspective allows us to compare 
-component-to-component by month, but comparison against adjacent cells are 
-meaningless because each cell uses a different base value. The component-max 
-perspective is the opposite, it allows us to see trends with a single entity, 
-but it does not allow comparison across components. Lastly, the global-max 
-perspective is good at showing the outliers and supports both month-to-month 
-and component-to-component comparisons, but it is difficult to see overall
-trends because the outliers, if any, will dominate and push all non-outliers
-into the same scoring bin.
-
-To put the different perspectives in better context, we list sample 
-questions that can be answered with these different perspective views:
-\begin{itemize} [noitemsep]
-  \item Month-Max: In month X, which vehicle component had the most complaints?
-  \item Component-Max: Are there more braking problems in the summer months or
-  the winter month?
-  \item Global-Max: What are the most unreliable vehicle components?
-\end{itemize}
-
-The heatmap viewing perspective is at a global scope, thus a change in
-perspective will affect all visible heatmaps. This keeps the interface
-consistent and avoid viewers from switching to different modalities when they
-shift their attention from one heatmap to another. The view switching mechanism
-is realized as a drop-down control sitting atop the hierarchy filters and shows
-the currently selected viewing mode.
-
-
-    % === Figure === 
-	\begin{figure}
-	 \centering  
-	 \includegraphics[width=\columnwidth]{heatmap.png}
-	 \caption[Heatmap Perspectives]{Showing the different heatmap perspectives. Left
-	 displays the monthly perspective, centre displays the component perspective, and right displays the
-	 global perspective}
-	 \label{figure:heatmap}
-	\end{figure}
-	% ==============
-
-\subsection{Comparison}
-Comparison mode allows people to compare two different types of the same
-physical product specified by two different query sets Q1 and Q2. Every entity
-from a query set is matched against the same named entity in the other query
-set, producing an entity level based comparison. For example, we can compare how
-each car component fared against each other in a comparison of Honda Civic
-versus Toyota Corolla, or comparing Ford Focus against the industry form.
-
-Two separate measures are used for the comparison view. A contribution sum and a
-percentage difference. The contribution sum is the aggregated entity score from
-the two query sets, it reflects the overall importance of the entity by
-emphasizing the frequently occurring entities in one or both query set. The
-percentage difference describes the relative frequencies of an entity, whether
-it occurs more frequently under Q1 or Q2 relative to the total contributions
-from Q1 and Q2 respectively. The percentage score is calculated as entity score
-divided by the total contribution. Then the percentage difference follows as
-percentage score Q1 minus percentage score Q2, with the sign and magnitude
-indicating  which query set has the stronger presence. We made the decision to
-use percentage based comparisons because it enables as to compare query results
-of different sizes.
-
-We encode the sum score as the colour of the \threed component, based on the
-default colour scale. For the difference score, we render the measure as an
-outline around the object. The sign of the difference is encoded as one of two diverging
-colours, one for positive and one for negative values. The magnitude of the
-difference is encoded as the transparency of the outline, larger magnitude have
-more distinct, solid outlines compared to smaller values. Thus, a highly
-problematic object from both side will have a strong presence overall but with a
-faint outline, while a lopsided but infrequent problem will have strong outline
-but barely visible interior colour.
-
-As an example, see Figure \ref{figure:comparison}, where we compared Plymouth
-against both the Jeep and Chrysler. At a glance most parts remain the same
-with the exception of two outliers, Jeep appear to have a higher failure rate
-than Plymouth, and Dodge has a higher failure rate in brakes component. The
-overview could suggest that Plymouth is more reliable than both vehicles.
- 
     % === Figure ===
 	\begin{figure}
 	 \centering  
@@ -261,6 +209,12 @@ overview could suggest that Plymouth is more reliable than both vehicles.
 	 \label{figure:comparison}
 	\end{figure}
 	% ==============
+
+As an example, see Figure \ref{figure:comparison}, where we compared Plymouth
+against both the Jeep and Chrysler. At a glance most parts remain the same
+with the exception of two outliers, Jeep appear to have a higher failure rate
+than Plymouth, and Dodge has a higher failure rate in brakes component. The
+overview could suggest that Plymouth is more reliable than both vehicles.
  
 By default, comparison mode is turned off. It is activated when the viewer
 switches the second hierarchy filter from the ``None'' position to a valid
@@ -269,9 +223,10 @@ until the selection is turned to ``None'' again.
 
 One limitation with this approach is our current usage of the total
 contributions to calculate the percentage scores. Our total contribution is in
-relations to the number of documents in the corpus, which may or may not be a
-good indication of the overall contribution. 
+relations to the number of documents in the corpus, which may not be
+the best indication of the overall contribution.
 
+ 
  
  
 \section{Aggregation}
@@ -295,16 +250,21 @@ a higher level of abstraction is desirable.
 Aggregation mode mimics the type of high level rating system found on consumers
 review websites. When aggregation mode is enabled, individual objects, and their
 scores are aggregated up to the first level entities. In our specific case, the 
-first level are the major sub-systems in a vehicle. The visualization responds
-by making all child objects referencing the aggregated score of their parent
-subsystem. 
+first level are the major sub-systems in a vehicle. Aggregated components
+responds to interaction events as a single group, thus, selecting the
+``seatbelt'' will select the entire ``seat'' subsystem.
 
-Aggregation mode is enabled/disabled by a toggle switch located at the top
-portion of the interface. Aggregation mode works in
-conjunction with comparison mode, allow people to make comparison of major systems.
+%The visualization responds
+%by making all child objects referencing the aggregated score of their parent
+%subsystem. 
 
-An example is shown in Figure \ref{figure:aggregation}. A default rendering is
-shown in the top portion, one can see that brake is the most severe out of all
-components. The bottom shows the aggregated view, one can observe that on a
-higher level, the engine and seat subsystems are quite problematic.
+Figure \ref{figure:aggregation} shows a before and after illustration of using
+aggregation mode. A default rendering is shown in the top portion, one can see
+that brake is the most severe out of all components. The bottom shows the
+aggregated view, one can observe that on a higher level, the engine and seat
+subsystems are quite problematic.
  
+Aggregation mode is enabled/disabled by a toggle switch located at the top
+portion of the display interface. Aggregation mode works in
+conjunction with comparison mode, allow people to make comparison of major
+systems.
