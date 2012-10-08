@@ -1,51 +1,61 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Scenarios and User study
+% - Find a nice way to mention the scenario and how the visualization works
+% - Probably want to divide up the discussion section for the study and expand
+%   it a bit more.
+% - Scenario ideas
+%      > Spatial with lens
+%      > Toyota recall analysis
+%      > Comparison during car purchase ???
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Scenarios and User Study}
+In this chapter, we present several scenarios to show the possible uses cases
+for our visualization. Following that, in the second section we present a
+qualitative user study, discuss the experiment results and our observations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Scenarios}
-The basic idea behind our visualization system is to present a visual overview
-of the most salient objects in text document, without resorting to reading the
-text documents one-by-one to get a summary of their contents. Here we present
-several scenarios to illustrate our visualization system in action.
+We present two different scenarios to show possible use case with our
+visualization. The first is a general user case and showcases the benefits of
+preserving the spatial dimensions. The second is an analytical use case, where
+we use our visualization to detect trends and patterns.
 
-\subsection{Buying a Used Vehicle}
-The family sedan has been in service for the past 10 years and is starting to
-show its age. Michael, the owner and primary provider for his family of four had 
-been thinking of buying a new sedan for the past three month and have been saving 
-up for the big purchase. With the budgeting concerns more or less taken care of, 
-Michael wants to make sure that the next family car is reliable and built by a 
-manufacturer with a proven track record on safety standards. With these in mind, 
-Michael decides that he does not want to buy the new models coming out this year, 
-he believes it is too much risk buying new vehicles that has not been tested by 
-drivers in real life. Michael starts off his search by talking to his friends and 
-colleagues at work to get a sense of how they feel about certain manufacturers, 
-and to get a sense of how their vehicles performed up-to-date. In his second step, 
-Michael conducts research on various consumer product review websites to see how 
-the expert rank the automotive manufacturers and their specific vehicles in terms 
-of safety and reliability ratings, he also browsed open forums to see what type of 
-problems can arise from current owners. Michael finds his search helpful but quite 
-tedious because the information is difficult to digest; often the data is quite 
-generic and provide no link to detailed information. After a week of searching, 
-Michael finally picked out three potential models that he believes will meet 
-his requirements, he contacted the used car dealerships to come in for a closer 
-look in person.
+% \subsection{Buying a Used Vehicle}
+% The family sedan has been in service for the past 10 years and is starting to
+% show its age. Michael, the owner and primary provider for his family of four had 
+% been thinking of buying a new sedan for the past three month and have been saving 
+% up for the big purchase. With the budgeting concerns more or less taken care of, 
+% Michael wants to make sure that the next family car is reliable and built by a 
+% manufacturer with a proven track record on safety standards. With these in mind, 
+% Michael decides that he does not want to buy the new models coming out this year, 
+% he believes it is too much risk buying new vehicles that has not been tested by 
+% drivers in real life. Michael starts off his search by talking to his friends and 
+% colleagues at work to get a sense of how they feel about certain manufacturers, 
+% and to get a sense of how their vehicles performed up-to-date. In his second step, 
+% Michael conducts research on various consumer product review websites to see how 
+% the expert rank the automotive manufacturers and their specific vehicles in terms 
+% of safety and reliability ratings, he also browsed open forums to see what type of 
+% problems can arise from current owners. Michael finds his search helpful but quite 
+% tedious because the information is difficult to digest; often the data is quite 
+% generic and provide no link to detailed information. After a week of searching, 
+% Michael finally picked out three potential models that he believes will meet 
+% his requirements, he contacted the used car dealerships to come in for a closer 
+% look in person.
+% 
+% The visualization system saves Michael the need to aggregate the data himself, which is tedious
+% due to the number documents available, and the number of things mentioned within
+% each document. Using our visualization system, it is possible for Michael to
+% speed up his research process because the system presents a visual summary. Using the time
+% filters Michael can narrow down the period of his research. He can then use the
+% hierarchy filters, as well as the comparison mode to see how manufacturers
+% perform relative to each other. Michael can use visual inspection to find
+% anything that are out of place, he can then use the lens widget to focus on the
+% the area of interest to see more details. Finally he can select the object into
+% focus and use the document widget to read detailed reports.
 
-The visualization system saves Michael the need to aggregate the data himself, which is tedious
-due to the number documents available, and the number of things mentioned within
-each document. Using our visualization system, it is possible for Michael to
-speed up his research process because the system presents a visual summary. Using the time
-filters Michael can narrow down the period of his research. He can then use the
-hierarchy filters, as well as the comparison mode to see how manufacturers
-perform relative to each other. Michael can use visual inspection to find
-anything that are out of place, he can then use the lens widget to focus on the
-the area of interest to see more details. Finally he can select the object into
-focus and use the document widget to read detailed reports.
 
-
-\subsection{Investigating Possible Problems}
+\subsection{Locating Possible Issues}
 Larry owns a 2009 Toyota Corolla; for the past two or three weeks while driving
 on city streets he noticed a strange intermittent vibration coming from near the 
 front-passenger side of the his car. Larry is mulling over whether to contact the 
@@ -67,23 +77,43 @@ covered by the lens and narrow his search results significantly. Larry can then
 use the document widget and read the detailed complaints and decides if the
 problem is serious enough to contact the dealership.
 
-\subsection{Finding Causal and Related Issues}
-Curly is an automobile defect investigator, he is in the process of gathering
-information about a possible defect in the 2009 model of sedans. He leverage the
-NHTSA database as a data source for consumer initiated complaint reports. He
-enters the criteria one by one: manufacturer, model, make and the date range he
-wants to search for. After reviewing several dozen reports with brake issues he
-notices that there seem to be a trend emerging: over 50 percent of the reports
-read so far also mentions problems with the accelerator pedal. Thinking that
-there may be a connection between these two components Curly decides that he
-should widen his search criteria to include both accelerator and brakes.
 
-Our system suggest causal relations by explicitly highlighting the related
-entities in text documents. Rather than having to account for related terms in
-his head, Curly can select the brake component in the visualization, which will
-high light all co-occurring entities, include the accelerator. A visual scan
-will reveal the high occurring, which Curly can select, and use the document
-panel to read the detailed complaint descriptions.
+\subsection{Retrospective on Toyota Recalls}
+In addition to experimental testing, we can examine how our visualization
+system works by reviewing an example scenario. The Toyota
+vehicle recall happened between September 2009 to February 2010
+and had to do with faulty accelerators and brakes. We wondered if
+there were any leading or lagging indicators in our data, which may be
+indicative of the problem. We set visualization time frame to be between
+2008 and 2010 and selected Toyota as the vehicle manufacturer.
+The first thing we noticed is that the engine, usually one of the highest
+occurring components in the complaint reports, no longer dominated
+the visualization. Instead, two components pop out: brakes and accelerator.
+A closer examination with the lens widget raised more questions.
+The heatmaps show that there are two outlier months where a
+huge amount of complaints were registered: February 2010 and March
+2010, after the recall was announced. Perhaps the widely publicized
+event triggered a loss in consumer confidence, which in turn led to an
+over-reporting of problems. This is supported by the sharp drop-off
+after March 2010.
+
+% \subsection{Finding Causal and Related Issues}
+% Curly is an automobile defect investigator, he is in the process of gathering
+% information about a possible defect in the 2009 model of sedans. He leverage the
+% NHTSA database as a data source for consumer initiated complaint reports. He
+% enters the criteria one by one: manufacturer, model, make and the date range he
+% wants to search for. After reviewing several dozen reports with brake issues he
+% notices that there seem to be a trend emerging: over 50 percent of the reports
+% read so far also mentions problems with the accelerator pedal. Thinking that
+% there may be a connection between these two components Curly decides that he
+% should widen his search criteria to include both accelerator and brakes.
+% 
+% Our system suggest causal relations by explicitly highlighting the related
+% entities in text documents. Rather than having to account for related terms in
+% his head, Curly can select the brake component in the visualization, which will
+% high light all co-occurring entities, include the accelerator. A visual scan
+% will reveal the high occurring, which Curly can select, and use the document
+% panel to read the detailed complaint descriptions.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -282,6 +312,7 @@ before. Several participants tried to use the lens' depth function to access
 occluded objects, however we observed that there were difficulties making fine
 adjustments, especially if the objects are located within close proximity to each other.
   
+\subsection{Summary}
 Overall, the receptions of using the visualization system were positive;
 comments such as ``cool,'' ``relatable,'' and ``that was really neat'' were heard
 through out the study sessions. Other comments, such as ``seeing all the different angles is
