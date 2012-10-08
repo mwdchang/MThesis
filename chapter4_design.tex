@@ -476,29 +476,45 @@ that prevents a wider audience from using applications without prior training.
 
 Here we take a different approach, the lens widget allows people to demand and
 filter detailed information by means of a visual query. Unlike explicit queries,
-visual query is done more passively by moving the lens widget about the screen
-to inspect different spatial areas that appear interesting to the viewer. This
-is the key difference, as the focus selection is done visually, rather than
-through explicit selection, this means the viewers do not need to know what the
-entities are called to select them, reducing the need to have prior knowledge
-about the data. This type of interaction is more playful and open-ended, people
-are free to explore the visualization on their on terms which may lead to
-unknown or unexpected discoveries.
+visual query is done more passively by moving the lens widget about the 
+visualization, points of interests, if any, are shown as heatmap charts without
+explicit requests. Thus a user is free to roam about the visualization without 
+any specific goals or prior knowledge about the data, making the visualization
+more playful and open to unexpected discoveries.
 
-In addition of the freedom to explore the visualization, the spatial
-interaction has two other advantages: proximal relationship and reduced effort
-in query construction. First, with most complex objects, incidents relating to
-an entity is rarely in isolation, neighbouring objects are often impacted as
-well. The lens widget allows selection of a volume range, which easily
-facilitate bringing back entities close to the one we want to focus on. Second,
-the visual query allows us to form queries that can be difficult to construct in
-conventional systems. Imaging a case where we want to know how many vehicle
-complaints are related to the ``front'' of the vehicle, traditional query would
-require knowledge of the parts that belong to the front of the car, then follow
-by an aggregation step of constructing a query that includes all these parts.
-Our visual query simplifies this step by taking advantage of the familiar form
-factor, a lens widget can be over the ``front'' of the vehicle visualization,
-automatically pulling out all the relevant entities.
+%\daniel{Maybe cite the bohemain bookshelf would be appropriate here}
+
+%to inspect different spatial areas that appear interesting to the viewer. This
+%is the key difference, as the focus selection is done visually, rather than
+%through explicit selection, this means the viewers do not need to know what the
+%entities are called to select them, reducing the need to have prior knowledge
+%about the data. This type of interaction is more playful and open-ended, people
+%are free to explore the visualization on their on terms which may lead to
+%unknown or unexpected discoveries.
+
+In addition to the freedom of exploration, the lens has an additional 
+benefit of allowing people to specify logical regions. Imagine the case where 
+a person is asked to investigate issues relating to the ``front'' of the 
+vehicle, this query is difficult to formulate, components situated at the front 
+need to be identified (which inconviencne a person with novice expertise), 
+and ``front'' itself may be subjective depending on person. By repositioning 
+and resizing the lens, we can identify the front, or any other logical region quite
+easily.
+
+% In addition of the freedom to explore the visualization, the spatial
+% interaction has two other advantages: proximal relationship and reduced effort
+% in query construction. First, with most complex objects, incidents relating to
+% an entity is rarely in isolation, neighbouring objects are often impacted as
+% well. The lens widget allows selection of a volume range, which easily
+% facilitate bringing back entities close to the one we want to focus on. Second,
+% the visual query allows us to form queries that can be difficult to construct in
+% conventional systems. Imaging a case where we want to know how many vehicle
+% complaints are related to the ``front'' of the vehicle, traditional query would
+% require knowledge of the parts that belong to the front of the car, then follow
+% by an aggregation step of constructing a query that includes all these parts.
+% Our visual query simplifies this step by taking advantage of the familiar form
+% factor, a lens widget can be over the ``front'' of the vehicle visualization,
+% automatically pulling out all the relevant entities.
 
 
 
@@ -509,86 +525,79 @@ of complaints changed over time for individual entity components by fitting a
 time series data onto a two dimensional grid. In particular, the heatmaps allows
 year-to-year and month-to-month comparisons.
 
-%The information chart extruded from the lens widget is designed as a
-% heatmap-like chart, it shows the volume of complaints registered against individual objects 
-%across time. Like our design for the time slider histograms, our intention is to 
-%allow people to compare specific periods of time across different years for a 
-%specific objects, albeit in finer detail. 
-
-Prior to our heatmap implementation, we have also considered using a simple 
-scatter-plot approach, with time on the X-axis and the volume of complaints on
-the Y-axis. While this solution is simpler to read and likely easier to detect
-long term trend, its major drawback is that it is likely more difficult to
-make seasonal comparisons. For example, imagine a case where we want to compare
-summer to fall over a 4 year span, one must constantly make the context switch
-to decipher which parts of the graph represents summer, and which parts
-represent winter. Also, in extreme cases scrolling need to be utilized for very
-long time frames.
+% Prior to our heatmap implementation, we have also considered using a simple 
+% scatter-plot approach, with time on the X-axis and the volume of complaints on
+% the Y-axis. While this solution is simpler to read and likely easier to detect
+% long term trend, its major drawback is that it is likely more difficult to
+% make seasonal comparisons. For example, imagine a case where we want to compare
+% summer to fall over a 4 year span, one must constantly make the context switch
+% to decipher which parts of the graph represents summer, and which parts
+% represent winter. Also, in extreme cases scrolling need to be utilized for very
+% long time frames.
 
 We arrange the time segments chronologically onto a grid like a calendar,
 the month are arranged left-to-right in ascending order, and the years arranged 
-top-to-bottom in ascending order. Each cell then represents the entity score for
+top-to-bottom in ascending order. The dimension of the heatmap's grid corresponds to 
+the selected time on the time widget. Each cell then represents the entity score for
 the particular month. We use the same 6-bin colour encoding for the heatmap
-widget to keep a consistent colouring scheme throughout the system. The widget
-label, from left-to-right, shows the entity name, the number of complaints
-referring to the entity with respect to the current query, and the number
-of complaints in total if nothing is selected. Due to the use of synsets, each
-entity has at least one corresponding string representations, we use the first
-lemma that appears in our vocabulary, which may differ from actual text.
+widget to keep a consistent colouring scheme throughout the system. The heatmap
+label, placed at the top of the widget, shows the entity name, co-occurrence score 
+and occurrence score. Note the choice of the entity name is the first word in the 
+keyword's synset, which may differ from the actual text.
 
 When examining the heatmap, trends and outliers can be detected visually. The
-grid view aligns both month and year time dimensions, allowing viewers to
-compare year and month with relative ease. Hovering over individual cells will cause a
-tooltip to appear, showing the precise numerical score for the month, the tooltip itself is 
-rendered with a semi-transparent style to avoid occlusion. Hovering also creates 
-a visual cue of a highlighted border around the selected cell, the highlighting
-effect is carried across all visible heatmaps as a brush+link effect.
+grid-like view aligns both month and year time spatially, allowing viewers to
+make yearly (row-to-row) and monthly (column-to-column) comparisons with relative
+ease. Two types of interactions are supported by the heatmap widget. Selecting the 
+heatmap is equivalent to a selection on the \threed visualization. Performing a hold
+over an individual cell toggles a tooltip that displays the numerical score for that
+month, a blue border is drawn around the cell, the same border is linked over all cells
+of the same month across visible heatmaps, allowing for quick comparison.
 
-With respect to the actual placement of the heatmaps, we have considered two
-types of labeling layout for our lens widget: A flush-left/flush-right layout
+
+\subsection{Layout}
+With respect to heatmaps placement, we have considered two
+types of layout around the lens widget: A flush-left/flush-right layout
 that places the heatmaps on either left or right side of the lens, and a radial
 layout where each heatmap is placed around the lens’ circumference. The radial
-layout is anchored at the centre of the lens, imaginary line segments extends
-from the centre through the projected centroids, and a real line segments
-extends the imaginary line to the circumference. The result was eye-pleasing,
-but due to the nature of the lens being an exploratory tool which is moved
-around the screen frequently, the layout is unstable and not suited for this
-particular usage case. For the flush-based layout, we first sort the object
-centroids by their Y-coordinates in screen space, then we place the heatmaps on
-left/right side based on the heuristics below. Since there is no reliance on the
-centre of the lens for placement, movement of the lens widget will not cause
-drastic changes to the heatmap placement and thus produce a more stable looking
-layout. Lastly we horizontally align the charts so it is easier for people to
-compare values across different heatmaps.
+layout is eye-pleasing, but is unstable due to a single anchor point in the centre, 
+and it is harder to compare across heatmaps because they re not spatially aligned, 
+thus it was deemed unsuitable for our system.
 
-In order to avoid occluding the \threed visualization, or to run off screen
-space, we employ the following heuristics for heatmap placement.
+For the flush layout, we first sort the object centroids by their 
+Y-coordinates in screen space, then we place the heatmaps on
+left/right side based on the heuristics below: 
 \begin{itemize}[noitemsep]
-  \item Heatmap placement should always be outside of the axis-aligned bounding
-  box (AABB) in projected screen space of the \threed visualization, unless the
-  AABB itself runs off the screen.
-  \item If the heatmaps are off the screen space, perform contraction to move it
-  back into screen space.
+  \item Heatmap placement should always be outside of the axis-aligned bounding box the \threed visualization.
+  \item If the entity centroid is closer to the right edge of the bounding box, it will be placed on the right, else left.
+  \item If the heatmaps are off the screen space, perform contraction to move it back into screen space.
 \end{itemize} 
+Since there is no reliance on the centre of the lens for placement, movement of the lens widget will not cause
+drastic changes to and thus is more stable when moving the lens over the visualization.
 
-Because of limited screen space, we have made the decision to cap the number
-of heatmaps that can be displayed at any given time. Rather than showing
-heatmaps for all the entities under the lens widget, which would
-inevitably create visual clutter, we employed a scrolling mechanism that 
-allows people to scroll through the entities under the lens. We have a parameter
-N which controls the maximum number of visible heatmaps. We have no
-recommendations to what N should be, as it is tied to the amount of entities in
-total, as well as the spatial placement of these entities. We found N=8 works
-well with our vehicle complaint corpus.
+Due to limited display space, not all heatmap are shown at once. A scrolling mechanism, shown
+as up and down arrows on the lens, are used to scroll through unseen entity objects, numerical
+indicators on each arrows provide a summary of how many entities are hidden in either direction.
+We set the maximum visible heatmap to 8 in this prototype.
+
+%Because of limited screen space, we have made the decision to cap the number
+%of heatmaps that can be displayed at any given time. Rather than showing
+%heatmaps for all the entities under the lens widget, which would
+%create visual clutter, we employed a scrolling mechanism that 
+%allows people to scroll through the entities under the lens. We have a parameter
+%N which controls the maximum number of visible heatmaps. We have no
+%recommendations to what N should be, as it is tied to the amount of entities in
+%total, as well as the spatial placement of these entities. We found N=8 works
+%well with our vehicle complaint corpus.
 
 
 \section{Document Widget}
 The document widget is the final stage of our drill-down process by providing links 
-to the raw text (Requirement R4). Each document is divided into two sections,
-the header section shows each document’s fixed attributes and the content
+to the raw text (R4). Each document is divided into two sections,
+the header section shows each document’s meta attributes and the content
 section shows the raw text descriptions. We denote the selected entity words and
 co-occurring entity words using blue and grey highlights respectively to create
-contract against the remainder of the text. Scrolling is enabled when text
+contrast against the remainder of the text. Scrolling is enabled when text
 content overflows the display panel. A document widget in action is seen in
 Figure \ref{figure:document}.
 
@@ -602,15 +611,14 @@ Figure \ref{figure:document}.
 	\end{figure}
     % ===================
 
-We restrict the application to have a single document widget only. The widget is
-toggle-based and is by default hidden from view. Once activated, an animation
-will expand its dimension from a single pixel to its full size at the
+The document widget is toggle-based and is by default hidden from view. 
+Once activated, an animation will expand its dimension from a single pixel to its full size at the
 activation coordinate, a reverse animation is used to deactivate the panel. 
 
 Once fully visible, the document widget embed itself with two different
 interaction regions. The left region, which takes up 80 percent of the panel, is
-used for relocating the document widget to a different location. The right
-region is designated for scrolling through the document text.
+used for relocating the document widget to a different position. The right
+region is designated for scrolling over the document texts.
 
 
 
@@ -655,13 +663,8 @@ supports single selection, each item in the filter shows the name and the number
 of documents associated with this organizational level. Rather than having the
 readers comparing items by reading the numbers in text format, we double-encoded
 the number of document as a horizontal histogram in similar style as the scented
-widget approach in \cite{Willett2007}. The histogram bars are shaded in light
-grey so they are visible but not overly distracting. The histogram makes it very
-clear any outlier items, and allows reader to make relative comparison among
-items. We capped the number of items that can be displayed at once, as such,
-scrolling is required to navigate long list of items. When an item is selected,
-we change the selected item's font type to bold and change its bar to the
-selected colour(blue).
+widget approach in \cite{Willett2007}. The bar for each item in the widget is shaded
+in light grey, and turns blue if the item is selected. 
 
 Each level of the hierarchy is shown in individual filters. We position the
 filters left-to-right across the display space, from the most general to most
@@ -672,44 +675,50 @@ it would for ``Chrysler''.  Non-top level hierarchy widgets remain hidden from v
 until it has selectable content, thus at the start, only the top level 
 (manufacturer) filter widget is visible.
 
-The hierarchical content is dependent on the currently selected time. Our
-application queries the document collection and reconstructs the hierarchy. Previous 
-selected items are persisted if the items are available within the new selection 
-criteria. In the case where the items do not exist, the widgets, and all their 
-children widgets are hidden from view and we clear the corresponding selections.
+
+
 
 \subsection{Time Filter Widget}
 The time dimension is encoded as a histogram, with the height of each bar denoting 
 the volume of unique complaints for that time period. There are several granularity 
-options with our document collection: daily, weekly, monthly or yearly. From a 
-preliminary analysis of the incoming volume of complaint documents, we found that 
-daily and weekly granularity resulted in too much noises, there are insufficient
-amount of data at that level to form visually detectable trends and other
-interesting patterns. Thus we selected to use month and year as our base time
-periods. The widget is made up of two sliders. The top slider represents time
+options with our document collection: daily, weekly, monthly or yearly. From an 
+analysis of the incoming volume of documents, we found that daily and weekly 
+granularity levels resulted in too much noises, these are discarded in favour
+of months and years.
+
+The widget is made up of two sliders. The top slider represents time
 period in years, and the bottom slider represent time periods in months. Text
 labels at the top of each bar give the numerical representation of the volume of
-documents.
+documents, note for the month slider the volume is the accumulated sum across
+selected years. Makers at the bottom of each slider are used to select contiguous 
+blocks. Selections of months and years are independent, for example, a person
+can select all January to June, between 2000 and 2005. This selection behaviour allows
+people to focus and filter based on specific seasons.
 
-Time selection is not continuous, but rather in a block like manner. Multiple
-years and multiple months can be selected simultaneously; when more than one
-year is selected, the values on the month's histogram become the accumulated sum
-of the month across the selected years. There were two motivations for this
-design approach: One, this allows us to analyze a large time frame without
-sacrificing too much screen real estate. Two, because the number of months is
-static, viewers can compare month-to-month or season-to-season without
-difficulty,  this follows up on our requirement to allow analysis of seasonal
-trends (Requirement R2). We illustrate with an example, suppose we want to
-compare the number of incidents in January versus June from 2000 to 2005, we
-select 2000 to 2005 on the year slider, we can then compare the January volume
-and June volume directly, furthermore, each month can be selected for further
-analysis.
+Interactions with the sliders are done through their markers as mentioned above, or directly
+on the histogram bars. A double select action on the year slider's bars provides a short cut
+to select an entire year. An animated transition is used to interpolate the histograms to its
+new state.
 
-User interaction is done through click/tapping the individual histogram bars, or
-by dragging each slider's respective markers. A short cut for selecting an
-entire year is provided by double clicking/tapping any non-zero bar on the year
-range slider. An animated transition is used to interpolate the height of the
-histogram bars from their current volume to their new volume.
+%Time selection is not continuous, but rather in a block like manner. Multiple
+%years and multiple months can be selected simultaneously; when more than one
+%year is selected, the values on the month's histogram become the accumulated sum
+%of the month across the selected years. There were two motivations for this
+%design approach: One, this allows us to analyze a large time frame without
+%sacrificing too much screen real estate. Two, because the number of months is
+%static, viewers can compare month-to-month or season-to-season without
+%difficulty,  this follows up on our requirement to allow analysis of seasonal
+%trends (Requirement R2). We illustrate with an example, suppose we want to
+%compare the number of incidents in January versus June from 2000 to 2005, we
+%select 2000 to 2005 on the year slider, we can then compare the January volume
+%and June volume directly, furthermore, each month can be selected for further
+%analysis.
+
+%User interaction is done through click/tapping the individual histogram bars, or
+%by dragging each slider's respective markers. A short cut for selecting an
+%entire year is provided by double clicking/tapping any non-zero bar on the year
+%range slider. An animated transition is used to interpolate the height of the
+%histogram bars from their current volume to their new volume.
  
 
 
@@ -727,6 +736,8 @@ display changes, we use a smooth animation to facilitate the transition.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\daniel{talk about waiting when making a selection}
+
 \section{Touch Display}
 Touch enabled system can be deployed in situations that is otherwise cumbersome
 for systems that uses mouse/keyboard input. For example, in a
@@ -781,10 +792,11 @@ designs.
 
 \subsection{Surface Based Interaction}
 We use the idea of zone to segment our display space and to process touch
-point events. Each zone consist of one or more polygonal spaces with predefined
+point events. Each zone consists of one or more polygonal spaces with predefined
 semantics for handling touch based gestures. In the event that the zones overlap
-each other and an event comes in, we only process the zone with the highest
-priority. The priority of each zone is fixed and is predetermined. 
+each other and the system receives an event, the event will be propagated to the zone
+with the highest priority, the remaining zones will ignore the event. The priority 
+of each zone is fixed and is predetermined. 
 
 When a touch point is registered by the sensor hardware, we tie the touch point
 to a single zone, the coupling will remain so until the touch point is removed.
@@ -810,13 +822,13 @@ In the list below, we summarize the different zones we have in our application
 \end{itemize}
 
 
-While we tried to adhere to commonly accepted gestures for navigational and
+While we tried to adhere to commonly accepted gestures for navigation and
 selection based tasks, our gesture design is also influenced heavily by our
 hardware and our perceived usage scenario: an infrared sensor overlay placed
 atop a large, nearly vertical display screen. Our hardware setup has several
 design implications. The infrared sensor is imprecise because it senses
 movements instead of real touches, as such it is possible to introduce
-false positives due to how the hand posture and orientation. We can use software
+false positives due to hand posture and orientation. We can use software
 heuristics to mitigate the consequences of these unintended noises, however,
 there are ambiguous cases where we cannot guarantee the correct outcome. For example,
 imagine a single handed gesture with the thumb and index finger, we have
@@ -824,28 +836,35 @@ noticed through experimental trials that the knuckles on the other fingers are
 often picked up as extra touch points as well due to their proximity to the
 sensor. In this case, it is difficult to judge which points are intentional and
 which ones are not; these points are roughly equal distance apart, and without
-additional information such as a camera image or depth which may be used to
-conjecture hand orientation, we cannot guarantee correctness as we only have
-Cartesian coordinates as our data source. Due to said reason, we decided
+additional information such as a camera or depth image which may be used to
+conjecture a hand orientation. As we only have XY coordinates as our data source, 
+we cannot guarantee correctness.  Thus, we decided
 to abandon any complex, explicitly-singled-handed, multi-fingered gestures in
 favour of a simpler, less error prone approach.
 
-Our final gesture set is a cumulation of several iterations of redesign, new
-heuristics and refinement of existing gestures. We pilot-test each iteration by
-asking people to perform sample tasks and observer their reactions, in a few
-cases we gave no instructions on how to use the system in order to observe their
-natural instinct.
+The final gesture set is a cumulation of several iterations of redesign. At 
+each iteration, fellow lab members were asked to pilot-test the new gesture
+recognitions and heuristics, their reactions and feedback were then incorporated 
+into the next design iteration. 
 
-In our current iteration, we designed two types of touch gesture semantics for
-our system: a tap semantic and a hold semantic. The tap semantic results from a
-single touch where there is no delay between the initial touch gesture and
-subsequent actions, conversely the hold semantic requires the user to hold the
-initial touch point briefly before transitioning into subsequent movements. We
-map the tap semantic to actions to selection, scrolling and orientation logic.
-For the gestures that use the hold semantics, we reserve these gestures for the
-toggling our custom made user interface widgets. 
-We summarize our gesture set
-below, group by by functional areas:
+Within the current iteration, there are two types of basic touch gesture semantics: 
+a short-touch semantic and a long-touch semantic. A short-touch consists of any gesture
+where the initial position is held for less than a threshold, while a long-touch is the
+opposite. The system uses 450 milliseconds as the threshold. From the above, we create
+more complex gesture set:
+
+\begin{itemize}[noitemsep]
+  \item Touch/Tap: A short-touch followed by disengaging the gesture.
+  \item Hold: A long-touch followed by disengaging the gesture. 
+  \item Drag: A short-touch followed by some movement.
+  \item Drag-Hold: A long-touch followed by some movement.
+\end{itemize}
+
+Gestures are designed to be discrete and cannot be transitioned from one to 
+another, for example, a dragging gesture to change the selected months cannot 
+be transitioned to making a selection on the \threed visualization.
+
+A summary of the system's gesture set is as follows:
 \begin{itemize} [noitemsep]
   \item Perspective Manipulation: Perspective manipulation consist of rotation
   of \threed model and camera zoom. Rotation is achieved with a
@@ -854,44 +873,34 @@ below, group by by functional areas:
   together two touch points closer together or further apart. All perspective
   manipulations are restricted to the empty zone.
 
-  \item Entity Selection: Entity selection is triggered with a single tap event.
-  A hold gesture on an entity will invoke the tooltip widget, if applicable.
+  \item Entity Selection: Entity selection is triggered with a single touch.
   
-  \item Time Sliders: Single-tap gesture is used to send select events to
-  individual time sliders. Dragging gesture is used to move the markers left and
-  right for selecting multiple periods.
-  
-  \item Hierarchical Filters: A single tap gesture is used to open, close and to
-  make selections. Scrolling is achieved by dragging the item list vertically.
-  Note the gestures are associated with unique events, thus we do not allow
-  transition from one semantic to another, even though the gesture point is on
-  the same zone. For example, one cannot transition directly from dragging the
-  item list to select, a separate gesture need to be executed to perform the
-  selection.
+  \item Tooltip: A hold gesture, or drag-hold gesture over the heatmap's cells will toggle the tooltip. 
   
   \item Lens Manipulation: A lens widget is created by specifying its diameter
   with two hold points, for example using index fingers on left and right hand
   to create the diameter. We impose a minimum and maximum diameter length to
   keep the physical size of the lens within reason, with our display hardware,
-  we use the range between 100 to 500 pixels. Dragging gesture performed on the inner part
-  of the lens shift the lens location, while dragging gesture performed on the
+  we use the range between 100 to 500 pixels. Dragging gestures performed on the inner part
+  of the lens shift the lens location, while dragging gestures performed on the
   border resize the lens with respect to the point's distance away from the
   lens centre. A resize that results in a diameter that falls below the minimum
-  threshold removes the lens widget from the application. The handle on the
+  threshold removes the lens widget all together. The handle tab on the
   widget adjusts the depth parameter, dragging the handle counter-clockwise
   increases the cutting depth, while the reverse decreases the cutting depth, we
   modelled this behaviour after the zooming mechanism on the barrels of camera
   lenses.
   
-  \item Text Browsing: The document panel becomes active upon a hold gesture
-  event, with no other hold events in its vicinity. The hide the panel from
-  view, executing a hold gesture anywhere on the document widget will trigger
-  the close event. The widget is further subdivided vertically into two separate
-  zones at 80 percent and 20 percent of the widget's width. The larger of the
-  two listens to move events, while the smaller one, positioned on the right
-  side handles scrolling of text. Both of these zones receive tap based
-  events.
+  \item Text Browsing: The document widget is toggled with a hold gesture, performed
+  over the  empty zone. An active document widget has two zones, the left-most 80 percent
+  of the document panel is used for reposition, while the right-most 20 percent for scrolling.
+  Both zones uses the drag gesture. Both  reposition and scroll actions use the drag gesture.
+
+  \item Hierarchical Filters: A single touch gesture is used to open, close and to
+  make selections. Scrolling of the item list is achieved by dragging the item list vertically.
   
+  \item Time Sliders: Single touch gesture is used to send select events to
+  individual time sliders. Dragging gesture is used to move the slider markers.
 \end{itemize}
 
     % === Figure ===
@@ -911,38 +920,40 @@ When using the keyboard, mouse and other hardware peripherals, actions are
 rewarded with some type of haptic feedback, for example we know when a key on a 
 keyboard is pressed of depressed. This behaviour allows people to be more keenly 
 aware of the system's current state. This is not true with touch interfaces,
-with touch sensing technology, it is possible for touch points to become lost during a gesture, 
-this is due to the users accidentally lifting their fingers. When this happens people 
+with touch and sensing technology, it is possible for touch points to become lost during a gesture, 
+this is due to the users unconsciously lifting their fingers. When this happens people 
 can get confused because they may be not be aware that their touch points are lost 
 since their fingers are still contacting the table, there are no feedback system 
 to alert the actual touch point had disappeared. To accommodate the lack of
-physical response, we implemented out own visual feedback system. We created
+physical response, we implemented out own visual feedback. We created
 four different types of visual cues, which we summarize below and can be seen in
 Figure \ref{figure:feedback}. 
 
 \begin{itemize}[noitemsep]
-  \item Touch Point: Whenever a touch point is registered, we render a gradient
-  circle at the XY screen coordinate as detected by the infrared sensor. The
+  \item Short Touch Point: Whenever a touch point is registered, we render a gradient
+  circle at the XY screen coordinate as detected by the sensor. The
   radius of the circle is slightly larger than the average finger tip such that
   is is always visible, this is about 15 pixels on our display. The position of
-  the gradient circle is updated in-sync with the sensor updates, and is removed
+  the gradient circle is updated to synchronize with sensor updates, and is removed
   when the touch point is rescinded. This visual cue gives viewers immediate
-  feedback of the active touch points, which can be used to perform higher level
-  actions.
-  \item Hold Point: A hold point has the same basic visual cue as a touch point.
-  A hold point starts off as a touch point, a ticking timer running in the
-  background determines when the touch point transitions into a hold point. We
+  feedback of the active touch points.
+
+  \item Long Touch Point: A long touch point has the same basic visual cue as a short touch point.
+  A long touch starts off as a short touch point, a ticking timer running in the
+  background determines when the short touch transitions into a long touch. We
   visualize this timing sequence as a arc outside of the circle, the arc grows
   with an increasing central angle and opacity that are mapped to the amount of
-  time required to become a hold point. A hold gesture is activated once the arc has travelled
+  time elapsed. A long touch gesture is activated once the arc has travelled
   the entire circumference and lock down. An interruption during the transition
   phase will remove the animation, the gesture will return back to a normal
   touch point.
+
   \item Trails: Our system keeps track of previous updates for a single,
   uninterrupted point. We visualize up to the last 10 most recent updates as
   breadcrumb trails to serve as a reminder of what type of high level gesture is
   being performed. The XY coordinates of previous update points are drawn in
-  smaller circles, similar to that of touch points.
+  smaller circles, similar to that of short touch points.
+
   \item Removals: These visual cues are used to denote any removals sensed by
   the hardware device, these includes the active points sensed by our software
   and also any other ones that were rejected by our evaluating heuristics. This
@@ -955,8 +966,11 @@ Figure \ref{figure:feedback}.
   reaches zero.
 \end{itemize}
  
- 
-
+An additional visual feedback was created to visualize processing time. Due the 
+size of dataset, the system may incur a slight delay between re-evaluation of the
+visualization. We draw a small clock icon at the position where the last action 
+was performed to indicate the system is processing, the clock fades into the back
+ground once the data processing is completed. 
 
 
 
