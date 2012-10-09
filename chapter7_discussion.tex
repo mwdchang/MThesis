@@ -8,34 +8,33 @@ domain of trying to make sense of a large quantity of text. Unlike traditional
 InfoVis systems that rely on abstract representations, we explore different ways
 to encoding underlying semantics on forms that are familiar to viewers. 
 
-In this section we summarize our result findings, the limitations of our
+In this chapter we summarize our results, the limitations of our
 application, and discuss avenues for future work.
 
 \section{Limitations}
-In this thesis, we have presented a working prototype of our ideas. However,
-there are still some challenges and limitations. The limitations of our
-prototype falls primarily into two categories: language processing and graphical
-representation. In this section we will discuss what they are and possible
-solutions.
+In this thesis, we have presented a working prototype showcasing descriptive
+non-photorealistic rendering technique. However, there are still some challenges
+and limitations. The limitations of our prototype falls primarily into two
+categories: language processing and graphical representation. In this section we
+will discuss what they are and possible solutions.
 
 From a language perspective, our system of parsing is quite simplistic as we are
 only taking into account word frequencies. Casual relations are inferred with
 co-occurring entities, however a more precise method would use grammatical
 structures to infer relations. While we have made early attempt at extracting
 dependency relations, it did not yield fruitful result due to many grammatically
-incorrect sentences within the document collection, although a different text
-corpus may benefit from this approach. We also only looked at nouns, but verbs
-and other domain specific terms can attribute themselves to specific components,
-including them in our vocabulary would have increased our coverage.
+incorrect sentences int the document text, however a different text
+corpus may benefit from this approach. We also only looked at nouns, it may be
+interesting to look at verbs and adjectives as well.
 
 In terms of graphical representations, occlusion still presents an issue,
 especially in densely packed areas. These areas makes interactions difficult.
-While the heatmaps provide an easy alternative for selection, it does not solve
-perceptual difficulties in trying to uniquely identify an object in the
+While the heatmaps provide an easy alternative for entity selection, it does not
+solve perceptual difficulties in trying to uniquely identify an object in the
 visualization. Zooming into the scene, or changing the lens' depth only
-partially solve the problem as both method require very fine tuning from the
-viewer. Alternative selecting approaches, such as selecting by importance score,
-or other heuristic may help. More advanced graphical techniques such as exploded
+partially solve the problem as both method require very fine adjustments from
+the viewer. Alternative selecting approaches, such as selecting by importance score,
+or other heuristic may help. Alternative graphical techniques such as exploded
 views would be able to push objects away from each other, avoiding occlusion in
 the first place but at a possible risk of distorting the overall context.
 
@@ -48,12 +47,12 @@ physical entities from text documents and encode the abstract semantics onto
 reconstructing the subject matter in a way that is familiar to the viewers. We call
 our approach \emph{descriptive non-photorealistic rendering}.
 
-In order to gauge the effects of our approach, we conducted a user study
-asking participants to analyze NHTSA's repository of vehicle complaint reports.
-Each participant were asked to perform objective and open-ended tasks in order to 
-give us a sense of whether the visualization can be accurately interpreted, and whether
-participants can perform complex tasks using our system.
-Our study results showed that people were able to perform analytical tasks
+In order to gauge the effects of our approach, a user study was conducted with
+12 participants where they were asked to analyze NHTSA's repository of vehicle
+complaint reports. Each participant were asked to perform objective and
+open-ended tasks in order to give us a sense of whether the visualization can be
+accurately interpreted, and whether participants can perform complex tasks using our system.
+Study results showed that people were able to perform analytical tasks
 within our system, and that the visualization itself was well received based on
 aesthetic factors and the interactive options we provided. 
 
@@ -73,8 +72,6 @@ aesthetic factors and the interactive options we provided.
 % study to see if people can accurately interpret the visualization, we also
 % solicited qualitative feedback from study participants. Our study showed that
 % (need results to put in here)
-
-
 
 
 \section{Future Work}

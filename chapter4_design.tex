@@ -375,11 +375,21 @@ then from the circumference back to the entity's projected centroid.
 
   
     % ===== Figure =====
+% 	\begin{figure}
+% 	 \centering  
+% 	 \includegraphics[width=\columnwidth]{lens_schematic.png}
+% 	 \caption[Lens Widget Schematics]{Cross section schematics of the Lens Widget}
+% 	 \label{figure:lensSchematic}
+% 	\end{figure}
+	% ==================
+	
+    % ===== Figure =====
 	\begin{figure}
 	 \centering  
-	 \includegraphics[width=\columnwidth]{lens_schematic.png}
-	 \caption[Lens Widget Schematics]{Cross section schematics of the Lens Widget}
-	 \label{figure:lensSchematic}
+	 \includegraphics[width=\columnwidth]{lens_interaction.png}
+	 \caption[Lens Widget Schematics]{Interactions, from left to right: moving the
+	 lens, resizing the lens and adjusting the depth handle.}
+	 \label{figure:lens_interaction}
 	\end{figure}
 	% ==================
 
@@ -392,7 +402,7 @@ then from the circumference back to the entity's projected centroid.
 	 occluded geometries. Left shows the unaltered geometry. On the right, the
 	 lens cuts into the geometric shapes to expose the tree contained in the
 	 cylinder, which itself is contained in a box.}
-	 \label{figure:lensExample}
+	 \label{figure:lens_depth}
 	\end{figure}
 	% ==================
 	
@@ -421,15 +431,15 @@ whether the lens is active or inactive.
 % whether the lens is active or inactive.
 
 
-The lens enables three different actions. The position of the lens
-can be moved by dragging within the lens, impacting the currently
-focused entities and the heatmap charts. The lens can be resized by
+The lens enables three different actions, seen in Figure
+\ref{figure:lens_interaction}. The position of the lens can be moved by dragging
+within the lens, impacting the currently focused entities and the heatmap charts. The lens can be resized by
 dragging on the border of the lens, increasing or decreasing the query
 area. Lastly, the depth plane can be adjusted by rotating the depth
-selector tab around the circumference of the lens (see Figure \ref{figure:xxx}). The
-depth plane function provides a method for people to reduce occlusion,
-as all entities that are the cut by the plane are drawn in an outline style,
-allowing viewers to see through them and into the object. Objects that
+selector tab around the circumference of the lens (see Figure
+\ref{figure:lens_depth}). The depth plane function provides a method for people
+to reduce occlusion, as all entities that are the cut by the plane are drawn in
+an outline style, allowing viewers to see through them and into the object. Objects that
 are cut off are excluded from any scoring calculations, they also have
 their heatmaps hidden to reduce visual clutter. These three interactions
 can be combined together to create a rich, flexible query mechanism
