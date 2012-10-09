@@ -16,76 +16,60 @@ qualitative user study, discuss the experiment results and our observations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Scenarios}
-We present two different scenarios to show possible use case with our
-visualization. The first is a general user case and showcases the benefits of
-preserving the spatial dimensions. The second is an analytical use case, where
-we use our visualization to detect trends and patterns.
+We present three different scenarios to show how different facets of the
+visualization can be used to analyze data and facilitate decision making tasks.
+The first two demonstrate our system functions: spatial exploration and making
+comparisons, note these scenarios are contrived and not based on real data. The
+third and last scenario, we take a look at a real world event and see if the 
+dataset reveal any interesting facts surrounding the event.
 
-% \subsection{Buying a Used Vehicle}
-% The family sedan has been in service for the past 10 years and is starting to
-% show its age. Michael, the owner and primary provider for his family of four had 
-% been thinking of buying a new sedan for the past three month and have been saving 
-% up for the big purchase. With the budgeting concerns more or less taken care of, 
-% Michael wants to make sure that the next family car is reliable and built by a 
-% manufacturer with a proven track record on safety standards. With these in mind, 
-% Michael decides that he does not want to buy the new models coming out this year, 
-% he believes it is too much risk buying new vehicles that has not been tested by 
-% drivers in real life. Michael starts off his search by talking to his friends and 
-% colleagues at work to get a sense of how they feel about certain manufacturers, 
-% and to get a sense of how their vehicles performed up-to-date. In his second step, 
-% Michael conducts research on various consumer product review websites to see how 
-% the expert rank the automotive manufacturers and their specific vehicles in terms 
-% of safety and reliability ratings, he also browsed open forums to see what type of 
-% problems can arise from current owners. Michael finds his search helpful but quite 
-% tedious because the information is difficult to digest; often the data is quite 
-% generic and provide no link to detailed information. After a week of searching, 
-% Michael finally picked out three potential models that he believes will meet 
-% his requirements, he contacted the used car dealerships to come in for a closer 
-% look in person.
-% 
-% The visualization system saves Michael the need to aggregate the data himself, which is tedious
-% due to the number documents available, and the number of things mentioned within
-% each document. Using our visualization system, it is possible for Michael to
-% speed up his research process because the system presents a visual summary. Using the time
-% filters Michael can narrow down the period of his research. He can then use the
-% hierarchy filters, as well as the comparison mode to see how manufacturers
-% perform relative to each other. Michael can use visual inspection to find
-% anything that are out of place, he can then use the lens widget to focus on the
-% the area of interest to see more details. Finally he can select the object into
-% focus and use the document widget to read detailed reports.
+ 
+\subsection{Locating Issues}
+This scenario describes how a regular consumer, Larry, may use the 
+visualization to look up a problem. Larry has about 6 years of driving 
+experience and owns a 2005 Ford Focus, recently while driving he 
+noticed a rattling sound coming from the passenger side of his vehicle. 
+He decided to do some research on his own before taking the car back 
+to the dealership.
+
+Using the visualization, Larry filters the dataset to focus on 2005 
+Focus model. Since Larry is not sure exactly where the noise came from, 
+he uses the lens widget to focus on components near the front-passenger 
+region. Using the lens, Larry can see that the suspension component has 
+higher number of complaints registered against it than the other components 
+in the focused region. Larry then selects the suspension component using 
+the heatmap, and toggles the document widget so he can read through the 
+actual complaint reports. After a few minutes of reading, Larry notes that
+there are at least 4 or 5 reports that seemed to document similar noise 
+issues and point to defective suspension setup. Larry decides that he 
+should contact his dealership to have them check it out.
 
 
-\subsection{Locating Possible Issues}
-Larry owns a 2009 Toyota Corolla; for the past two or three weeks while driving
-on city streets he noticed a strange intermittent vibration coming from near the 
-front-passenger side of the his car. Larry is mulling over whether to contact the 
-dealership to have them do a checkup, he does not want to spend the time and
-money to fix what might be a trivial issue, but at the same time he is worried that his 
-might develop into a major problem which would cost more in the long run. He 
-checked on the web to see if there are any other owners with the same issues, after 
-browsing multiple forums and looking through all the owner complaints with similar 
-characteristics he found about a dozen instances with half of them leading to more 
-serious suspension issues. Larry decides that these provides more than enough evidence 
-that the car may have a serious problem, he contacts the dealership to make 
-appointment for a checkup.
+\subsection{Vehicle Comparison}
+This scenario describes how our visualization may guide purchasing decisions.
+Sara just accepted a job offer across town, and is looking to purchase a car 
+for her commute. She previously had her mind settled on a used Honda Civic, 
+but her friends have been saying good things about Nissan Sentra. With the 
+visualization system, Sara uses the comparison function to compare Civic to 
+Sentra, she then turns on the aggregation mode function so the visualization 
+shows the system level view. 
 
-The visualization system helps people explore items and issues that are not
-necessarily known ahead of time. Instead of taking a guess at what the
-issue is, Larry can use the lens widget tool and place the lens at the front of
-the car.  The system will then display the available objects
-covered by the lens and narrow his search results significantly. Larry can then
-use the document widget and read the detailed complaints and decides if the
-problem is serious enough to contact the dealership.
+Sara sees that engine and wheel components are lightly shaded, which indicates
+that neither one had serious issues regarding these sub systems. However, she notices
+that there are dark green outlines around several components, using the lens she
+identifies them as parts of the transmission subsystem. It seems like Sentra had
+a much higher rate of transmission failure than Civic. Sara decides that her original
+intuition about Honda Civic is correct.
 
 
-\subsection{Retrospective on Toyota Recalls}
-In addition to experimental testing, we can examine how our visualization
-system works by reviewing an example scenario. The Toyota
-vehicle recall happened between September 2009 to February 2010
-and had to do with faulty accelerators and brakes. We wondered if
-there were any leading or lagging indicators in our data, which may be
-indicative of the problem. We set visualization time frame to be between
-2008 and 2010 and selected Toyota as the vehicle manufacturer.
+\subsection{Retrospective Analysis}
+In this scenario, we use our system to examine the Toyota recall. The Toyota 
+vehicle recall happened between September 2009 to February 2010 and had to
+do with defective brakes and accelerators. We are curious to see if there are
+any patterns, in terms of leading or lagging indicators in the complaint data.
+We set the time sliders to show 2009 and 2010 as seen in Figure \ref{figure:heatmap} 
+and use the heatmap widget to observe for patterns.
+
 The first thing we noticed is that the engine, usually one of the highest
 occurring components in the complaint reports, no longer dominated
 the visualization. Instead, two components pop out: brakes and accelerator.
