@@ -101,7 +101,7 @@ after March 2010.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Study}
+\section{User Study}
 We conducted a user study to see how the visualization is perceived and how
 people perform analytical tasks. In order to create a realistic scenario, we
 leveraged the vehicle complaint dataset, the study is framed around the idea of
@@ -132,26 +132,26 @@ software. For experiences relating to the automotive domain, 2 participants
 currently own a vehicle, while 7 had previously investigated safety issues is
 some way. 
  
-\daniel{Maybe show a demographic graph here?}
+%\daniel{Maybe show a demographic graph here?}
 
-The study takes place in a controlled lab environment. The visualization ran on
+The study took place in a controlled lab environment. The visualization ran on
 a 60 inch display fitted with a PQLabs infrared sensor overlay capable of
 multitouch gestures. To avoid personal bias that may came from prior domain
-knowledge, we removed known identifiers and replaced them with placeholders, for
-example we replaced the manufacturer``Toyota'' with ``MFR1.''
+knowledge, known identifiers were removed and replaced with placeholders,
+for example the manufacturer``Toyota Motors'' was replaced with ``MFR1.''
 
 After a brief tutorial on how to interpret the visualization and how to use the
 interface, participants were asked to perform 3 sets of tasks. The first set
-consists of warm-up exercises aimed to help participants become familiar with the system
-interactions (These are excluded from our data analysis). Next came a set of
+consists of warm-up exercises aimed to help participants become familiar with the 
+interactions (these are excluded from our analysis). Next came a set of
 objective tasks with specific answers, they are intended to indicate whether the
 \threed visualisation can be accurately perceived. For example, one question may
-be ``Select the most complained about car component in the year 1999.'' Finally,
+be ``Select the most complained about component in the year 1999.'' Finally,
 the third set of questions are subjective in nature and have open-ended answers.
-For these, participants are presented with the several scenarios, participants
-were asked to look for trends and patterns, and finally come up with a decision
-based on their interpretation. For example: ``Between 1997 and 2000, which of
-the vehicles X and Y would you purchase and why? Assume these vehicles are
+For these, we presented participants with a view of the data and asked them to
+describe what they see, mentioning any trends or patterns, and lastly make a
+decision based on a comparison of two vehicles. For example: ``Between 1997 and
+2000, which of the vehicles X and Y would you purchase and why? Assume these vehicles are
 similarly priced.'' After these tasks were completed, we conducted a
 semi-structured interview to solicit opinions from participants about their
 experiences. 
@@ -162,31 +162,6 @@ they wanted on any task. Each session was recorded on video, and touch
 interactions were logged by the system.
  
 
-
-%Our study involves a series of computer based tasks, as well a short,
-%semi-formal interview that is held at the end of the study. Our tasks are
-%divided into categories, objective tasks and subjective tasks. Objective tasks
-%are designed to test whether participants can accurately interpret the
-%visualization encoding. Subjective tasks are designed to solicit analytical
-%processes from each of our participants, they tell us if our visualization can
-%support decision making. 
-%
-%We have considered running a comparison against existing applications that query
-%the complaint database. However, the existing system are web application that
-%are form-based. We felt that these applications are sufficiently different from
-%ours that a comparative approach would not yield useful insights.
-%
-%Our study procedure is in the appendix section of this thesis.
-
-
-%\subsection{Data Preparation}
-%To remove any personal bias against particular makes of vehicles or
-%manufacturers, we perform a replacement scheme to remove known and common
-%identifiers and replace them with generic placeholders such as ``Make1'',
-%``Model2'' \ldots etc. For simplicity, we included only the top four occurring
-%manufacturers in the study dataset.
-
-
 \subsection{Discussion}
 12 participants took part in the study, however one study session was excluded
 from data analysis as the participant had severe difficulty understanding the
@@ -196,14 +171,12 @@ during the interview portion of the study.
 Interpretation of the \threed visualization seemed to be fairly accurate for
 simple scenarios, while more complicated target acquisition tasks that required
 multiple steps yielded mixed results. The first two tasks, which asked
-participants to directly identify the mostly significant outliers with respect
-to the colouring scale, to accomplish these tasks, participants were to
-visually identify the outlier \threed component and select it, there were
-no restrictions on their method of selection. In total, 8/11 and 10/11 answered
-correctly. The lower score may be attributed to participants not fully
-comprehending that they were suppose to interpret the visualization, as
-illustrated by one participant whom made the choice based on personal opinion
-then what is shown on the display.
+participants to directly identify the mostly significant outliers, to accomplish
+these tasks, participants were to visually identify the outlier \threed
+component and select it, there were no restrictions on their method of
+selection. In total, 8/11 and 10/11 answered correctly, though one participant
+who selected the incorrect entity later stated that the selection was based on
+personal opinion rather than a direct interpretation of the visualization.
 
 The third interpretation task, which asked participants to identify which of the four
 manufacturers used in the study had the highest engine complaints, received
@@ -211,24 +184,29 @@ mixed results. To complete the tasks, participants had to look at each
 manufacturer one-by-one, or carry out a series pairwise comparison to find the
 max. We believe the complexity of having to memorize multiple states likely
 contributed to the incorrect answers, in total 5 participants chose the correct
-manufacturer. The interpretation of co-occurrence relationships were also mixed,
-3 participants had difficulties understanding the concept of co-occurrence and
-required further explanation, 2 others, at times, chose to read the
-co-occurrence relationship from the document widget instead of reading off the
+manufacturer. 
+
+The interpretation of co-occurrence relationships were also mixed. In these
+tasks, we asked the participants to identify the components that failed when
+component X failed. We expected the participants to select X, then identify the
+remaining entities in the visualization. However, we found that 3 participants
+had difficulties understanding the co-occurrence concept. Unexpectedly, 2 2
+participants noted that document widget also shows co-occurrences in textual
+form, and read the documents directly instead of using the \threed
 visualization.
 
 Analysis of subjective tasks showed that participants generally had no problems
 in accomplishing what was asked. For the task regarding trend analysis, most
 attention was on the heatmap widgets. 5 participants explicitly mentioned
-outlier month in particular vehicle components over the a 12 month period that
-they found to be peculiar. 3 participants made note of possible seasonal trends,
+outlier month in particular vehicle components over the twelve months period
+that they found to be peculiar. 3 participants made note of possible seasonal trends,
 such as winter months usually had higher number of complaints. The remaining 3
 participants did not observe any specific patterns or outliers. 
 
-For the comparison task of picking a more reliable vehicle, the participant
+For the comparison task of picking a reliable vehicle, the participants
 focused on the \threed visualization. 6 participants made the choice based on
 preconceived notions of which components are more vital then others, for example
-some chose solely based on which one had a lower rate of engine failures. 4
+some chose solely based on which vehicle had a lower rate of engine failures. 4
 chose based on the sheer number of different components that failed. The
 remaining lone participant was not able to make a choice but was able to
 correctly interpret the visualization, mentioning each each vehicle's problems
@@ -241,7 +219,7 @@ comparison function, rather each vehicle was examined one at a time.
 \begin{figure}
 \begin{tikzpicture}
 \begin{axis}[ 
-    width=14cm,
+    width=13cm,
     height=8cm,
     bar width=0.2cm, 
     ybar=0,
@@ -270,18 +248,22 @@ comparison function, rather each vehicle was examined one at a time.
 \end{figure}
   
    
-In terms of interaction within the \threed space, we observed 3 different
+In terms of interaction with the system, we observed 3 different
 interaction styles. One group (P2, P7) used the lens almost exclusively
 as their primary navigational tool. The second group (P4, P5, P11) were the
 opposite and used direct manipulation to rotate and zoom the \threed model to
 access different components. The last group used a combination of both lens
-widget and direct manipulation. We also observed different behaviours, some
-participants (P1, P2, P3, P11) spent a lot more time exploring the
-visualization, while others (P4, P7 and P10) were more efficient in getting the
-visualization to their desired orientation. A chart showing widget usage can be
-seen in Figure \ref{chart:usage}.
+widget and direct manipulation. A chart showing the distributions of time spent
+on each widget can be see in Figure \ref{chart:usage}.
 
 
+%We also observed different behaviours, some
+%participants (P1, P2, P3, P11) spent a lot more time exploring the
+%visualization, while others (P4, P7 and P10) were more efficient in getting the
+%visualization to their desired orientation. A chart showing widget usage can be
+%seen in Figure \ref{chart:usage}.
+
+\subsection{Participant Feedback}
 Interaction with the heatmap widget had the most negative reactions. 4
 participants thought the heatmap widget provided too much detail, they argued
 that an ordinary consumer would not care for trend details, they would only care
@@ -294,9 +276,44 @@ severity levels. Participants liked using the lens to focus on specific
 objects, particularly for revealing entities that were unknown to them
 before. Several participants tried to use the lens' depth function to access
 occluded objects, however we observed that there were difficulties making fine
-adjustments, especially if the objects are located within close proximity to each other.
+adjustments, especially if the objects are close to each other. 
+  
+During the interview session, we asked the participants what they would do to
+improve the system, there are four ideas relating to visualizations that emerged
+from the study sessions:
+\begin{itemize}[noitemsep]
+  \item Non consecutive year functions: Allow non-contiguous selection, for
+  example select the years 2000 and 2002. Several participant also mentioned it
+  would be nice to make year-to-year comparisons for each entity without
+  leveraging the heatmap.
+  
+  \item Semantic zoom for the document widget: Several participant noted that
+  the text on the document widget felt overwhelming, and would be better to
+  present a brief summary before diving into the full text.
+  
+  \item Provide entity summary: The system only shows the name of the entity,
+  there are a few participants that mentioned it would be nice to add a brief
+  description to what the entity is and its function.
+  
+  \item Regional select: Provide a shortcut to select all entities under the
+  lens influence.
+\end{itemize}
+  
   
 \subsection{Summary}
+Our study sessions showed that in general people were able to interpret the
+visualization correctly, however for complicated situation where the analysis
+requires multiple steps, result tend to vary. In the open-ended tasks, we
+observed that participants were able to use the visualization and various
+interaction widget to help guide their analysis.
+
+The visualization itself was intuitive, there are times where we did not
+sufficiently explain the interface but participants were able to correctly infer
+the correct interpretation. The semantic relations of occurrence and
+co-occurrence were harder to understand, which came as a surprise as we did not
+encounter comprehension issues in our pilot studies, perhaps a more hands-on
+tutorial would have helped.
+
 Overall, the receptions of using the visualization system were positive;
 comments such as ``cool,'' ``relatable,'' and ``that was really neat'' were heard
 through out the study sessions. Other comments, such as ``seeing all the different angles is
