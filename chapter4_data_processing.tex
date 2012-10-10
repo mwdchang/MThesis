@@ -2,13 +2,13 @@
 % This chapter describes the text processing steps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Data Processing}
-Data is received in a textual list of records consisting of meta data about
-the complain and the text description of the complaint. We apply several
-processing steps to each document to first extract the physical entity
-keywords, and then to calculate the semantic scores. For this dataset, we have
-chosen the semantics of occurrence relations and co-occurrence relations. Finally we
-segment \threed models to match our keyword ontology. Each of the steps are
-explained in greater detail below.
+Data is received in a textual list of records consisting of meta data and the
+text description of the complaint. We apply several processing steps to each
+document to first extract the physical entity keywords, and then to calculate
+the semantic scores. For this dataset, we have chosen the semantics of
+occurrence relations and co-occurrence relations. Finally we segment \threed
+models to match our keyword ontology. Each of the steps are explained in greater
+detail below.
 
 
 \section{Entity Vocabulary}
@@ -26,8 +26,8 @@ normalization tasks: One, we used regular expressions to convert the text from
 all capital cases to normal case format. Second, we remove suffix characters that
 appear at the end of the text paragraph, that, as far as we know contributes
 nothing to the incident context. Although we changed the underlying text, the
-normalization process improves readability, and allows us receive more
-meaningful output from natural language parsers.
+normalization process improves readability, and enables us to receive more
+meaningful outputs from natural language parsers.
 
 \subsection{Keyword Hierarchy}
 Our entity extraction process leverages the WordNet database, a lexical English
@@ -46,12 +46,12 @@ merged together.
 While this process extracts a fair amount of physical entities, an analysis of
 sample dataset showed that it is not a representative of the entities mentioned
 in the documents. The primary reason for this is due to the use of synonyms
-names in the document text. To alleviate this situation, we additionally extract
+in the document text. To alleviate this situation, we additionally extract
 the synset relations from WordNet for each keyword. A synset is a set
 relationship that describes words that are semantically equivalent of one
-another, for example ``limo'' and ``limousine'' both describe the same type of
-object and thus belongs to the same semantic group. For each word in our current
-vocabulary, we replace it with the its synset equivalent.
+another, for example ``limo'' and ``limousine'' are different words, but both
+describe the same type of object and thus belongs to the same semantic group.
+For each word in our current vocabulary, we replace it with the its synset.
 
 
     % ===== Figure =====
@@ -80,14 +80,15 @@ physical objects under typical usage, for example WordNet hierarchy of a
 vehicle contains ``first'', ``second'', ``third'' and ``fourth'', which
 describes the first, second, third and fourth gears respectively. Including
 these words will likely result in over-counting the number of occurrences of
-gears because they are used in every day speech. We also removed several
-acronyms that will likely cause ambiguities, for example ``ice'', which is short for internal-combustion-engine,
+gears because they are used in every day speech, but not typically with respect
+to car gears. We also removed several acronyms that will likely cause
+ambiguities, for example ``ICE'', which is short for internal-combustion-engine,
 will cause issues if the document is about ice, the solid state of water. They
-are therefore removed from the keyword vocabulary. 
+are therefore removed from the keyword vocabulary.
 
 The second step deals with any possible missing keywords that are not in WordNet
-meronyms. We attempted to detect these semi-automatically with natural language 
-processing techniques. We first perform part-of-speech (POS) tagging on our document 
+meronym synsets. We attempted to detect these semi-automatically with natural
+language processing techniques. We first perform part-of-speech (POS) tagging on our document 
 corpus. POS taggers look at the grammatical structures of text and break down 
 sentences into lexical categories such as nouns, verbs and adjectives. We use the 
 POS output and tie them back to the original text, extracting the nouns and 
@@ -107,29 +108,31 @@ extended and further refined by consulting experts that works in the problem fie
 
 \section{Semantic Relations}
 We chose to look at two semantic relations in our dataset: occurrence and
-co-occurrence. The occurrence relation is a measure of how frequently a
-particular entity was mentioned throughout the corpus, and is an
+co-occurrence relations. The occurrence relation is a measure of how frequently
+a particular entity was mentioned throughout the corpus, and is an
 indication how important the entity is overall. The co-occurrence relation is
 also a frequency measure, it measures how frequently an entity is mentioned along
-with another entity in the same document, indicating possible causal relations.
+with other entities in the same document, indicating possible causal relations.
 For example: ``Engine failed because radiator overheated'' has a co-occurrence
 relation between engine and radiator.
 
-Semantic relations are defined document-entity pairs, that is to say, there is a
-one-to-many relation between a document and our keyword ontology. Detection of
+Semantic relations are defined as document-entity pairs, that is to say, there
+is a one-to-many relation between a document and our keyword ontology. Detection of
 keywords in document is done through a tagging process. In the sections below we
 describe this process in detail, as well as formalizing the semantic scoring
 function.
-
+ 
 
 \subsection{Tagging}
-We use straight forward string matching to tag each document. First, document
-text is segmented into word tokens, then for each token we perform a string
-match against the entity keywords. When a match is found, we store a triple
-that describes the document identifier, the keyword and the position of the word
-in the document. In the aforementioned example above, we would store (Doc0,
-engine, 0) for the engine entity, and (Doc0, radiator, 3) for the radiator
-entity.
+%We use straight forward string matching to tag each document. 
+Straight forward string matching is used for tagging of each document
+First, document text is segmented into word tokens, then for each token we
+search for a string match against the entity keywords. When a match is found, we
+store a triple that describes the document identifier, the keyword and the
+indexed position of the word in the document. In the aforementioned example
+above, we would store
+\emph{(Doc0, engine, 0)} for the engine entity, and \emph{(Doc0, radiator, 3)}
+for the radiator entity.
 
 In the actual string matching, we use an open source, off the shelf snowball
 stemmer\footnote{http://snowball.tartarus.org/} to normalize each word token. 
@@ -147,8 +150,8 @@ stemming. On the other hand this also introduced false positives, the word
 ``lock'', which refers to the component, is falsely picked up when the text describe components
 ``locking up''.
 
-We have also looked at tagging explicit casual relations. Using the dependency
-parser extension, the output is a tree-like structure that can be used to infer
+In addition, we have also looked at tagging explicit casual relations. Using the
+dependency parser extension, the output is a tree-like structure that can be used to infer
 word dependencies. In practice this did not work very well; informal languages,
 spelling mistakes and grammatical errors result in incorrect dependency parse
 trees. We ultimately opted to go for a more general approach, where we tag each
@@ -173,13 +176,14 @@ when G is the empty set the score is the occurrence score (every document
 contains an empty set). When G is non-empty the score reflects the co-occurrence 
 strength among a set of components. For clarity we illustrate this with a few examples:
 \begin{itemize} [noitemsep]
-  \item $S(engine, \{\})$: The absolute strength of ``engine'' component in all
-  documents
-  \item $S(engine, \{engine\}$): The strength of ``engine'' relative to
-  ``engine'', thus the same as the above
-  \item $S(engine, \{brake\})$: The number of times engine keyword is mentioned
-  when brake keyword is mentioned as well. Thus, mathematically,  $S(brake,
-  \{\}) \geq S(engine, \{brake\})$
+  \item $S(engine, \{\})$: The number of documents that mentions the entity
+  engine.
+  
+  \item $S(engine, \{engine\}$): The number of documents that mentions the
+  entity engine and engine, thus this is the same as above. 
+  
+  \item $S(engine, \{brake\})$: The number documents that mention both
+  ``engine'' and ``brakes''. 
 \end{itemize}
 
 Each document is only counted once per physical entity, this was done to
@@ -187,11 +191,16 @@ discourage biases coming from longer documents where the entities are
 repetitively mentioned.
 
 Unlike the tagging process, scores are not stored, but rather
-evaluated on a need basis. The numerous combinations of G along makes it
-impractical to persist the scores in any manner, as the number of possibilities
-is a permutation of all available entities.
+evaluated on a need basis. The numerous combinations that make up the set G
+along makes it impractical to persist the scores in any manner, as the number of
+possibilities is a permutation of all available entities.
  
- 
+Upon retrieving the entity scores during runtime, each score is normalized
+to show relative strength with respect to each other. First, the system finds
+the highest score within a subset of the data being visualized, then it uses the
+score as a divisor so the scores are normalized to a range between 0 and 1.
+
+  
 \subsection{Limitations} 
 For this prototype, we gave the same score weighting to each objects. This is a 
 subjective measure because not all parts are created equal. For example: if window 

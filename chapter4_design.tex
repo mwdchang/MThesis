@@ -6,18 +6,18 @@
 %   in the 3D visualization section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Designing D-NPR}
-This chapter covers our visual design process and our rationals for our
-decisions. Our main interface, as shown in \ref{figure:overview}, is composed
-of four major components:
+This chapter covers our visual design process and our rationales of our
+design decisions. The system interface, as seen in \ref{figure:overview}, is
+composed of four major components:
 
 \begin{itemize} [noitemsep]
-   \item Stylized Visualization: The central point of the visualization system
+   \item 3D Visualization: The central point of the visualization system
    is a stylized rendering representing the physical entities in the text documents,
    the visualization can be zoomed and rotated to explore different viewing
    perspectives. Each entity is rendered with respect to a function which denotes
    its importance, we explore different rendering styles to take advantage of
    viewers' preattentive perception, allowing them to quickly uncover the
-   important subject matters.
+   important information.
 
    \item Lens Widget: The lens widget is a detail-on-demand tool. It is used
    to specify spatial regions on the \threed visualization. Entities under the
@@ -27,16 +27,20 @@ of four major components:
    \item Heatmap Widget: The heatmap displays time series data at the lowest
    granularity level in order to provide trend and pattern analysis. It is
    organized into a grid, each cell is shaded in accordance with its score of
-   that time period. In addition, the heatmap identifies the entity name and its
-   raw numerical scores.
+   that time period. In addition, the heatmap identifies the entity names and
+   their raw numerical scores.
    
   \item Document Widget: The document widget displays the source text documents.
-  The panel displays documents relating to the current selected objects and 
-  highlights all component keywords.
+  The panel displays documents relating to the current selected objects and
+  applies highlights to all relevant keywords.
 \end{itemize}
 
-In addition, we introduce two domain specific widgets, which are used to filter
-vehicle specific data into manageable pieces:
+%In addition, we introduce two domain specific widgets, which are used to filter
+%vehicle specific data into manageable pieces:
+ 
+In addition, two domain specific widgets provide filtering functions to
+visualize subsets of the text corpus. These widgets are created from the meta
+data in the documents, they are: 
 
 \begin{itemize} [noitemsep]
   \item Time Filter: The filter is composed of two independent range sliders
@@ -47,22 +51,21 @@ vehicle specific data into manageable pieces:
   
   \item Hierarchy Filter: The hierarchy filters are placed at the
   top portion of the display similar to a series of drop-down menus or spinners.
-  These are designed specifically for our data of automotive complaints. The
-  hierarchy filters allow successive query refinement by organizational
-  hierarchies of manufacturers, going in the order of : Vehicle Manufacturer,
-  Vehicle Make, Vehicle Model and Vehicle Year. Hierarchy filter is also used to
-  select two different vehicle types in comparison mode.
+  The hierarchy filters allow successive refinement of dataset by means of
+  filtering on organizational hierarchies. Going top down, the system supports:
+  Vehicle Manufacturer, Vehicle Make, Vehicle Model and Vehicle Year. 
+  Hierarchy filter is also used to select two different vehicle types in comparison mode.
 \end{itemize}
 
 
     % === Figure ===
 	\begin{figure}
 	 \centering  
-	 \includegraphics[width=\columnwidth]{overview.png}
+	 \includegraphics[width=\columnwidth]{overview_2.png}
 	 \caption{System Overview}
-	 \label{figure:overview}
+	 \label{figure:overview} 
 	\end{figure}
-	% ==============
+	% ============== 
 
 The following subsections will describe each visualization components in
 greater detail, with respect to how each widget works and their design trade
@@ -95,15 +98,15 @@ Yet another argument is that the use of a set of \twod images can also convey
 realism, our opinion is that they lack the expressive power and playfulness of a
 fully rendered \threed model. Flat image representation would likely result in
 multiple images, used to cover different viewing perspectives, this can result
-in more cognitive load due to the viewers switching between images to see 
-different data.
+in more cognitive load due to the viewers having to switch between images to
+see different data.
 
 
 \subsection{Visual Mapping}
 Because our visualization environment makes use of 3 dimensional space,
 extra care are taken into account for the selection of visual variables. Not all 
-variables are appropriate, shape, position and orientation are inherently used 
-to represent the geometries on the virtual model, a double encoding of these
+visual variables are appropriate, shape, position and orientation are inherently
+used to represent the geometries on the virtual model, a double encoding of these
 variables is likely going to lead to confusion, compromising the ability to
 interpret the visualization, or destroy any resemblance of the virtual model to
 its real world counterpart. Thus these are rejected in the early part of our
@@ -124,7 +127,7 @@ textures do not possess order or quantifiable characteristics and was not
 included in our design. However it may be interesting to use textures for
 visualizing individual document, we leave this idea as future work.
 
-\subsection{Stylized Visualization}
+\subsection{Stylized Rendering}
 %Data comes in many different dimensions, include those with spatial attributes
 %and those with abstract attributes. Our innovation is to show these spatial 
 %vocabulary as they would exist in the physical world, while using the abstract 
@@ -173,16 +176,16 @@ further down.
 The first case can be partially solved by altering
 the viewing distance and viewing perspective on the visualization, whereas in
 the second case no amount of viewing adjustment will solve the occlusion issue.
-To address this problem, we double-encoded the importance score as both the
-colour and transparency values. The transparency value of each object is
-proportional to the object’s score, such that the higher scored entities appear
-more opaque, while the lower scored entities appear more transparent. The
+To address this problem, we double encoded the score as both the
+colour and transparency values. The transparency value of each geometric object
+is proportional to the entity’s score, such that the higher scored entities
+appear more opaque, while the lower scored entities appear more transparent. The
 maximum and minimum transparency values are capped between 0.4 and 0.8 such that
 no objects are completely opaque or completely transparent. Our transparency scale
 is slightly weighted to give more emphasis for more frequently occurring
 entities. One challenge of rendering translucent geometries in \threed space is
-that ordering of geometries becomes important for blending to work correctly,
-out-of-sequence geometries appear to lose their depth cues when blended
+that the ordering of geometries becomes important for alpha-blending to work
+correctly, out-of-sequence geometries can lose their depth cues when blended
 together. We discuss this effect, and solutions in further detail in the
 implementation chapter.
 
@@ -195,11 +198,17 @@ what viewers are looking at, but also the placement and relative position among
 other entity objects. To show that these components are semantically different
 than others, the system renders them with silhouette styled edges in a just
 noticeable colour so they are visible but not overly
-distracting~\cite{BAR2007a}. It is important to note that 0 scored objects only
+distracting~\cite{BAR2007a}. It is worth noting that 0 scored objects only
 provides graphical context, they do not partake in any user interactions.
 
 
 
+
+
+%As mentioned in Chapter 3, each entity has a numerical occurrence score.
+
+
+ 
 
 \subsection{Selection}
 Selection of entities is used to refine the visualization scope, for example
@@ -208,6 +217,14 @@ refer to windows. The system provides several methods for selecting entities,
 selections can be made by directly interacting with the \threed visualization,
 or through interaction with the heatmap widget.
 
+    % === Figure ===
+ 	\begin{figure}
+ 	 \centering  
+ 	 \includegraphics[width=\columnwidth]{select.png}
+ 	 \caption[Interactive Selection]{The visualization changes based on the currently selected entities.}
+ 	 \label{figure:selection}
+ 	\end{figure}
+ 	% ==============
 
 By default the application has no entities selected, thus the visualization
 reflects the absolute number of occurrences of each entity. As
@@ -220,8 +237,8 @@ the windshield wiper, the visualization is rerendered to show entities
 that co-occur with the wiper component and the strength of this
 relation. If the same person then selects the windows, the visualization
 will show co-occurring relation to both windshield wiper and windows. This example
-is reflected in Figure \ref{figure:xxx}. The rerendering process is facilitated
-by an animated transition that interpolates the graphical effects.
+is reflected in Figure \ref{figure:selection}. The rerendering process is
+facilitated by an animated transition that interpolates the graphical effects.
 
 
 % Entity objects can be acquired in two ways: One can directly select the entity
@@ -259,7 +276,7 @@ by an animated transition that interpolates the graphical effects.
 % Selection of an entity with zero score is considered invalid, instead, the
 % system will propagate the selection event through the zero scored entities.
 
- 
+\daniel{Stopping here\ldots}
 
 \subsection{Trade-offs}
 We recognize that blending different hues in \threed space does not necessarily
