@@ -138,7 +138,8 @@ predefined poses. One of the interesting WordsEye strives for is the preservatio
 of spatial relations among subjects in the text, for example: ``The giant orange 
 cat is on the black chair.'' will literally rendering a large cat on top of a chair. 
 However, WordsEye is limited by the inherent ambiguities in written language and
-the accuracy of its semantic interpretation. 
+the accuracy of its semantic interpretation. WordsEye also works best for
+a single document, and is not meant for collections of text.
 
 
 Another example of text-to-scene generation is CarSim\cite{Akerberg2003},
@@ -149,6 +150,7 @@ animated sequence by inferring the speed and direction of vehicles from the text
 content, it is less concerned with the literal representation of the car, but
 with the situation surrounding the incident.
 
+ 
 
 %So far, the discussion have been around examples where the renderings are based
 %on the literal meaning of the text. On the other side are interpretive
@@ -203,9 +205,9 @@ grail in graphics research, there are compelling reasons for using NPR
 techniques. First, NPR images are judged based on their ability to
 communicate a specific message to their viewers, thus they are driven to
 emphasize features in a scene or some underlying attributes~\cite{Gooch2001}.
-This is in contrast with photorealistic rendering where they are compared
-against a ground-truth image. Second, often times it is undesirable to preserve
-a high degree of accuracy, specular reflections, shadows and other natural
+This is in contrast with photorealistic rendering where the goal is to compared
+the rendering against a ground-truth image. Second, often times it is
+undesirable to preserve a high degree of accuracy, specular reflections, shadows and other natural
 lighting phenomenons can hinder viewers' ability to see vital details and create
 ambiguities. NPR can choose to ignore the natural laws of physics, and instead
 choose to focus on different abstractions such that the illustration can be
@@ -234,7 +236,7 @@ toon-shading map the intensity of light from a continuous function into discrete
 values, creating distinct contours where the values change as if shaded by a
 marker. Still, other works look at the simulation of physical materials,
 for example textures as halftones to simulate stylistic artistic
-sketches~\cite{Freudenberg2002} and pen-and-ink
+sketches~\cite{Freudenberg2002}, and pen-and-ink
 illustrations~\cite{Salisbury1994}. However it is semi-automatic as some human
 input is required for the right combination of textures, normal maps and other
 special effects.
@@ -256,8 +258,8 @@ into higher level geometric primitives. In \threed space, features can
 classified under the broad categories of ridges, valleys and  silhouettes.
 Ridges are formed by two front facing polygons with dihedral angle between 0 to
 180, similarly, valleys are front facing polygons with dihedral angle between
-180 to 360, both of these are exclusive, as angle of 0 or 180 results in a flat
-surface. Lastly silhouette edges are formed by the shared edge of front-facing
+180 to 360, both of these are exclusive, as an angle of 0 or 180 results in a
+flat surface. Lastly silhouette edges are formed by the shared edge of front-facing
 polygon and back-facing polygon. Raskar \cite{Raskar2001} computes these \threed features without
 connectivity information by extruding additional faces per polygon, using
 existing geometries to hide the generated features if they turn out to be
@@ -266,27 +268,28 @@ performed on these quads such that they can be rendered in a multitude of ways.
 Hermosilla~\cite{Hermosilla2009} took this idea further by moving the extrusion
 process to modern graphic pipeline's geometry shader, removing the need to do
 the computations on the CPU. It should be noted that in interactive environment,
-features are view dependent in both \threed and \twod scenarios, this usually
-indicates that feature extraction operation need to run once per frame.
+geometric features are generally view dependent in both \threed and \twod
+scenarios, this usually means that feature extraction operation need to run on a
+per frame basis.
  
 
 When it comes to expressiveness, NPR rendering styles can be used to convey a
 variety of semantics. Of particular interest to us is the idea of uncertainty:
 graphics that are visible to the viewer, but also convey a sense of error
 and inaccuracy. Researches in ancient architectural
-reconstructions~\cite{Masuch1998, Strothotte1999}, found that straight, solid
+reconstructions found that straight, solid
 strokes convey higher degree of certainty than strokes that are drawn faded and
-curved. The relevance here to our work is that we use this type of technique to
-covey objects that are not in the focused context.
+curved~\cite{Masuch1998, Strothotte1999},. The relevance here to our work is
+that we use this type of technique to covey objects that are not in the focused context.
 
 
 Another branch of non-photorealistic rendering deals with semantic segmentation
 of objects in the scene, such as illustrations found in science and medical 
 literature where specific parts are highlighted in different colours. This is
-done in order to differentiate normal and outlier areas. These type of
-techniques look at visibility issues, to ensure that semantically important
-objects are easily visible and to provide features to deal with occlusion
-issues. One prominent research came from an importance-driven function that can
+done in order to differentiate normal and outlier regions in the final
+illustration. These type of NPR techniques deals with visibility issues, to
+ensure that semantically important objects are easily visible and to provide features to deal with occlusion. 
+One prominent research work came from an importance-driven function that can
 be used to determine the visibility of objects \cite{Viola2004}. In this paper
 scores are assigned to volumetric components such that more important
 objects are rendered more opaque than objects of lesser importance. A screen
@@ -294,13 +297,15 @@ door transparency technique is introduced to ensure overall visibility by
 rendering holes into the outermost volumetric layers. The idea of
 segmentation and context is taken further by Tietjen \etal, they described a
 segmentation scheme that partitions different volumes into focus, near focus and
-context categories, with the following semantics:
+context categories~\cite{Tietjen2005}, with the following semantics:
 \begin{itemize}[noitemsep]
   \item Focus object: Current focus and is emphasized.
   \item Near focus object: Object for understanding spatial location or
   interrelations.
   \item Context Object: All others objects in the scene.
 \end{itemize}
+The segmentation allows for further accentuation of specific regions, while
+still providing enough background context to show the subject matter.
 
 %In action, focus, near-focus and context objects can be interactively changed
 %and take on different artistic styles.
@@ -342,12 +347,12 @@ physical objects, but contains inherent spatial information for reconstructing a
 \threed representation: An automobile model for CarComVis and a virtual library
 environment for LIbVis. Sedlmair \etal explores different types of integration
 techniques, including the usage of multiple coordinated views and a total immersion 
-environment where the user is in a virtual world. Subject feedback 
-from their study suggest a strong desire for integration of \threed
-visualizations, reaffirming the need to fuse together techniques from SciVis and
-InfoVis. Our work here is perhaps mostly closely associated with CarComVis,
-however our renderings are driven by unstructured text, and our interactions are
-directly applicable to the visualization itself rather than through coordinated
+environment where the user is in a virtual world. Subjective feedback 
+from their study suggested a strong desire for integration of \threed
+visualizations into traditional visualization and work flow. Our work in this
+thesis is perhaps mostly closely associated with CarComVis, however our
+renderings are driven by unstructured text, and our interactions are directly
+applicable to the visualization itself rather than through multiple coordinated
 views.
 
 %\textbf{Summary:} We take an approach similar to CarComVis [Seldmair2009], we
@@ -358,10 +363,10 @@ views.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \section{Focus+Context Techniques}
-Focus+Context is a well known and practiced technique used to draw attention to
-particular areas of interest while maintaining a certain degree of contextual 
+Focus+Context is a well known and practiced technique in InfoVis, it is used to
+draw attention to particular areas of interest while maintaining a certain degree of contextual 
 information. There are various ways to discriminate these areas, for example 
-Hauser\cite{Hauser2006} reviewed the general approaches where usage of colour, 
+Hauser~\cite{Hauser2006} reviewed the general approaches where usage of colour, 
 spatial-location, opacity and other resources are demonstrated. One interesting 
 use of the focus+context technique is the idea of using lenses, the lens traces 
 back to a real world metaphor of a magnification lens, where the area directly 
@@ -371,17 +376,17 @@ data graphics under the lens undergoes a graphical transformation in order to
 represent different semantics.
 
 
-Fisheye Lens\cite{Sarkar1992} is a well known lens technique for enlarging
+Fisheye Lens~\cite{Sarkar1992} is a well known technique for enlarging
 details on a \twod image, for example on digital maps and circuit diagrams. Much
 like its real world counterpart, a fisheye lens technique creates an ultra-wide viewing perspective that
 creates a distortion displacement under the lens. The amount of displacement 
 is controlled via a drop-off function that determines the degree of enlargement 
 and shrinkage, typically with the central part of the lens enlarged while area
 regions near the circumferences shrinks to compensate. There are a
-few usability issues with fisheye lens, and the same issue applies to all lens
-that undergoes geometric distortion: it is difficult to tell where the focus is,
-because the lens itself occludes nearby objects that helps the readers to
-understand the overall context.
+few usability issues with fisheye lens, and likely the same issue applies to all
+lenses that undergoes geometric distortion: it is difficult to tell where the
+focus is, because the lens itself may occludes nearby objects which the viewers
+use as navigational cues.
 
 Although not directly a focus+context scenario, the original idea of using a
 flexible and multipurpose virtual lens likely came from research by Bier \etal,
@@ -393,25 +398,24 @@ through the lens directly to the objects beneath it.
 
 NPRLens\cite{Neumann2007a} follows up on the MagicLens metaphor from Bier
 \etal to allows the user to interactively create images in a non-photorealistic
-style which is object independent. NPRLens performs image processing on
-the \twod projections of objects in \threed space. Graphical data points are
-first projected to screen space, collected and aggregated into higher level
-graphical constructs such as line segment and curve primitives. These can then
-be further manipulated such as stretching, shrinking or changing the stroke styles of each
-primitive unit. NPRLens supports many of the effects discussed in the NPR
-section above.
+style. NPRLens performs image processing on the \twod projections of objects in
+\threed space. Graphical data points are first projected to screen space,
+collected and aggregated into higher level graphical constructs such as line
+segment and curve primitives. These can then be further manipulated such as
+stretching, shrinking or changing the stroke styles of each primitive unit.
+NPRLens supports many of the effects discussed in the NPR section above.
 
 
-\threed MagicLens\cite{Viega1996} is likely the first foray of the lens idea
+\threed MagicLens~\cite{Viega1996} is likely the first foray of the lens idea
 taken into 3 dimensional space, unlike the previously mentioned works, MagicLens works with 
 viewing volumes rather than \twod image maps. The lens in this scenario slices
 the scene into different frustum volumes, each volume is then rendered separately 
 and then recomposed together to create the final scene. This technique allows 
 people to create interesting effects, for example exposing the skeletal 
 structures of multi-layered objects. With more advanced hardware features, it is
-possible to use buffer the rendering into textures and combine them at a later
+possible to buffer the rendering into textures and combine them at a later
 stage, rather than physically cutting the scene in volumes, this is the
-technique that we use here.
+technique that we use in our work.
 
 
 Other than stylization and distortion techniques, the same lens metaphor can
@@ -430,9 +434,9 @@ graphics and text. The lens itself is movable which allows for exploration of
 interesting regions. Extended Excentric Labeling~\cite{Bertini2009} further extends on the idea by
 creating additional interactions with the lens, dynamic overviews are shown
 inside the lens as miniature graphs summarizing of objects under the lens. The
-labels are scrollable to allow exploration of dense areas without overcrowding screen space, the labels and 
-the extending lines are also altered to minimize crossings which can cause 
-additional visual complexity. 
+labels are scrollable to allow exploration of dense areas without overcrowding
+screen space, the layout of labels and the extending lines are also altered to
+minimize crossings which can cause additional visual complexity. 
 
 
 %While both Excentric and Extended Excentric Lens operate in \twod space, there
@@ -442,18 +446,20 @@ additional visual complexity.
 While the techniques above are largely applied to \twod applications, there are
 applicable \threed focux+context techniques. Sonnet \etal \cite{Sonnet2004}
 created a medical volume rendering system where the lens takes the form of a \threed cursor,
-although the viewers cannot view into the cursor itself, the cursor creates a
-spherical volume that pushes other volumes away from the center, thus creating
-more space for labels and annotations, and reduce the occlusion issues that
+although the viewers cannot see into the cursor itself, the cursor creates a
+spherical volume that pushes other volumetric objects away from the center, thus
+creating more space for labels and annotations, and reduce the occlusion issues that
 come naturally with \threed environment. Another system is BrainGazer
 \cite{Bruckner2009}, a volumetric visualization application that allows
-users to draw a query path onto a segmented volume data. The path behaves as a visual query, that is, a query
-that can be specified via visual inspection, rather than explicitly stating the
-query parameters. When the query is issued/drawn, volume objects near the drawn
-path are highlighted, and their semantic information are displayed in a user
-interface panel.
+users to draw a query path onto a segmented volume data. The path exhibits lens
+like behaviour, that is, the the systems queries the objects that are in
+proximity to the path drawn. Additional information about these objects are then
+shown in a separate user interface panel. Our system uses a similar approach, in
+that the scene we render is pre-segmented into regions of different
+semantics, though we use an actual lens as the querying tool, and we deal with
+geometric rather than volumetric data.
 
-
+ 
 %\textbf{Summary:} Our approach to focus+context resembles a combination of
 %approaches taken by BrainGazer, NPRLens and Excentric Labels. Like BrainGazer, we allow 
 %people to form visual queries via indexing spatial location with different semantics, 
@@ -475,9 +481,9 @@ Though much of the work today deals with either collaborative or
 distributed environments, the focus in this work deals with designing
 surface-based gestures for a large display space. Gesture design
 and classification have been looked at via crowd sourcing approaches,
-leveraging public opinion to come to a consensus. Wobbrock \etal conducted
-experiments where the consequences are given, and participants had to come up
-with their own appropriate gestures to cause the said
+leveraging public opinions to come to a consensus as to which action should be
+associated with what gestures. For example, Wobbrock \etal conducted experiments
+where the consequences are given, and participants had to come up with their own appropriate gestures to cause the said
 actions~\cite{Wobbrock2009}. Others, such as Hinrichs and Carpendale, looked at
 how environmental and social context affect how people perform gestures
 ~\cite{Hinrichs2011}. In both cases, experimental results converge and they were
@@ -495,5 +501,5 @@ by Wigdor and Wixon, where they discussed design principles and other
 guidelines~\cite{Wigdor2011}.
 
 
-
+ 
 
