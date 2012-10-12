@@ -133,7 +133,15 @@ software. For experiences relating to the automotive domain, 2 participants
 currently own a vehicle, while 7 had previously investigated safety issues is
 some way. 
  
-%\daniel{Maybe show a demographic graph here?}
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{gesture2_2.png}  
+	 \caption{User evaluation setup.}
+	 \label{figure:study}
+	\end{figure}
+	% ==============
+
 
 The study took place in a controlled lab environment. The visualization ran on
 a 60 inch display fitted with a PQLabs infrared sensor overlay capable of
@@ -143,7 +151,7 @@ for example the model ``Civic'' was replaced with ``Model1.'' The dataset for
 the study itself includes the top 4 occurring manufacturers, and we used a time
 frame between 1997 and 2004. 2 pilot studies, both with lab members, were
 conducted beforehand to ensure the study was appropriate, and allowed us to
-tweak usability issues.
+tweak usability issues. Our setup can be seen in Figure \ref{figure:study}.
 
 
 After a brief tutorial on how to interpret the visualization and how to use the
@@ -222,7 +230,7 @@ and that neither one was desirable. One participant did not directly use the
 comparison function, rather each vehicle was examined one at a time.
 
  
-
+ 
 % Usage data chart
 \begin{figure}
 \begin{tikzpicture}
@@ -235,6 +243,7 @@ comparison function, rather each vehicle was examined one at a time.
     symbolic x coords={P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11},
     xtick=data, 
     legend style={at={(1.35, 0.9)}},
+    ylabel=seconds
     ] 
     \addplot[ybar,fill=blue!50] 
        coordinates { (P1,85) (P2,172)(P3,106) 
