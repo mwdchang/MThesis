@@ -12,35 +12,35 @@
 \chapter{Scenarios and User Study}
 In this chapter, we present several scenarios to show the possible uses cases
 for our visualization. Following that, in the second section we present a
-qualitative user study, discuss the experiment results and our observations.
+qualitative user study, discuss the study results and our observations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Scenarios}
 We present three different scenarios to show how different facets of the
 visualization can be used to analyze data and facilitate decision making tasks.
 The first two demonstrate our system functions: spatial exploration and making
-comparisons, note these scenarios are contrived and not based on real data. The
-third and last scenario, we take a look at a real world event and see if the 
-dataset reveal any interesting facts surrounding the event.
+comparisons. In the third and last scenario, we take a look at a real world
+event and see if the dataset reveals any interesting facts surrounding the
+event.
 
  
 \subsection{Locating Issues}
 This scenario describes how a regular consumer, Larry, may use the 
-visualization to look up a problem. Larry has about 6 years of driving 
-experience and owns a 2005 Ford Focus, recently while driving he 
+visualization to research a problem. Larry has about 3 years of driving 
+experience but does not know a lot about cars, recently while driving he 
 noticed a rattling sound coming from the passenger side of his vehicle. 
-He decided to do some research on his own before taking the car back 
+He decides to do some research on his own before taking the car back 
 to the dealership.
 
-Using the visualization, Larry filters the dataset to focus on 2005 
-Focus model. Since Larry is not sure exactly where the noise came from, 
+Using the visualization, Larry filters the dataset to focus on his
+vehicle model. Since Larry is not sure exactly where the noise came from, 
 he uses the lens widget to focus on components near the front-passenger 
 region. Using the lens, Larry can see that the suspension component has 
 higher number of complaints registered against it than the other components 
-in the focused region. Larry then selects the suspension component using 
+in the focused area. Larry then selects the suspension component using 
 the heatmap, and toggles the document widget so he can read through the 
 actual complaint reports. After a few minutes of reading, Larry notes that
-there are at least 4 or 5 reports that seemed to document similar noise 
+there are at least 8 or 9 reports that seemed to document similar noise 
 issues and point to defective suspension setup. Larry decides that he 
 should contact his dealership to have them check it out.
 
@@ -54,12 +54,13 @@ visualization system, Sara uses the comparison function to compare Civic to
 Sentra, she then turns on the aggregation mode function so the visualization 
 shows the system level view. 
 
-Sara sees that engine and wheel components are lightly shaded, which indicates
-that neither one had serious issues regarding these sub systems. However, she notices
-that there are dark green outlines around several components, using the lens she
-identifies them as parts of the transmission subsystem. It seems like Sentra had
-a much higher rate of transmission failure than Civic. Sara decides that her original
-intuition about Honda Civic is correct.
+Sara sees that engine and wheel components are both lightly shaded, which
+indicates that neither one had serious issues regarding these sub systems.
+However, she notices that there are dark green outlines around several
+components, using the lens she identifies them as parts of the transmission subsystem. It seems like Sentra had
+a much higher rate of transmission failure than Civic. Selecting the
+transmission, Sara reads through several complaint reports, Sara then decides
+that her original intuition about Honda Civic is correct.
 
 
 \subsection{Retrospective Analysis}
@@ -298,12 +299,12 @@ from the study sessions:
   \item Regional select: Provide a shortcut to select all entities under the
   lens influence.
 \end{itemize}
-  
+   
   
 \subsection{Summary}
 Our study sessions showed that in general people were able to interpret the
 visualization correctly, however for complicated situation where the analysis
-requires multiple steps, result tend to vary. In the open-ended tasks, we
+requires multiple steps, results tend to vary. In the open-ended tasks, we
 observed that participants were able to use the visualization and various
 interaction widget to help guide their analysis.
 

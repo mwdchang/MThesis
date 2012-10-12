@@ -14,10 +14,11 @@ our solutions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Environment and Architecture}
 The implementation of this prototype is done in the Java programming language.
-Graphics are rendered through Java for OpenGL (JOGL) graphics library. A MySQL
-database is used to host the text documents as well as their respective document
-scores. Our graphics hardware is a NVIDIA Quadro FX video card. The prototype is
-designed to run on 1680x1050 screen resolution. 
+Graphics are rendered through Java for OpenGL graphics library. MySQL
+database is used to host the raw text and document tags. Our graphics hardware
+is a NVIDIA Quadro FX video card, and we were able to achieve a frame rate
+between 15 to 30 FPS. The prototype is designed to run on 1680x1050 screen
+resolution.
 
     % === Figure === 
 	\begin{figure}
@@ -54,17 +55,14 @@ The major modules of our system, as well as their functionalities are listed bel
   
   \item State Manager: State Manager keeps track of all states used to calculate
   the current visualization, as well as the states of all interactive elements.
-  The basic idea is that State Manager represents a save-state, that can be
-  written out to disk and restored.
   
   \item Model Manager: The model manager stores the \threed model geometries, it
   allows access to \threed information at various levels: models, components,
   polygons and finally vertices.
   
   \item Cache Manager: Cache Manager is responsible for handling all actions
-  that impact the occurrence and co-occurrence scores. On system initialization,
-  Cache Manager reads in all entity scores, and compute what is needed on a
-  ad-hoc basis.
+  that impact the occurrence and co-occurrence scores, as well as any database
+  queries.
   
   \item Event Manager: Event Manager listens to user interaction events, it
   communicate changes to the State Manager. All the hardware specific tunings
@@ -79,7 +77,7 @@ The major modules of our system, as well as their functionalities are listed bel
 During the development of the software prototype, we have encountered several
 non-trivial problems. While these issues are not a part of our visualization 
 design, they nonetheless impact the overall user experience via the degradation 
-of aesthetic and usability of the application. In this section we discuss these 
+of aesthetic and usability of the system. In this section we discuss these 
 problems and our proposed solutions.
 
 \subsection{Order Independent Transparency}
@@ -88,7 +86,7 @@ can create artifacts, here we will describe this in greater detail and outline
 our work around solution. There are two states that need to be toggeled to
 enable translucent effetcs:
 \begin{itemize} [noitemsep]
-  \item Enable Blending: This option allows foreground object to blend with
+  \item Enable Blending: This option allows foreground objects to blend with
   background objects.
   \item Disable Depth Testing: This option renders all geometries regardless of
   depth and overlaps.
@@ -124,15 +122,15 @@ Naively we can sort the geometries into depth order, or use space partitioning
 structures that forces the geometries to be depth order rendering. However, 
 these naive solutions tend to have very expensive computation, and are view
 dependent which results in re-computation whenever the viewing perspective
-changes. There are also pathological cases where polygons intersects each other,
+changes. There are also pathological cases where polygons intersect each other,
 which cannot be solved with partitioning or sorting alone.
 
 Alternative blending algorithm exist that looks at minimizing the effects of
-order-dependent terms, but there is a threshold on the amount
-of transparency that can be applied on an object~\cite{Meshkin2007, Bavoil2008}.
+order-dependent terms in blending equations, but there is a threshold on the
+amount of transparency that can be applied~\cite{Meshkin2007, Bavoil2008}.
 Other works use hardware features to allocate a buffer to emulate
 sorting~\cite{Myers2007, Bavoil2008, Yang2010}, these algorithms produce more
-accurate results, albeit bounded by hardware constraints and the complexity of
+accurate results, albeit bounded by hardware constraints or the complexity of
 the scene itself.  
 
 In this prototype, we use an implementation of dual-depth-peeling
@@ -161,11 +159,11 @@ the required features are available on most hardware at the time of implementati
 % texture, we alter the non-lens area to be completely transparent and superimpose
 % the remainder onto the existing scene.
 
-
+ 
 
 \subsection{Cache and Stabilization}
 Because the size of the dataset used to render the visualization can vary
-greatly, database query performance tend to vary as well. To compound the
+greatly, database query performance tends to vary as well. To compound the
 problem, most queries in the system are aggregation based queries and create
 additional performance overhead. Overall database execution time can vary from a
 few milliseconds to several seconds, we found this to be unacceptable because
@@ -244,50 +242,56 @@ about 100 to 200 milliseconds to complete, which we found to be acceptable.
 \subsection{Multi-Touch Heuristics}
 Touch sensors have a few drawbacks, there are inherent noises that come from
 performing gestures, in addition, our inability to hold our hands perfectly
-still accentuate this issue by create jitters. In our particular use case, the
+still accentuate this issue by creating jitters. In our particular use case, the
 upright display makes certain gestures difficult, for example, in an informal
-evaluation of the display we found that certain curvatures of sinusoidal curves
-introduced noises because the knuckles of other fingers are sensed as
-false-positive touch points as a result of drifting too close to the screen
-itself.
+evaluation of the display we found that certain curvatures introduced noises
+because the knuckles of other fingers are sensed as false-positive touch points
+as a result of drifting too close to the screen itself.
 
 These noises degrades user experiences, as they trigger unexpected events within
 the system. We introduce a set of software heuristics as an intermediate step
 between when the points are sensed and when they are executed. In general, these
 heuristics remove unintended touches and prevent jittery animations that
-result from minute movements. While these are tuned specifically for our
-hardware, we believe rules are general enough that they can be adopted to other
-touch sensors. 
+result from minute movements. While these are designed specifically to deal with
+our hardware issues, we believe rules are general enough that they can be
+adopted to other touch sensors. 
 
 \begin{itemize} [noitemsep]
   \item \textbf{Real Update:} The muscle deformation when pressed against the
-  display, paired with inability to keep perfect still postures results in
+  display, paired with inability to keep perfect still postures result in
   sensor registering jittery updates. This is undesirable because it induces a
   shaking effect, and often time unnecessary because the updates are minute.
-  To compensate this problem, we only accept an update if it is at least 2
-  number of pixels away from the previous update point.
+  To compensate this problem, the system only accept an update if it is at least
+  X number of pixels away from the previous updated point.
   
   \item \textbf{Coincidental Points:} When a touch is initialized on the touch
   surface, there is a possibility that more than one touch point will be
   registered. This is similar to the case we presented above. To reduce this scenario from
-  occurring, we store the xy-coordinate and the time the touch point is created.
-  If a touch point is created too close to any other touch point within a time
-  threshold, that point is rejected
+  occurring, we store the XY-coordinate and the time that the touch point is
+  created. If a touch point is created too close to any other touch point within a time
+  threshold X, that point is rejected.
   
   \item \textbf{Movement Buffer:} When a gesture is in transition, there are
   cases where other parts of the hand will inadvertently cause false-positives.
   We try to neutralize these occurrences by introducing buffer zones around touch
-  points that are in transition. New touch points cannot be created in the
-  zones, existing touch points are not affected.
+  points that are in transition. New touch points cannot be created 
+  if they fall within X pixels away from a point that is in transition.
   
   \item \textbf{Reinforce Intention:} This heuristic deals with reducing jitters
   on the initial touch. This can be seen as a special case of the Real Update
   heuristic, but while Real Update toss away extremely small update in general,
   the first update can be quite large, probably due to the act of pressing the
-  finger against the display. We made is such that the first update must be at
+  finger against the display. We made it such that the first update must be at
   least X pixels distance in magnitude. This heuristic is not applicable to
   lens widget nor document widget because we want them to be immediately
-  responsive.
+  responsive. 
+  
+  \item \textbf{Dead Zones:} In some cases, the act of lifting up
+  a finger to disengage a gesture will trigger a new touch point. This makes
+  selection problematic, as selected entities will be deselected right away. To
+  resolve this issue the system impose dead zones. When a touch is removed, the
+  area around it will become unavailable for a small amount of time, during
+  which all new touch points are ignored.
   
 \end{itemize}
 
