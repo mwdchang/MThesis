@@ -44,7 +44,7 @@ there are at least 8 or 9 reports that seemed to document similar noise
 issues and point to defective suspension setup. Larry decides that he 
 should contact his dealership to have them check it out.
 
-
+ 
 \subsection{Vehicle Comparison}
 This scenario describes how our visualization may guide purchasing decisions.
 Sara just accepted a job offer across town, and is looking to purchase a car 
@@ -139,7 +139,12 @@ The study took place in a controlled lab environment. The visualization ran on
 a 60 inch display fitted with a PQLabs infrared sensor overlay capable of
 multitouch gestures. To avoid personal bias that may came from prior domain
 knowledge, known identifiers were removed and replaced with placeholders,
-for example the manufacturer``Toyota Motors'' was replaced with ``MFR1.''
+for example the model ``Civic'' was replaced with ``Model1.'' The dataset for
+the study itself includes the top 4 occurring manufacturers, and we used a time
+frame between 1997 and 2004. 2 pilot studies, both with lab members, were
+conducted beforehand to ensure the study was appropriate, and allowed us to
+tweak usability issues.
+
 
 After a brief tutorial on how to interpret the visualization and how to use the
 interface, participants were asked to perform 3 sets of tasks. The first set
@@ -155,12 +160,14 @@ decision based on a comparison of two vehicles. For example: ``Between 1997 and
 2000, which of the vehicles X and Y would you purchase and why? Assume these vehicles are
 similarly priced.'' After these tasks were completed, we conducted a
 semi-structured interview to solicit opinions from participants about their
-experiences. 
+experiences.  
 
 Each study session took approximately one hour to complete, though there were no
 strict time constraints and participants were allowed to take as much time as
-they wanted on any task. Each session was recorded on video, and touch
-interactions were logged by the system.
+they wanted on any task. The same set of tasks were used for all
+participants. Each session was recorded on video, and touch interactions were
+logged by the system. Each participant was compensated with a \$10 gift
+certificate for their effort.
  
 
 \subsection{Discussion}
@@ -171,7 +178,7 @@ during the interview portion of the study.
 
 Interpretation of the \threed visualization seemed to be fairly accurate for
 simple scenarios, while more complicated target acquisition tasks that required
-multiple steps yielded mixed results. The first two tasks, which asked
+multiple steps yielded mixed results. The first two tasks asked
 participants to directly identify the mostly significant outliers, to accomplish
 these tasks, participants were to visually identify the outlier \threed
 component and select it, there were no restrictions on their method of
@@ -181,7 +188,7 @@ personal opinion rather than a direct interpretation of the visualization.
 
 The third interpretation task, which asked participants to identify which of the four
 manufacturers used in the study had the highest engine complaints, received
-mixed results. To complete the tasks, participants had to look at each
+mixed results. To complete the task, participants had to look at each
 manufacturer one-by-one, or carry out a series pairwise comparison to find the
 max. We believe the complexity of having to memorize multiple states likely
 contributed to the incorrect answers, in total 5 participants chose the correct
@@ -191,7 +198,7 @@ The interpretation of co-occurrence relationships were also mixed. In these
 tasks, we asked the participants to identify the components that failed when
 component X failed. We expected the participants to select X, then identify the
 remaining entities in the visualization. However, we found that 3 participants
-had difficulties understanding the co-occurrence concept. Unexpectedly, 2 2
+had difficulties understanding the co-occurrence concept. Unexpectedly, 2
 participants noted that document widget also shows co-occurrences in textual
 form, and read the documents directly instead of using the \threed
 visualization.
@@ -283,7 +290,7 @@ During the interview session, we asked the participants what they would do to
 improve the system, there are four ideas relating to visualizations that emerged
 from the study sessions:
 \begin{itemize}[noitemsep]
-  \item Non consecutive year functions: Allow non-contiguous selection, for
+  \item Non consecutive years: Allow non-contiguous selection, for
   example select the years 2000 and 2002. Several participant also mentioned it
   would be nice to make year-to-year comparisons for each entity without
   leveraging the heatmap.
@@ -297,7 +304,7 @@ from the study sessions:
   description to what the entity is and its function.
   
   \item Regional select: Provide a shortcut to select all entities under the
-  lens influence.
+  lens.
 \end{itemize}
    
   
