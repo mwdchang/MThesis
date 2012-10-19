@@ -17,7 +17,7 @@ review in brief the designs for touch interfaces.
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Fundamentals}
-Visualization revolves around the process of of mapping and representing data or
+Visualization revolves around the process of mapping and representing data or
 concept graphically such that they are visible to the human eye. Visualization, 
 in theory,  takes advantage of the human perceptual system to rapidly understand
 what the data is communicating to the readers. 
@@ -42,7 +42,7 @@ of marks and visual variables from Bertin~\cite{BER1983a}. Bertin defined seven
 variables, including position, size, shape, value, colour, orientation and
 texture. Each visual variable can have certain characteristics that can be used
 to determine which of the seven visual variables is most appropriate visual
-representation. These characteristics includes properties such as selective,
+representation. These characteristics include properties such as selective,
 associative, quantitative, order and length. A summary table below outlines the
 relationship between each variable and its attributes.
 
@@ -80,8 +80,8 @@ mapping as follows:
   \item Rendering: Transform raw data into image data
 \end{itemize}
 For an interactive visualization, these stages are not a linear, one-off
-process. The stages of Filter, Mapping and Renderings form a repetitive loop as
-the users change parameters to explore different parts of the visualization.
+process. These stages of Filter, Mapping and Renderings form a repetitive loop
+as the users change parameters to explore different parts of the visualization.
 The next part is finding interesting information within the visual presentation,
 it is often through exploration that enables users to find and extract
 interesting data. The process of facilitating useful graphical-based exploration
@@ -128,7 +128,7 @@ application itself evaluates these rules and determines the optimal viewing pers
 the application adjust the lighting conditions as a way to draw attention to
 specific details in the scene. To our knowledge this is one of the first systems
 where a preconstructed scene can be modified by text input.
-
+ 
 
 One of the most fully-realized text-to-scene generation application is
 WordsEye~\cite{Coyne2001}. WordsEye uses a combination of grammatical rules 
@@ -205,13 +205,13 @@ grail in graphics research, there are compelling reasons for using NPR
 techniques. First, NPR images are judged based on their ability to
 communicate a specific message to their viewers, thus they are driven to
 emphasize features in a scene or some underlying attributes~\cite{Gooch2001}.
-This is in contrast with photorealistic rendering where the goal is to compared
+This is in contrast with photorealistic rendering where the goal is to compare
 the rendering against a ground-truth image. Second, often times it is
 undesirable to preserve a high degree of accuracy, specular reflections, shadows and other natural
 lighting phenomenons can hinder viewers' ability to see vital details and create
 ambiguities. NPR can choose to ignore the natural laws of physics, and instead
 choose to focus on different abstractions such that the illustration can be
-meaningful to people from different fields. Because there are multitude of
+meaningful to people from different fields. Because there are multitudes of
 possibilities in NPR, this section solely focuses on prior works that related
 to our work here, or served as our inspirations.
 
@@ -222,12 +222,12 @@ Images found in technically written materials, or that of
 instructional manuals are quite different than those found in photo scrapbooks. The key point, as
 stated above, is that communication is valued above realism. Early works by
 Gooch \etal uncovered common themes in technical illustrations and ways to
-automate some of these properties \cite{Gooch1998}. Gooch \etal modifies the
+automate some of these properties~\cite{Gooch1998}. Gooch \etal modifies the
 conventional shading algorithm to use a two-tone approach that shift from
 warm-colour to cool-colour, in addition, they added edge lines and removed
 shadows. Illustrations created in this fashion have major benefits over
 photography. One, strong lighting effects under conventional shading model are
-reduced, preserving the surface details under the light patches. Two, the
+reduced, thus preserving the surface details under the light patches. Two, the
 removal of shadow regions shows the hidden details that were not previous
 visible. Other NPR shading techniques also exist, for example 
 those that emulate the simplistic cartoon styles known as
@@ -242,7 +242,7 @@ input is required for the right combination of textures, normal maps and other
 special effects.
  
 
-Another major benefits of NPR is that it can be used to simplify orr
+Another major benefit of NPR is that it can be used to simplify or
 accentuate geometric features. By taking advantage of visual perception
 capabilities of seeing continuities and surfaces as dictated by Gestalt Principals
 \cite{WAR2004b}, human can see and complete entire shapes with just a few
@@ -254,14 +254,14 @@ discontinuity can take on several types, for example colour, normal and depth. A
 called a kernel, is used to evaluate the discontinuity measure and is run
 against every pixel in the image. Any pixels that fell below a specified
 threshold hold are discarded, the remaining pixels are collected and aggregated
-into higher level geometric primitives. In \threed space, features can
+into higher level geometric primitives. In \threed space, features can be
 classified under the broad categories of ridges, valleys and  silhouettes.
 Ridges are formed by two front facing polygons with dihedral angle between 0 to
 180, similarly, valleys are front facing polygons with dihedral angle between
 180 to 360, both of these are exclusive, as an angle of 0 or 180 results in a
 flat surface. Lastly silhouette edges are formed by the shared edge of front-facing
-polygon and back-facing polygon. Raskar \cite{Raskar2001} computes these \threed features without
-connectivity information by extruding additional faces per polygon, using
+polygon and back-facing polygon. Raskar~\cite{Raskar2001} computes these \threed
+features without connectivity information by extruding additional faces per polygon, using
 existing geometries to hide the generated features if they turn out to be
 inappropriate. In addition, since the features are geometric quads, additional processing can be
 performed on these quads such that they can be rendered in a multitude of ways.
@@ -279,18 +279,18 @@ graphics that are visible to the viewer, but also convey a sense of error
 and inaccuracy. Researches in ancient architectural
 reconstructions found that straight, solid
 strokes convey higher degree of certainty than strokes that are drawn faded and
-curved~\cite{Masuch1998, Strothotte1999},. The relevance here to our work is
+curved~\cite{Masuch1998, Strothotte1999}. The relevance here to our work is
 that we use this type of technique to covey objects that are not in the focused context.
 
 
 Another branch of non-photorealistic rendering deals with semantic segmentation
-of objects in the scene, such as illustrations found in science and medical 
-literature where specific parts are highlighted in different colours. This is
-done in order to differentiate normal and outlier regions in the final
+of objects in the scene. For example illustrations found in science and
+medical literature where specific parts are accentuated using different colours.
+This is done in order to differentiate normal and outlier regions in the final
 illustration. These type of NPR techniques deals with visibility issues, to
 ensure that semantically important objects are easily visible and to provide features to deal with occlusion. 
 One prominent research work came from an importance-driven function that can
-be used to determine the visibility of objects \cite{Viola2004}. In this paper
+be used to determine the visibility of objects~\cite{Viola2004}. In this paper
 scores are assigned to volumetric components such that more important
 objects are rendered more opaque than objects of lesser importance. A screen
 door transparency technique is introduced to ensure overall visibility by
@@ -302,7 +302,7 @@ context categories~\cite{Tietjen2005}, with the following semantics:
   \item Focus object: Current focus and is emphasized.
   \item Near focus object: Object for understanding spatial location or
   interrelations.
-  \item Context Object: All others objects in the scene.
+  \item Context Object: All other objects in the scene.
 \end{itemize}
 The segmentation allows for further accentuation of specific regions, while
 still providing enough background context to show the subject matter.
@@ -322,12 +322,12 @@ division is not always obvious. Many applications combine elements and technique
 from both fields, though the two sides remain separate disciplines. As data 
 becomes more heterogeneous, new approaches for data visualization make the case 
 of whether the boundary should exist or not, as illustrated by recent attention 
-to discuss the similarities and differences between the two groups
-\cite{Hauser2005, Weiskopf2004}. The SciVis community in particular has
+to discuss the similarities and differences between the two groups~\cite{Hauser2005, Weiskopf2004}. 
+The SciVis community in particular has
 adopted techniques and practices that are traditionally in the InfoVis community, 
-a well known example is the volumetric visualization from Doleisch \etal, where 
+a well-known example is the volumetric visualization from Doleisch \etal, where 
 multiple coordinated views, and linking and brushing techniques are used to 
-further help the exploration process \cite{Doleisch2003}.
+further help the exploration process~\cite{Doleisch2003}.
 
 For a more hybrid space approach between InfoVis and SciVis,  Balabanian \etal
 placed hierarchical renderings of human anatomy inside an interactive
@@ -339,7 +339,7 @@ operations such as viewing, slicing and picking of objects. Changes are linked
 and propagated across relevant nodes and volume renders.
 
 In the InfoVis space, researches done by Sedlmair \etal looked at enriching
-InfoVis visualizations with \threed models \cite{Sedlmair2009}.
+InfoVis visualizations with \threed models~\cite{Sedlmair2009}.
 In this work, they presented two applications, CarComVis which allows users to
 explore intercommunication among vehicle components, and LibVis which explores
 environmental reading in a library setting. Neither one is explicitly about
@@ -363,7 +363,7 @@ views.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \section{Focus+Context Techniques}
-Focus+Context is a well known and practiced technique in InfoVis, it is used to
+Focus+Context is a well-known and practiced technique in InfoVis, it is used to
 draw attention to particular areas of interest while maintaining a certain degree of contextual 
 information. There are various ways to discriminate these areas, for example 
 Hauser~\cite{Hauser2006} reviewed the general approaches where usage of colour, 
@@ -376,7 +376,7 @@ data graphics under the lens undergoes a graphical transformation in order to
 represent different semantics.
 
 
-Fisheye Lens~\cite{Sarkar1992} is a well known technique for enlarging
+Fisheye Lens~\cite{Sarkar1992} is a technique for enlarging
 details on a \twod image, for example on digital maps and circuit diagrams. Much
 like its real world counterpart, a fisheye lens technique creates an ultra-wide viewing perspective that
 creates a distortion displacement under the lens. The amount of displacement 
@@ -385,7 +385,7 @@ and shrinkage, typically with the central part of the lens enlarged while area
 regions near the circumferences shrinks to compensate. There are a
 few usability issues with fisheye lens, and likely the same issue applies to all
 lenses that undergoes geometric distortion: it is difficult to tell where the
-focus is, because the lens itself may occludes nearby objects which the viewers
+focus is, because the lens itself may occludes nearby objects which the viewer
 use as navigational cues.
 
 Although not directly a focus+context scenario, the original idea of using a
@@ -396,14 +396,13 @@ significantly, the lens acts as an interactive layer, where actions can be send
 through the lens directly to the objects beneath it.
 
 
-NPRLens\cite{Neumann2007a} follows up on the MagicLens metaphor from Bier
-\etal to allows the user to interactively create images in a non-photorealistic
+NPRLens~\cite{Neumann2007a} follows up on the MagicLens metaphor from Bier
+\etal, allowing users to interactively create images in a non-photorealistic
 style. NPRLens performs image processing on the \twod projections of objects in
 \threed space. Graphical data points are first projected to screen space,
 collected and aggregated into higher level graphical constructs such as line
 segment and curve primitives. These can then be further manipulated such as
 stretching, shrinking or changing the stroke styles of each primitive unit.
-NPRLens supports many of the effects discussed in the NPR section above.
 
 
 \threed MagicLens~\cite{Viega1996} is likely the first foray of the lens idea
@@ -446,14 +445,14 @@ minimize crossings which can cause additional visual complexity.
 While the techniques above are largely applied to \twod applications, there are
 applicable \threed focux+context techniques. Sonnet \etal \cite{Sonnet2004}
 created a medical volume rendering system where the lens takes the form of a \threed cursor,
-although the viewers cannot see into the cursor itself, the cursor creates a
+although viewers cannot see into the cursor itself, the cursor creates a
 spherical volume that pushes other volumetric objects away from the center, thus
 creating more space for labels and annotations, and reduce the occlusion issues that
 come naturally with \threed environment. Another system is BrainGazer
 \cite{Bruckner2009}, a volumetric visualization application that allows
 users to draw a query path onto a segmented volume data. The path exhibits lens
-like behaviour, that is, the the systems queries the objects that are in
-proximity to the path drawn. Additional information about these objects are then
+like behaviour, that is, the systems queries the objects that are in
+proximity to the path drawn. Additional information about these objects is then
 shown in a separate user interface panel. Our system uses a similar approach, in
 that the scene we render is pre-segmented into regions of different
 semantics, though we use an actual lens as the querying tool, and we deal with
@@ -493,7 +492,7 @@ prototype looks at a specific problem from end-to-end. As such, these
 classification servers as inspirations rather than dictating our gesture design.
 
 Aside from classification, there are many other nuances and device specific
-attributes in gesture design that one needs to pay attention to to make them
+attributes in gesture design that one needs to pay attention to make them
 more user friendly. Providing appropriate visual feedback, dealing with
 false-positive/false-negative touches, and target acquisition are some of
 important details for natural interactions. Much of the intricacies are outline

@@ -13,10 +13,10 @@ representations of data to amplify human cognition \cite{Card1999}. While there
 are many InfoVis techniques that deals with summarization and exploration of
 data, particularly in text format, these techniques are not always in context
 because of their abstract presentation. For example, consider the popular
-technique of TagCloud, the size of the tags are semantically linked to the
+technique of TagCloud, the sizes of the tags are semantically linked to the
 frequency, but the actual context and subject matter of the text is not taken
-into account. Many of these missing context are concrete ideas about objects and
-space relations that do not naturally lend themselves to be mapped against
+into account. Many of these missing contexts are concrete ideas about objects
+and space relations that do not naturally lend themselves to be mapped against
 abstract representations.
  
 In this work, we introduce descriptive non-photorealistic rendering, a hybrid
@@ -28,9 +28,9 @@ retaining their easily recognizable shapes and forms.
  
    
 \section{Motivation}
-There are many text collection about physical things, and information
+There are many text collections about physical things, and information
 visualization generally summarizes these documents with an abstract
-presentation. While these visualization are easy to understand, they are
+presentation. While these visualizations are easy to understand, they are
 typically disconnected from the real world and the presented
 visualizations have no physical resemblance to the subject matter in the text.
 In another words, we don't seem to be taking advantage of existing familiarity of
@@ -84,7 +84,7 @@ interactions to navigate and to explore the underlying dataset.
 For the first problem, we extract from the text documents the physical noun
 keywords that make up the subject matter. A meronomy relationship is used to link the
 noun entities together to from a hierarchy representing the physical parts of
-the subject. We then segmented \threed models that represents the subject into
+the subject. We then segmented \threed models that represent the subject into
 different geometric groups to match our hierarchy, creating a 1-to-1 mapping 
 between keywords ontology and the \threed model components.
 
@@ -92,7 +92,7 @@ Second, we defined the semantic relations that we want to visualize, which are
 occurrence and co-occurrence relations of the physical entities. We created a
 mapping function that takes the entity relations as parameters and output a
 stylized graphical effect which is applied to the geometric components, this is used to 
-denoting the level or severity of the semantic relations. The subject matter can 
+denote the level or severity of the semantic relations. The subject matter can 
 then be reconstructed with the aforementioned hierarchy of parts, creating the 
 main part of our visualization that showcases the entities with highly scored relations.
 
@@ -151,7 +151,7 @@ interpret the visualization and how they perform open-ended tasks.
 
 
 \section{Contribution}
-This works describes a novel approach for visualizing text documents with inherent spatial 
+This work describes a novel approach for visualizing text documents with inherent spatial 
 attributes that we called \emph{descriptive non-photorealistic rendering}.
 By combining abstract semantics with non-photorealistic rendering techniques into a 
 single view,  we created an engaging visualization that can be related to the real world.
