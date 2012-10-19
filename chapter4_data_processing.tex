@@ -2,7 +2,7 @@
 % This chapter describes the text processing steps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Data Processing}
-Data is received in a textual list of records consisting of meta data and the
+Data is received in a textual list of records consisting of metadata and the
 text description of the complaint. We apply several processing steps to each
 document to first extract the physical entity keywords, and then to calculate
 the semantic scores. For this dataset, we have chosen the semantics of
@@ -19,12 +19,12 @@ relations, such as relation between component and its subcomponents. This
 relation is important because it enables logical groupings which are useful for
 high level overviews.
 
-Before any semantic processing can take place, we spent some time doing
+Before any semantic processing can take place, we performed
 preliminary analysis, looking at the data text, their format and how they have
 evolved over the life span of the data repository. We performed several
 normalization tasks: One, we used regular expressions to convert the text from
 all capital cases to normal case format. Second, we remove suffix characters that
-appear at the end of the text paragraph, that, as far as we know contributes
+appear at the end of the text paragraph that, as far as we know contributes
 nothing to the incident context. Although we changed the underlying text, the
 normalization process improves readability, and enables us to receive more
 meaningful outputs from natural language parsers.
@@ -38,7 +38,7 @@ nouns, for example, a brake is a part of a wheel, and a wheel is a part of the
 automotive vehicle. All together, the meroynomy relationship forms a hierarchical 
 structure where the most general part forms the root node, while the most specific 
 parts form the leaf nodes. We use two common words pertaining to the subject
-matter of our dataset to bootstrap the creation of the hierarchy hierarchy:
+matter of our dataset to bootstrap the creation of the hierarchy:
 ``car'' and ``vehicle''. From this, we recursively extracted children entities
 using the meronomy relationship until we have two tree structures, which we then
 merged together.
@@ -51,7 +51,7 @@ the synset relations from WordNet for each keyword. A synset is a set
 relationship that describes words that are semantically equivalent of one
 another, for example ``limo'' and ``limousine'' are different words, but both
 describe the same type of object and thus belongs to the same semantic group.
-For each word in our current vocabulary, we replace it with the its synset.
+For each word in our current vocabulary, we replace it with its synset.
 
 
     % ===== Figure =====
@@ -87,7 +87,7 @@ will cause issues if the document is about ice, the solid state of water. They
 are therefore removed from the keyword vocabulary.
 
 The second step deals with any possible missing keywords that are not in WordNet
-meronym synsets. We attempted to detect these semi-automatically with natural
+at all. We attempted to detect these semi-automatically with natural
 language processing techniques. We first perform part-of-speech (POS) tagging on our document 
 corpus. POS taggers look at the grammatical structures of text and break down 
 sentences into lexical categories such as nouns, verbs and adjectives. We use the 
@@ -98,7 +98,7 @@ exam the top occurring nouns and add them into the hierarchy where we believe
 would be appropriate.
 
 \subsection{Limitations}
-While we believe this extract process is a plausible method for building the
+While we believe this extraction process is a plausible method for building the
 vocabulary, we acknowledge that WordNet is not the definitive authority for our 
 problem domain, nor would it be for any specific domain. The automatic
 extraction can be used as a starting point. The keywords vocabulary should be
@@ -111,7 +111,7 @@ We chose to look at two semantic relations in our dataset: occurrence and
 co-occurrence relations. The occurrence relation is a measure of how frequently
 a particular entity was mentioned throughout the corpus, and is an
 indication how important the entity is overall. The co-occurrence relation is
-also a frequency measure, it measures how frequently an entity is mentioned along
+also a frequency measure; it measures how frequently an entity is mentioned along
 with other entities in the same document, indicating possible causal relations.
 For example: ``Engine failed because radiator overheated'' has a co-occurrence
 relation between engine and radiator.
@@ -125,7 +125,7 @@ function.
 
 \subsection{Tagging}
 %We use straight forward string matching to tag each document. 
-Straight forward string matching is used for tagging of each document
+Straight forward string matching is used for tagging of each document.
 First, document text is segmented into word tokens, then for each token we
 search for a string match against the entity keywords. When a match is found, we
 store a triple that describes the document identifier, the keyword and the
@@ -137,10 +137,9 @@ for the radiator entity.
 In the actual string matching, we use an open source, off the shelf snowball
 stemmer\footnote{http://snowball.tartarus.org/} to normalize each word token. 
 Stemming is a process of reducing the words to their root forms. Finding the
-root is important because it unifies the singular and plural forms, as well, it
-converges various forms without the need to add additional vocabulary to our
-keywords. We performed stemming on both the word tokens as well as our keyword
-vocabulary.
+root is important because it unifies various conjugations without the need to
+add additional vocabulary to our keywords. We performed stemming on both the
+word tokens as well as our vocabulary of keywords.
 
 For the document text, stemming is performed on all string tokens and not
 limited to nouns. This has both positive and negative effects. In our data, 
@@ -161,13 +160,6 @@ physical entities as well as co-occurring entities within the same document.
 \subsection{Scoring}
 Once all documents are tagged, the occurrence and co-occurrence scores can be
 computed. 
-
-% Once we have identified the entities in each document, we can compute each
-% entity’s importance score. We denote the importance score of a physical entity 
-% as the number of times it is mentioned within the document corpus. We have two 
-% variations of importance score: occurrence  and co-occurrence. Within our
-% problem context, the occurrence scores denotes the components that are most prone to failure, while 
-% the co-occurrence suggest causal relationships among the objects.
 
 Let G be a (possibly empty) set of objects that are in the keyword hierarchy and
 c be a single object in the hierarchy. We define a scoring function S(c, G) to be 
@@ -192,8 +184,8 @@ repetitively mentioned.
 
 Unlike the tagging process, scores are not stored, but rather
 evaluated on a need basis. The numerous combinations that make up the set G
-along makes it impractical to persist the scores in any manner, as the number of
-possibilities is a permutation of all available entities.
+along makes storage impractical as the number of possibilities is a permutation
+of all available entities.
  
 Upon retrieving the entity scores during runtime, each score is normalized
 to show relative strength with respect to each other. First, the system finds
@@ -209,10 +201,10 @@ should pay more attention to the window component? A simple extension to this
 work would be to devise an appropriate weighting scheme by consulting the domain
 experts. 
 
-Another limitation is the vocabulary set itself, while we are only storing nouns 
-as keywords, it would be interesting to look at verbs as well. For example, 
-``stalled'', ``stalling'' are typically associated with engine object. Adding
-verbs into our dictionary would give more flexibility and accurate results.
+Another limitation is the vocabulary set itself, while we are only storing nouns
+it would be interesting to look at verbs as well. For example, ``stalled'',
+``stalling'' are typically associated with engine object. Adding verbs into our
+dictionary would give more flexibility and accurate results.
 
 
 \section{Model Segmentation}
