@@ -15,7 +15,7 @@ composed of four major components:
    is a stylized rendering representing the physical entities in the text documents,
    the visualization can be zoomed and rotated to explore different viewing
    perspectives. Each entity is rendered with respect to a function which denotes
-   its importance, we explore different rendering styles to take advantage of
+   its importance. We explore different rendering styles to take advantage of
    viewers' preattentive perception, allowing them to quickly uncover the
    important information.
 
@@ -26,7 +26,7 @@ composed of four major components:
 
    \item Heatmap Widget: The heatmap displays time series data at the lowest
    granularity level in order to provide trend and pattern analysis. It is
-   organized into a grid, each cell is shaded in accordance with its score of
+   organized into a grid; each cell is shaded in accordance with its score of
    that time period. In addition, the heatmap identifies the entity names and
    their raw numerical scores.
    
@@ -35,12 +35,10 @@ composed of four major components:
   applies highlights to all relevant keywords.
 \end{itemize}
 
-%In addition, we introduce two domain specific widgets, which are used to filter
-%vehicle specific data into manageable pieces:
  
 In addition, two domain specific widgets provide filtering functions to
-visualize subsets of the text corpus. These widgets are created from the meta
-data in the documents, they are: 
+visualize subsets of the text corpus. These widgets are created from the
+metadata in the documents, they are:
 
 \begin{itemize} [noitemsep]
   \item Time Filter: The filter is composed of two independent range sliders
@@ -53,8 +51,9 @@ data in the documents, they are:
   top portion of the display similar to a series of drop-down menus or spinners.
   The hierarchy filters allow successive refinement of dataset by means of
   filtering on organizational hierarchies. Going top down, the system supports:
-  Vehicle Manufacturer, Vehicle Make, Vehicle Model and Vehicle Year. 
-  Hierarchy filter is also used to select two different vehicle types in comparison mode.
+  Vehicle Manufacturer, Vehicle Make, Vehicle Model and Vehicle Year. Hierarchy
+  filter is also used to select two different vehicle types when making
+  comparisons.
 \end{itemize}
 
  
@@ -80,8 +79,8 @@ designed and discusses various design trade-offs.
 \subsection{Rationale}
 A major part of our design for this thesis is the mapping of abstract semantics
 onto realistic looking, \threed models. But this can also be a source of
-complication, we have to deal with the additional difficulties of navigating in
-three dimensional space,  as well as work around perceptual limitations. So why
+complication. We have to deal with the additional difficulties of navigating in
+three dimensional space as well as work around perceptual limitations. So why
 use \threed models in the first place? Familiarity with the models and varied
 exploration methods were key motivations. The familiarity with how the physical
 entities look in real life means people do not have to learn additional visual
@@ -99,7 +98,7 @@ Yet another argument is that the use of a set of \twod images can also convey
 realism, our opinion is that they lack the expressive power and playfulness of a
 fully rendered \threed model. Flat image representation would likely result in
 multiple images, used to cover different viewing perspectives, this can result
-in more cognitive load due to the viewers having to switch between images to
+in more cognitive load due to viewers having to switch between images to
 see different data.
 
 
@@ -129,23 +128,12 @@ included in our design. However it may be interesting to use textures for
 visualizing individual document, we leave this idea as future work.
 
 \subsection{Stylized Rendering}
-%Data comes in many different dimensions, include those with spatial attributes
-%and those with abstract attributes. Our innovation is to show these spatial 
-%vocabulary as they would exist in the physical world, while using the abstract 
-%attributes as rendering parameters. For tasks related to word frequencies and 
-%other scores, we hypothesize that people will be able to see, and communicate 
-%better than in raw text formats because they are working with a familiar form. 
-%Proximity-based clusters formed in the spatial dimension would also encourage 
-%exploration of these areas that may otherwise go undetected. In our visualization, 
-%we use \threed models comprised of segmented sub-mesh groups that link to our
-%part-of relation hierarchy of component keywords.
-
 In order to enhance the message carrying capacity of the visualization, we
-considered several NPR techniques as a medium to created a more expressive
+considered several NPR techniques as a medium to create  more expressive
 illustrations. We associate the entity score with either a NPR technique, or use
 the score as a parameter into a NPR function. In accordance with our
 requirement, the encoding scheme should be clear and distinguishable by visual
-examination (R1) while maintaining the real world aspects. Our effects include
+examination(R1) while maintaining the real world aspects. Our effects include
 varying stroke, halo/glow, colour variations, and transparency effects.
 
 We chose colour mappings as our primary visual encoding which denotes the
@@ -158,20 +146,9 @@ to a linear diverging yellow-orange-red hue scale, which is further divided into
 six discrete scoring bins. While this setup has a limited granularity, it is
 easier to perceive a small number of discrete colours than viewing a continuous
 scale. We mitigate any ambiguities that may arise with the discrete scale by
-providing numerical figures with the lens and heatmap widget, which we discuss
+providing numerical values with the lens and heatmap widget, which we discuss
 further down.
 
-% == Removed from colour scheme: explanation is weird, and perhaps obvious
-%
-%This has both advantages and disadvantages. The
-%advantage is that it is much easier to distinguish a small number of hues than a
-%continuous hue scale. The disadvantage being that we lose the ability to compare
-%the relative distance between the buckets. For example, imagining the case were
-%we have low value in bucket 1 and high value in bucket 2, this is equivalent
-%to high value in bucket 1 and low value in bucket 2. We partially mitigate
-%the ambiguity by allowing the viewers to extract exact numerical values with the
-%heatmap widgets, we will discuss this further down. We display the discrete hue
-%scale as an on-screen legend located near the top of the display.
 
 \threed geometries may not be visible due to occlusion or containment.
 The first case can be partially solved by altering
@@ -186,7 +163,7 @@ no objects are completely opaque or completely transparent. Our transparency sca
 is slightly weighted to give more emphasis for more frequently occurring
 entities. One challenge of rendering translucent geometries in \threed space is
 that the ordering of geometries becomes important for alpha-blending to work
-correctly, out-of-sequence geometries can lose their depth cues when blended
+correctly; out-of-sequence geometries can lose their depth cues when blended
 together. We discuss this effect, and solutions in further detail in the
 implementation chapter.
 
@@ -202,11 +179,6 @@ noticeable colour so they are visible but not overly
 distracting~\cite{BAR2007a}. It is worth noting that 0 scored objects only
 provides graphical context, they do not partake in any user interactions.
 
-
-
-
-
-%As mentioned in Chapter 3, each entity has a numerical occurrence score.
 
 
  
@@ -286,8 +258,8 @@ facilitated by an animated transition that interpolates the graphical effects.
 We recognize that blending different hues in \threed space does not necessarily
 produce a result which preserves the original hues, and can potentially lead to
 distracting visual artifacts. Different hue preservation schemes
-exist\cite{Chuang2009} but were not implemented for this prototype due to the
-added performance complexity (Hue adjustments are done at per pixel levels). Subjectively, 
+exist~\cite{Chuang2009} but were not implemented for this prototype due to the
+added performance complexity (Hue adjustments are done at per pixel level). Subjectively, 
 we did not find any visual distractors and thus decided that this was not necessary. A 
 single-hue scheme with varying saturation and opacity was tried as well, but we
 found it less eye-pleasing and lacks the \emph{pop-out} effect that is more prominent on multi-hue 
@@ -314,7 +286,7 @@ visual clutters. When lighting effects are enabled, the objects are easily
 distinguishable as lighting provides a clear silhouette. However, this type of lighting modifies 
 the colour based on the incidence angle of the light rays, thus it no longer matches 
 the assigned colour. Ultimately, we decided that the benefits of objects recognition and
-familiarity outweighs the colour offsets. The results of our design choices can be seen in
+familiarity outweigh the colour offsets. The results of our design choices can be seen in
 Figure \ref{figure:visualEncoding}.
 
 %Ultimately our design decision is that object recognition and 
@@ -376,16 +348,6 @@ heatmaps to show association: first the heatmap is connected back to the lens'
 circumference, then from the circumference back to the entity's projected centroid.
 
 
-  
-    % ===== Figure =====
-% 	\begin{figure}
-% 	 \centering  
-% 	 \includegraphics[width=\columnwidth]{lens_schematic.png}
-% 	 \caption[Lens Widget Schematics]{Cross section schematics of the Lens Widget}
-% 	 \label{figure:lensSchematic}
-% 	\end{figure}
-	% ==================
-	
     % ===== Figure =====
 	\begin{figure}
 	 \centering  
@@ -422,16 +384,6 @@ widget is active and the system renders the border in blue, otherwise
 the default grey colour is used. The semantics of the lens is not impacted by
 whether the lens is active or inactive.	
 
-% The lens widget utilizes its own rendering pipeline, object geometries are
-% sent into the pipeline as normal, the rasterized result is then stored in an
-% intermediate buffer and later combined in fragment shaders with the default
-% rasterization scene. This is an independent process, and thus allows us to
-% render the lens' scene in different rendering styles and semantics. To visualize
-% the lens widget itself, we draw a semi-transparent border around its
-% circumference so viewers are aware of its existence. When interacting with the
-% lens widget, the widget is active and we render the border in blue, otherwise we
-% use the default grey colour. The semantics of the lens is not impacted by
-% whether the lens is active or inactive.
 
 
 The lens enables three different actions, seen in Figure
@@ -447,17 +399,6 @@ are cut off are excluded from any scoring calculations, they also have
 their heatmaps hidden to reduce visual clutter. These three interactions
 can be combined together to create a rich, flexible query mechanism
 
-%Three different types of interactions can be performs on the lens widget. The
-%position of the lens can be moved around the display, which impacts the
-%currently selected filters and the heatmap charts. The lens can be resized,
-%which increases or decreases its querying area. Lastly, a depth field can be
-%adjusted, this field acts as a cutting plane that removes entity objects that
-%comes before the plane. The depth field function provides a method for people to
-%reduce occlusion, as all entities that are the cut by the plane drawn in
-%an outline style that allows viewers to see into the object. Objects that are
-%cut off are excluded from any scoring calculations, they also have their
-%heatmaps hidden to reduce visual clutter. These three interactions can be
-%combined together to create a rich, flexible query mechanism.
 
 Multiple lens widget are allowed for simultaneous explorations of
 different parts of the visualization. For example, if the subject matter is of
@@ -466,19 +407,6 @@ positioned at either end. However, no semantics are currently defined for
 multiple lens to co-exist in the same spatial location, that is, the lens widget
 has no defined behaviour when it is overlapped with another lens.
 
-%To build a rich, flexible query mechanism, the position of the lens and the
-%radius can be altered, thus creating different querying volume in different 
-%spatial locations. In addition, each lens widget use a depth parameter that acts 
-%as a cutting plane, all objects that comes before the cutting plane are excluded 
-%from the tagging process and are rendered as inactive objects. The depth parameter 
-%allows people to investigate occluded objects without resorting to changing their 
-%viewing perspectives.
-
-%Multiple lens widget are allowed to facilitate simultaneous exploration of
-%different areas, for example if we are looking at a tower structure, we can one
-%lens examining the base of the structure, while another lens examining the top of
-%the tower. However we have not defined any semantics for the lens to overlap, thus 
-%each lens should be used individually.
 
 \subsection{Spatial Interaction}
 Traditional systems, particularly databases use explicit queries as a mean to
@@ -497,13 +425,6 @@ more playful and open to unexpected discoveries.
 
 %\daniel{Maybe cite the bohemain bookshelf would be appropriate here}
 
-%to inspect different spatial areas that appear interesting to the viewer. This
-%is the key difference, as the focus selection is done visually, rather than
-%through explicit selection, this means the viewers do not need to know what the
-%entities are called to select them, reducing the need to have prior knowledge
-%about the data. This type of interaction is more playful and open-ended, people
-%are free to explore the visualization on their on terms which may lead to
-%unknown or unexpected discoveries.
 
 In addition to the freedom of exploration, the lens has an additional 
 benefit of allowing people to specify logical regions. Imagine the case where 
@@ -514,20 +435,6 @@ and ``front'' itself may be subjective depending on person. By repositioning
 and resizing the lens, a person can identify the front, back, or any other
 logical region quite easily.
 
-% In addition of the freedom to explore the visualization, the spatial
-% interaction has two other advantages: proximal relationship and reduced effort
-% in query construction. First, with most complex objects, incidents relating to
-% an entity is rarely in isolation, neighbouring objects are often impacted as
-% well. The lens widget allows selection of a volume range, which easily
-% facilitate bringing back entities close to the one we want to focus on. Second,
-% the visual query allows us to form queries that can be difficult to construct in
-% conventional systems. Imaging a case where we want to know how many vehicle
-% complaints are related to the ``front'' of the vehicle, traditional query would
-% require knowledge of the parts that belong to the front of the car, then follow
-% by an aggregation step of constructing a query that includes all these parts.
-% Our visual query simplifies this step by taking advantage of the familiar form
-% factor, a lens widget can be over the ``front'' of the vehicle visualization,
-% automatically pulling out all the relevant entities.
 
 
 
@@ -538,7 +445,7 @@ of complaints changed over time for individual entity components by fitting a
 time series data onto a two dimensional grid. In this system, the heatmaps
 allows year-to-year and month-to-month comparisons.
 
-% Prior to our heatmap implementation, we have also considered using a simple 
+% Prior to our heatmap implentation, we have also considered using a simple 
 % scatter-plot approach, with time on the X-axis and the volume of complaints on
 % the Y-axis. While this solution is simpler to read and likely easier to detect
 % long term trend, its major drawback is that it is likely more difficult to
@@ -702,26 +609,6 @@ on the histogram bars. A double select action on the year slider's bars provides
 to select an entire year. An animated transition is used to interpolate the
 height of the histogram bars.
 
-%Time selection is not continuous, but rather in a block like manner. Multiple
-%years and multiple months can be selected simultaneously; when more than one
-%year is selected, the values on the month's histogram become the accumulated sum
-%of the month across the selected years. There were two motivations for this
-%design approach: One, this allows us to analyze a large time frame without
-%sacrificing too much screen real estate. Two, because the number of months is
-%static, viewers can compare month-to-month or season-to-season without
-%difficulty,  this follows up on our requirement to allow analysis of seasonal
-%trends (Requirement R2). We illustrate with an example, suppose we want to
-%compare the number of incidents in January versus June from 2000 to 2005, we
-%select 2000 to 2005 on the year slider, we can then compare the January volume
-%and June volume directly, furthermore, each month can be selected for further
-%analysis.
-
-%User interaction is done through click/tapping the individual histogram bars, or
-%by dragging each slider's respective markers. A short cut for selecting an
-%entire year is provided by double clicking/tapping any non-zero bar on the year
-%range slider. An animated transition is used to interpolate the height of the
-%histogram bars from their current volume to their new volume.
- 
 
 
 \subsection{Compact View}
