@@ -38,12 +38,12 @@ the database, the parsing details are covered in Chapter 4.
  
 The visualization system implementation uses a standard two-tier design: A
 persistence layer and an interface layer. The persistence layer is in charge of
-database transactions, cached resources and system state. The interface layer takes
-care of the rendering and any user triggered events. The visualization is
+database transactions, cached resources and system states. The interface layer
+takes care of the rendering and any user triggered events. The visualization is
 state-driven and the current state is stored in the persistent layer. The
-primary reason for this is that this setup allows us to programmatically alter
-the visualization independently of any other changes, and porting to other
-platforms would likely only require changes to the Event Manager.
+reason for a state machine model is to allow us to programmatically  alter the
+visualization, and allow the system to be deployed to different platforms
+without major changes.
 
 The major modules of our system, as well as their functionalities are listed below: 
 \begin{itemize}[noitemsep]
@@ -76,15 +76,15 @@ The major modules of our system, as well as their functionalities are listed bel
 \section{Algorithms}
 During the development of the software prototype, we have encountered several
 non-trivial problems. While these issues are not a part of our visualization 
-design, they nonetheless impact the overall user experience via the degradation 
+design, they nonetheless impact overall user experiences via the degradation 
 of aesthetic and usability of the system. In this section we discuss these 
 problems and our proposed solutions.
 
 \subsection{Order Independent Transparency}
-Chapter 5 mentioned briefly that rendering translucent geometries in 3D space
-can create artifacts, here we will describe this in greater detail and outline
-our work around solution. There are two states that need to be toggeled to
-enable translucent effetcs:
+Chapter 5 mentioned briefly that rendering translucent geometries in \threed
+space can create artifacts, here we will describe this in greater detail and outline
+our work-around solution. There are two options in the graphics API that
+controls transparency effects:
 \begin{itemize} [noitemsep]
   \item Enable Blending: This option allows foreground objects to blend with
   background objects.
@@ -106,7 +106,7 @@ enable translucent effetcs:
 Geometries are typically not sent to the hardware in sorted order, so they are
 neither front-to-back nor back-to-front. Hardware supported depth buffer
 resolves the out-of-order polygons by selecting the fragment closest
-to the viewing position. With transparent effect in place, fragments are blended
+to the eye position. With transparent effect in place, fragments are blended
 together rather than going through the selection process. Where the problem
 arises is that alpha-blending is not commutative, for example: red+green+blue
 is not equivalent to red+blue+green. The effects of out of order blending versus
@@ -115,33 +115,33 @@ in order blending is seen in Figure \ref{figure:oit}.
 The major problem of out-of-order blending is that objects that are supposed to
 be behind can appear to be in front, making it difficult for the viewers to
 judge an object’s depth correctly. In the visualization, this is not only
-distracting, but can mislead readers because it creates additional offsets
-against the colouring scale.
+distracting, but can mislead viewers to select incorrect entity components.
 
-Naively we can sort the geometries into depth order, or use space partitioning 
-structures that forces the geometries to be depth order rendering. However, 
-these naive solutions tend to have very expensive computation, and are view
-dependent which results in re-computation whenever the viewing perspective
-changes. There are also pathological cases where polygons intersect each other,
-which cannot be solved with partitioning or sorting alone.
+
+Naively we can use either sort the geometries or use space partitions to force
+geometric objects into depth order, However, these naive solutions tend to have
+very expensive computation, and are view dependent which results in
+re-computation whenever the viewing perspective changes. There are also
+pathological cases where polygons intersect each other, which cannot be solved
+with partitioning or sorting alone.
 
 Alternative blending algorithm exist that looks at minimizing the effects of
 order-dependent terms in blending equations, but there is a threshold on the
 amount of transparency that can be applied~\cite{Meshkin2007, Bavoil2008}.
 Other works use hardware features to allocate a buffer to emulate
-sorting~\cite{Myers2007, Bavoil2008, Yang2010}, these algorithms produce more
-accurate results, albeit bounded by hardware constraints or the complexity of
+sorting operations~\cite{Myers2007, Bavoil2008, Yang2010}, these algorithms
+produce more accurate results, albeit bounded by hardware constraints or the complexity of
 the scene itself.  
 
 In this prototype, we use an implementation of dual-depth-peeling
 \cite{Bavoil2008}, which ``peels'' the \threed scene apart layer by layer
-into textures, before recomposing these texture into a final texture in depth order. The implication 
-of this peeling effect is that it effectively changes the rendering process from
-single to multiple passes, a complete rendering will take N/2 passes where N is
-the number of geometric layers based on the present viewing position. This 
-method yield accurate and eye-pleasing results, while more performance friendly
-methods exists, we decided that this was the most reasonable approach because
-the required features are available on most hardware at the time of implementation.
+into textures, before recomposing these texture into a final texture in depth
+order. The implication of this peeling effect is that it effectively changes the
+rendering process from single to multiple passes, and that performance depends
+on the depth complexity of the scene. This method yield accurate and
+eye-pleasing results, while more performance friendly methods exists, we decided
+that this was the most reasonable approach because the required features are
+available on most hardware at the time of implementation.
   
 
 
@@ -170,8 +170,8 @@ few milliseconds to several seconds, we found this to be unacceptable because
 it degrades user experiences.
 
 Here we introduce an intermediate in-memory cache to store the aggregated scores
-of each entity. The cache is initialized once at system initialization,
-afterwards queries are executed against the cache  rather than the database.
+of each entity. The cache is created at system initialization,
+then queries are executed against the cache rather than the database.
 The cache organization is specific to this dataset, however the idea itself is
 generalizable.
 
@@ -181,25 +181,25 @@ The cache levels are, from most general to most specific: time period, entity,
 manufacturer, make, model and model year. 
 
 Each node in the cache hierarchy contains three things, a reference to all its
-direct children, an aggregated score of all its children, and a reference to the
-documents that matches the node which are used to calculate co-occurrence. For
+direct children nodes, an aggregated score of all its children, and a reference
+to the documents that match the node which are used to calculate co-occurrence. For
 example, a node corresponding to (July 2010, engine) will have the following:
 \begin{itemize}[noitemsep]
   \item An aggregated score total that indicate the number of occurrence of
   engine in documents relating to incidents during July 2010
   
-  \item A listing of unique document IDs that matches the above criteria
+  \item A listing of unique document IDs that match the above criteria
   
   \item References to children nodes (manufacturers) that matches the above criteria
 \end{itemize}
 
 The overview visualization is then constructed by iterating over the desired
-time periods, apply the hierarchy filter to find the correct cache node for each
-entity, and then sum up the node's entity score across the time periods. Because
-the aggregations are done ahead of time at system start up, and because score
-lookup is constant time, our cache results in an a much more stable performance
-compared against database queries. On average we found the cache queries take
-about 100 to 200 milliseconds to complete, which we found to be acceptable.
+time periods. We then apply the hierarchy filters to find the correct cache
+nodes for each entity parts, and finally sum up the node's entity scores across the
+time periods. Because cache table lookup is close to constant time, our queries
+result in a much more stable performance compared against database queries. On
+average we found the cache queries take about 100 to 200 milliseconds to
+execute, which we found to be acceptable.
 
 
 
@@ -240,16 +240,16 @@ about 100 to 200 milliseconds to complete, which we found to be acceptable.
 
 
 \subsection{Multi-Touch Heuristics}
-Touch sensors have a few drawbacks, there are inherent noises that come from
+Touch sensors have a few drawbacks; there are inherent noises that come from
 performing gestures, in addition, our inability to hold our hands perfectly
 still accentuate this issue by creating jitters. In our particular use case, the
 upright display makes certain gestures difficult, for example, in an informal
-evaluation of the display we found that certain curvatures introduced noises
-because the knuckles of other fingers are sensed as false-positive touch points
-as a result of drifting too close to the screen itself.
+evaluation of the display we found that certain curvatures introduced a
+lot of noises because the knuckles of other fingers are sensed as
+false-positives as result of drifting too close to the screen itself.
 
 These noises degrades user experiences, as they trigger unexpected events within
-the system. We introduce a set of software heuristics as an intermediate step
+the system. We introduced a set of software heuristics as an intermediate step
 between when the points are sensed and when they are executed. In general, these
 heuristics remove unintended touches and prevent jittery animations that
 result from minute movements. While these are designed specifically to deal with
@@ -258,10 +258,10 @@ adopted to other touch sensors.
 
 \begin{itemize} [noitemsep]
   \item \textbf{Real Update:} The muscle deformation when pressed against the
-  display, paired with inability to keep perfect still postures result in
+  display, paired with inability to keep still postures result in
   sensor registering jittery updates. This is undesirable because it induces a
   shaking effect, and often time unnecessary because the updates are minute.
-  To compensate this problem, the system only accept an update if it is at least
+  To compensate, the system only accept an update if it is at least
   X number of pixels away from the previous updated point.
   
   \item \textbf{Coincidental Points:} When a touch is initialized on the touch
@@ -274,7 +274,7 @@ adopted to other touch sensors.
   \item \textbf{Movement Buffer:} When a gesture is in transition, there are
   cases where other parts of the hand will inadvertently cause false-positives.
   We try to neutralize these occurrences by introducing buffer zones around touch
-  points that are in transition. New touch points cannot be created 
+  points that are in motion. New touch points cannot be created 
   if they fall within X pixels away from a point that is in transition.
   
   \item \textbf{Reinforce Intention:} This heuristic deals with reducing jitters

@@ -16,8 +16,8 @@ different perspectives. This was done to support the different types of
 analytical tasks as we discussed in Chapter 3. These tasks, such as
 finding seasonal trends of a component and finding the worst performing
 component, are quite different, one requires a localized view showing how a
-single component performed over time, the other requires a very high level view
-designed to draw out outliers.
+single component performed over time, and the other requires a very high level
+view designed to draw out outliers.
 
     % === Figure === 
 	\begin{figure}
@@ -112,7 +112,7 @@ questions that can be answered with these different perspective views:
   \item Global-Max: What are the most unreliable vehicle components?
 \end{itemize}
 
-Going back to Figure \ref{figure:heatmap} as an example, one can some
+Going back to Figure \ref{figure:heatmap} as an example, one can make some
 interesting observations. From the component view in the centre, a person can
 see that there are two distinct outliers in the second and third months of the
 second year, in particular, one can see the scores getting lower, then there is
@@ -126,7 +126,7 @@ pushed into the lower brackets and not possible to detect any other trends.
  
 The heatmap viewing perspective is at a global scope, thus a change in
 perspective will affect all visible heatmaps. This keeps the interface
-consistent and avoid viewers from switching to different modalities when they
+consistent and avoids viewers from switching to different modalities when they
 shift their attention from one heatmap to another. The view switching mechanism
 is realized as a drop-down control sitting atop the hierarchy filters and shows
 the currently selected viewing mode.
@@ -168,35 +168,6 @@ both queries will have a strong presence overall but with a faint outline,
 while a lopsided but infrequently mentioned component will have
 strong outline but barely visible interior colour.
 
-% Comparison mode allows people to compare two different types of the same
-% physical product specified by two different query sets Q1 and Q2. Every entity
-% from a query set is matched against the same named entity in the other query
-% set, producing an entity level based comparison. For example, we can compare how
-% each car component fared against each other in a comparison of Honda Civic
-% versus Toyota Corolla, or comparing Ford Focus against the industry form.
-% 
-% Two separate measures are used for the comparison view. A contribution sum and a
-% percentage difference. The contribution sum is the aggregated entity score from
-% the two query sets, it reflects the overall importance of the entity by
-% emphasizing the frequently occurring entities in one or both query set. The
-% percentage difference describes the relative frequencies of an entity, whether
-% it occurs more frequently under Q1 or Q2 relative to the total contributions
-% from Q1 and Q2 respectively. The percentage score is calculated as entity score
-% divided by the total contribution. Then the percentage difference follows as
-% percentage score Q1 minus percentage score Q2, with the sign and magnitude
-% indicating  which query set has the stronger presence. We made the decision to
-% use percentage based comparisons because it enables as to compare query results
-% of different sizes.
-% 
-% We encode the sum score as the colour of the \threed component, based on the
-% default colour scale. For the difference score, we render the measure as an
-% outline around the object. The sign of the difference is encoded as one of two diverging
-% colours, one for positive and one for negative values. The magnitude of the
-% difference is encoded as the transparency of the outline, larger magnitude have
-% more distinct, solid outlines compared to smaller values. Thus, a highly
-% problematic object from both side will have a strong presence overall but with a
-% faint outline, while a lopsided but infrequent problem will have strong outline
-% but barely visible interior colour.
 
     % === Figure ===
 	\begin{figure}
@@ -226,17 +197,17 @@ switches the second hierarchy filter from the ``None'' position to a valid
 selection. Subsequent query modifications are carried out in comparison mode
 until the selection is turned to ``None'' again.
 
-One limitation with this approach is our current usage of the total
-contributions to calculate the percentage scores. Our total contribution is in
-relations to the number of documents in the corpus, which may not be
-the best indication of the overall contribution.
+%One limitation with this approach is our current usage of the total
+%contributions to calculate the percentage scores. Our total contribution is in
+%relations to the number of documents in the corpus, which may not be
+%the best indication of the overall contribution.
 
  
  
  
 \section{Aggregation}
 By default, the system treats each object individually rather than object
-groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all scored
+groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all processedo
 separately, even though they are logically under the group ``seat''. This
 setting allows people to isolate and identify unique problems accurately. There
 are times, however, when this level of information is unnecessarily detailed and
@@ -259,9 +230,6 @@ first level are the major sub-systems in a vehicle. Aggregated components
 responds to interaction events as a single group, thus, selecting the
 ``seatbelt'' will select the entire ``seat'' subsystem.
 
-%The visualization responds
-%by making all child objects referencing the aggregated score of their parent
-%subsystem. 
  
 Figure \ref{figure:aggregation} shows a before and after illustration of using
 aggregation mode. A default rendering is shown in the top portion, one can
