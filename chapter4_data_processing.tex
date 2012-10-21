@@ -43,17 +43,6 @@ matter of our dataset to bootstrap the creation of the hierarchy:
 using the meronomy relationship until we have two tree structures, which we then
 merged together.
 
-While this process extracts a fair amount of physical entities, an analysis of
-sample dataset showed that it is not a representative of the entities mentioned
-in the documents. The primary reason for this is due to the use of synonyms
-in the document text. To alleviate this situation, we additionally extract
-the synset relations from WordNet for each keyword. A synset is a set
-relationship that describes words that are semantically equivalent of one
-another, for example ``limo'' and ``limousine'' are different words, but both
-describe the same type of object and thus belongs to the same semantic group.
-For each word in our current vocabulary, we replace it with its synset.
-
-
     % ===== Figure =====
 	\begin{figure}
 	   \centering  
@@ -62,6 +51,19 @@ For each word in our current vocabulary, we replace it with its synset.
 	   \label{figure:meronomy}
 	\end{figure}
 	% ==================
+
+While this process extracts a fair amount of physical entities, an analysis of
+sample dataset showed that it is not a representative of the entities mentioned
+in the documents. The primary reason for this is due to the use of synonyms
+in the document text. To alleviate this situation, we additionally extract
+the synset relations from WordNet for each keyword. A synset is a set
+relationship that describes words that are semantically equivalent of one
+another, for example ``limo'' and ``limousine'' are different words, but both
+describe the same type of object and thus belongs to the same semantic group.
+For each word in our current vocabulary, we replace it with its synset. Figure
+\ref{figure:meronomy} illustrates what hierarchy structure looks like.
+
+
 
 
 \subsection{Refinement}
