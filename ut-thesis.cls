@@ -549,7 +549,8 @@
       \vfill
       A thesis submitted in conformity with the requirements\\
       for the degree of {\@degree}\\
-      Graduate Department of {\@department}\\
+      %Graduate Department of {\@department}\\
+      Faculty of Science \\
       University of Ontario Institute of Technology\\ 
       %University of Toronto\\
       \vfill
@@ -573,15 +574,15 @@
    \begin{center}
       \section*{Abstract}
    \end{center}
-   \begin{center}
-      {\@title}\\[2ex]
-      {\@author}\\
-      {\@degree}\\
-      Graduate Department of {\@department}\\
-      University of Ontario Institute of Technology\\
+%   \begin{center}
+%      {\@title}\\[2ex]
+%      {\@author}\\
+%      {\@degree}\\
+      %Graduate Department of {\@department}\\
+%      University of Ontario Institute of Technology\\
       %University of Toronto\\
-      {\@gradyear}\\
-   \end{center}
+%      {\@gradyear}\\
+%   \end{center}
    \begingroup
    %% Adjust the line spacing: if it was less than 1 1/2,
    %% increase it to 1 1/2; if it was between 1 1/2 and 2,

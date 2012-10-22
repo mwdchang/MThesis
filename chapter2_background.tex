@@ -8,21 +8,21 @@
 \chapter{Literature Review}
 There are primarily six different research areas that are relevant to our work. 
 The fundamentals of information visualization, a process of transforming
-data into graphics forms the basis of our work of text summarization.
-Descriptive rendering section reviews several text-to-scene applications.
-A discussion of why NPR is beneficial is next, followed by recent examples of
-visualizations that combines abstract and concrete concepts. Next, we review
+data into interactive graphics forms the basis of our work on text
+summarization. Section 2.2, Descriptive rendering, reviews several
+text-to-scene applications. A discussion of why NPR is beneficial is next, followed by recent examples of
+visualizations that combine abstract and concrete concepts. Next, we review
 the role of using lens as a focus+context interaction technique. Finally, we
 review in brief the designs for touch interfaces.
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Fundamentals}
 Visualization revolves around the process of mapping and representing data or
-concept graphically such that they are visible to the human eye. Visualization, 
+concepts graphically such that they are visible to the human eye. Visualization, 
 in theory,  takes advantage of the human perceptual system to rapidly understand
 what the data is communicating to the readers. 
 
-Foremost we want to recognize that human visual system is quite limited, we
+Foremost we want to recognize that human visual system is limited, we
 can only perceive a small fraction of the entire spectrum of light, and of our
 field of vision, only a small area is truly in focus. However, there is a small
 set of visual properties that can be detected extremely rapidly (comparatively
@@ -59,10 +59,10 @@ Associative &  Yes & Yes & Maybe & Yes & Yes & Yes & Yes \\
 \hline
 Quantitative &  Yes & Maybe & No & No & No & No & No \\
 \hline 
-Order &  Yes & Yes & No & Yes & No & No & No \\
+Ordered &  Yes & Yes & No & Yes & No & No & No \\
 \hline
-Length & Yes & Yes & Maybe & Yes & Yes & Yes & Yes \\
-\hline
+%Length & Yes & Yes & Maybe & Yes & Yes & Yes & Yes \\
+%\hline
 \end{tabular}\caption{List of visual variables and
 their characteristics}\label{table:VisualVariable}
 \end{table}
@@ -77,16 +77,16 @@ mapping as follows:
   \item Analysis: Normalization of raw data for visualization
   \item Filter: Select subsections of data to be visualized
   \item Mapping: Find the appropriate visual representations
-  \item Rendering: Transform raw data into image data
+  \item Rendering: Transform data into image data
 \end{itemize}
 For an interactive visualization, these stages are not a linear, one-off
-process. These stages of Filter, Mapping and Renderings form a repetitive loop
+process. These stages of Filter, Mapping and Rendering form a repetitive loop
 as the users change parameters to explore different parts of the visualization.
 The next part is finding interesting information within the visual presentation,
 it is often through exploration that enables users to find and extract
 interesting data. The process of facilitating useful graphical-based exploration
-is advocated in Shneiderman's information seeking mantra~\cite{Shneiderman1996}
-and can be broken down into these specific tasks:
+is advocated in Shneiderman's ``information seeking
+mantra"~\cite{Shneiderman1996} and can be broken down into these specific tasks:
 \begin{itemize}[noitemsep]
   \item Overview: See and summarize the entire collection
   \item Zoom: Zoom in on items of interest
@@ -121,10 +121,8 @@ with understanding of natural languages, whereas interpreted rendering systems
 tend to involve user intentions. Here we look at several examples. 
 
 Though strictly speaking not a text-to-scene application, the IBIS application
-from Seligmann and Feiner renders a \threed scene based on a set of user
-provided rules \cite{Seligmann1991}. These rules specify which
-object and locations in the \threed scene have higher degrees of interest. The
-application itself evaluates these rules and determines the optimal viewing perspective, as well
+from Seligmann and Feiner renders a \threed scene based on a set of
+user-provided rules \cite{Seligmann1991}. These rules specify which object and locations in the \threed scene have higher degrees of interest. The application itself evaluates these rules and determines the optimal viewing perspective, as well
 the application adjust the lighting conditions as a way to draw attention to
 specific details in the scene. To our knowledge this is one of the first systems
 where a preconstructed scene can be modified by text input.
@@ -135,11 +133,22 @@ WordsEye~\cite{Coyne2001}. WordsEye uses a combination of grammatical rules
 and heuristics to determine subjects and their actions. These subjects are
 mapped against a large repository of \threed models, and the verb actions are mapped to 
 predefined poses. One of the interesting WordsEye strives for is the preservation 
-of spatial relations among subjects in the text, for example: ``The giant orange 
-cat is on the black chair.'' will literally rendering a large cat on top of a chair. 
-However, WordsEye is limited by the inherent ambiguities in written language and
-the accuracy of its semantic interpretation. WordsEye also works best for
+of spatial relations among subjects in the text, for example: ``The cat is on
+the table. The cup is on the cat.'' will render a cup on top of a cat on top
+of a table (See Figure \ref{figure:wordseye}). However, WordsEye is limited by
+the inherent ambiguities in written language and the accuracy of its semantic interpretation. WordsEye also works best for
 a single document, and is not meant for collections of text.
+
+    % === Figure ===  
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{wordseye.jpg}  
+	 %\includegraphics[scale=1.0]{wordseye.jpg}  
+	 \caption[WordsEye]{WordsEye rendering of ``The cat is on the table. The cup is
+	 on the cat.''}
+	 \label{figure:wordseye}
+	\end{figure} 
+	% ==============
 
 
 Another example of text-to-scene generation is CarSim\cite{Akerberg2003},
@@ -150,6 +159,16 @@ animated sequence by inferring the speed and direction of vehicles from the text
 content, it is less concerned with the literal representation of the car, but
 with the situation surrounding the incident.
 
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{copyright/wordle.png}  
+	 \caption[Wordle]{A typical Wordle layout~\cite{VIE2009a}. \copyright 2009,
+	 IEEE. Reprinted with permission.}
+	 \label{figure:wordle}
+	\end{figure} 
+	% ==============
+ 
  
 
 %So far, the discussion have been around examples where the renderings are based
@@ -159,8 +178,8 @@ with the situation surrounding the incident.
 
 On the interpretive side, a popular example is the web-based application called
 %Wordle(http://www.wordle.net). Unlike the systems mentioned above, Wordle does
-Wordle~\cite{VIE2009a}. Unlike previous systems mentioned above, Wordle does
-not perform any semantic inferences on the underlying text, it rather collects frequency
+Wordle~\cite{VIE2009a} (See Figure \ref{figure:wordle}). Unlike previous systems
+mentioned above, Wordle does not perform any semantic inferences on the underlying text, it rather collects frequency
 statistics of each word tokens and encode the frequencies as font sizes.
 Unlike the closely related tag cloud, Wordle offers more creative freedom in
 varying typography and colours, which are all interactively chosen by the user.
@@ -171,10 +190,10 @@ further by binding the placement of the words to specific geometric shapes and
 outlines, which further strengthens how people can create their own interpretations and
 expose the underlying themes. For example, a text article about love can be
 place inside a shape of a heart, instilling the idea that it is emotionally
-based. However, because these creations are not usually tied back to their
+based. However, because these creations are not usually linked to their
 original text, it can be questionable whether these are proper tools for text
 analysis. 
-
+ 
 
 Another example is calligraphic packing \cite{Xu2007}, which takes a more
 liberal, artistic approach. This research visualizes single words by distorting
@@ -207,9 +226,9 @@ communicate a specific message to their viewers, thus they are driven to
 emphasize features in a scene or some underlying attributes~\cite{Gooch2001}.
 This is in contrast with photorealistic rendering where the goal is to compare
 the rendering against a ground-truth image. Second, often times it is
-undesirable to preserve a high degree of accuracy, specular reflections, shadows and other natural
-lighting phenomenons can hinder viewers' ability to see vital details and create
-ambiguities. NPR can choose to ignore the natural laws of physics, and instead
+undesirable to preserve a high degree of realism, reflections, shadows
+and other natural lighting phenomena may obstruct or create
+false-positive surface details. NPR can choose to ignore the natural laws of physics, and instead
 choose to focus on different abstractions such that the illustration can be
 meaningful to people from different fields. Because there are multitudes of
 possibilities in NPR, this section solely focuses on prior works that related
@@ -222,9 +241,9 @@ Images found in technically written materials, or that of
 instructional manuals are quite different than those found in photo scrapbooks. The key point, as
 stated above, is that communication is valued above realism. Early works by
 Gooch \etal uncovered common themes in technical illustrations and ways to
-automate some of these properties~\cite{Gooch1998}. Gooch \etal modifies the
+automate some of these properties~\cite{Gooch1998}. Gooch \etal modified the
 conventional shading algorithm to use a two-tone approach that shift from
-warm-colour to cool-colour, in addition, they added edge lines and removed
+warm-colours to cool-colours, in addition, they added edge lines and removed
 shadows. Illustrations created in this fashion have major benefits over
 photography. One, strong lighting effects under conventional shading model are
 reduced, thus preserving the surface details under the light patches. Two, the
@@ -240,13 +259,14 @@ sketches~\cite{Freudenberg2002}, and pen-and-ink
 illustrations~\cite{Salisbury1994}. However it is semi-automatic as some human
 input is required for the right combination of textures, normal maps and other
 special effects.
- 
+   
 
 Another major benefit of NPR is that it can be used to simplify or
 accentuate geometric features. By taking advantage of visual perception
 capabilities of seeing continuities and surfaces as dictated by Gestalt Principals
 \cite{WAR2004b}, human can see and complete entire shapes with just a few
-geometric primitives. Feature extraction is one way to achieve this goal.
+geometric primitives. Feature extraction is one way to achieve this goal by
+simplifying an image down to geometric primitives of lines and curves.
 Feature extraction can be done in either \twod or \threed spaces. The \twod
 algorithm is image based, and based upon calculating the a discontinuity value
 of a pixel against its neighbouring pixels~\cite{Gonzalez2002}. The
@@ -283,6 +303,19 @@ curved~\cite{Masuch1998, Strothotte1999}. The relevance here to our work is
 that we use this type of technique to covey objects that are not in the focused context.
 
 
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 %\includegraphics[width=\columnwidth]{copyright/viola.png}  
+	 \includegraphics[scale=1.0]{copyright/viola.png}  
+	 \caption[Importance-Driven Volume Rendering]{Importance-Driven Volume
+	 Rendering~\cite{Viola2004}.
+	 \copyright 2004, IEEE. Reprinted with permission.}
+	 \label{figure:viola}
+	\end{figure} 
+	% ==============
+
+
 Another branch of non-photorealistic rendering deals with semantic segmentation
 of objects in the scene. For example illustrations found in science and
 medical literature where specific parts are accentuated using different colours.
@@ -290,8 +323,8 @@ This is done in order to differentiate normal and outlier regions in the final
 illustration. These type of NPR techniques deals with visibility issues, to
 ensure that semantically important objects are easily visible and to provide features to deal with occlusion. 
 One prominent research work came from an importance-driven function that can
-be used to determine the visibility of objects~\cite{Viola2004}. In this paper
-scores are assigned to volumetric components such that more important
+be used to determine the visibility of objects~\cite{Viola2004} (See Figure
+\ref{figure:viola}). In this paper scores are assigned to volumetric components such that more important
 objects are rendered more opaque than objects of lesser importance. A screen
 door transparency technique is introduced to ensure overall visibility by
 rendering holes into the outermost volumetric layers. The idea of
@@ -329,6 +362,16 @@ a well-known example is the volumetric visualization from Doleisch \etal, where
 multiple coordinated views, and linking and brushing techniques are used to 
 further help the exploration process~\cite{Doleisch2003}.
 
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{copyright/sedlmair.png}  
+	 \caption[CarComVis]{User interface for CarComVis~\cite{Sedlmair2009}.
+	 \copyright 2009, Springer. Reprinted with permission.}
+	 \label{figure:seldmair}
+	\end{figure} 
+	% ==============
+
 For a more hybrid space approach between InfoVis and SciVis,  Balabanian \etal
 placed hierarchical renderings of human anatomy inside an interactive
 balloon-tree graph \cite{Balabanian2010}. In this graph, each anatomical object occupies a node, and is arranged by
@@ -337,6 +380,7 @@ semantics, such as what is currently selected, filtering operations,
 and relations among the anatomical parts. The \threed rendering supports SciVis
 operations such as viewing, slicing and picking of objects. Changes are linked
 and propagated across relevant nodes and volume renders.
+
 
 In the InfoVis space, researches done by Sedlmair \etal looked at enriching
 InfoVis visualizations with \threed models~\cite{Sedlmair2009}.
@@ -350,9 +394,9 @@ techniques, including the usage of multiple coordinated views and a total immers
 environment where the user is in a virtual world. Subjective feedback 
 from their study suggested a strong desire for integration of \threed
 visualizations into traditional visualization and work flow. Our work in this
-thesis is perhaps mostly closely associated with CarComVis, however our
-renderings are driven by unstructured text, and our interactions are directly
-applicable to the visualization itself rather than through multiple coordinated
+thesis is perhaps mostly closely associated with CarComVis (see Figure
+\ref{figure:sedlmair}), however our renderings are driven by unstructured text,
+and our interactions are directly applicable to the visualization itself rather than through multiple coordinated
 views.
 
 %\textbf{Summary:} We take an approach similar to CarComVis [Seldmair2009], we
@@ -430,12 +474,24 @@ points, line segments are extended from the data points outward towards the
 circumference of the lens. The actual text labels and descriptions are drawn
 along the circumference, allowing viewers to make the connection between
 graphics and text. The lens itself is movable which allows for exploration of
-interesting regions. Extended Excentric Labeling~\cite{Bertini2009} further extends on the idea by
-creating additional interactions with the lens, dynamic overviews are shown
-inside the lens as miniature graphs summarizing of objects under the lens. The
+interesting regions. Extended Excentric Labeling~\cite{Bertini2009} (Figure
+\ref{figure:bertini}) further extends on the idea by creating additional
+interactions with the lens, dynamic overviews are shown inside the lens as miniature graphs summarizing of objects under the lens. The
 labels are scrollable to allow exploration of dense areas without overcrowding
 screen space, the layout of labels and the extending lines are also altered to
 minimize crossings which can cause additional visual complexity. 
+ 
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{copyright/bertini.png}  
+	 \caption[Extended Excentric Labelling]{Extended Excentric
+	 Labelling~\cite{Bertini2009}.
+	 \copyright 2009, The Eurographics Association and Blackwell Publishing.
+	 Reprinted with permission.}
+	 \label{figure:bertini}
+	\end{figure} 
+	% ==============
 
 
 %While both Excentric and Extended Excentric Lens operate in \twod space, there

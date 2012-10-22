@@ -1,38 +1,52 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This chapter summarizes the thesis work 
-%
+% 
 % - Some kind of graphics would be nice? showing taking text to final image?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
-The amount of data available today is staggering. With advanced technologies,
-data are constantly been created and archived. Understanding large quantities of data is
-a difficult challenge in terms of the sheer volume and the time effort needed to
-sift through the data to find salient information. Information Visualization
-(InfoVis), is a field that deals with this data overload by using visual
-representations of data to amplify human cognition \cite{Card1999}. While there
-are many InfoVis techniques that deals with summarization and exploration of
-data, particularly in text format, these techniques are not always in context
-because of their abstract presentation. For example, consider the popular
-technique of TagCloud, the sizes of the tags are semantically linked to the
-frequency, but the actual context and subject matter of the text is not taken
-into account. Many of these missing contexts are concrete ideas about objects
-and space relations that do not naturally lend themselves to be mapped against
-abstract representations.
+Many types of text data are generated and archived on a daily basis, such
+as diaries, blogs and incident reports. These documents can be broadly
+categorized to have two types of attributes: abstract attributes that deal with
+word semantics that are intangible in nature; and concrete attributes where the
+words or relations among the words have physical manifestations. The field of Information
+Visualization (InfoVis) deals with the visual representation of these documents
+to amplify human cognition~\cite{Card1999}, in particular, to summarize and
+explore the dataset. While there are a broad range of InfoVis techniques for
+text documents, they often do not integrate the visualizations of abstract and
+concrete attributes. Consider the popular technique of word cloud (\ie, 
+\cite{VIE2009a}): the size of tags is linked to the word frequency, but the
+rendering of the cloud is out of context with respect to the physical meaning of these words.
+ 
+ 
+% The amount of data available today is staggering. With advanced technologies,
+% data are constantly been created and archived. Understanding large quantities of data is
+% a difficult challenge in terms of the sheer volume and the time effort needed to
+% sift through the data to find salient information. Information Visualization
+% (InfoVis), is a field that deals with this data overload by using visual
+% representations of data to amplify human cognition \cite{Card1999}. While there
+% are many InfoVis techniques that deal with summarization and exploration of
+% data, particularly in text format, these techniques are not always in context
+% because of their abstract presentation. For example, consider the popular
+% technique of TagCloud, the sizes of the tags are linked to the
+% frequency, but the actual context and subject matter of the text is not taken
+% into account. Many of these missing contexts are concrete ideas about objects
+% and space relations that do not naturally lend themselves to be mapped against
+% abstract representations.
  
 In this work, we introduce descriptive non-photorealistic rendering, a hybrid
-approach for text analytics by preserving both abstract and spatial semantics in
-a single visualization. This process, creates information rich visuals such that
+approach for text analytics which reveals both abstract and spatial semantics in
+a single visualization. This process creates information rich visuals such that
 significant parts of the model appear to “popout” to the viewers, while
 retaining their easily recognizable shapes and forms. 
 
- 
+  
    
 \section{Motivation}
 There are many text collections about physical things, and information
 visualization generally summarizes these documents with an abstract
 presentation. While these visualizations are easy to understand, they are
-typically disconnected from the real world and the presented
-visualizations have no physical resemblance to the subject matter in the text.
+typically disconnected from the real world and have no physical resemblance  to
+the subject matter in the text.
 In another words, we don't seem to be taking advantage of existing familiarity of
 the subject matter. Creating this link may have several benefits; first it is
 immediately obvious upon viewing what the text documents are about; and second, 
@@ -81,7 +95,7 @@ abstract text visualization with NPR illustrations: finding a way to formally
 define the subject matter, encode the NPR graphics, and finally create
 interactions to navigate and to explore the underlying dataset. 
 
-For the first problem, we extract from the text documents the physical noun
+For the first problem, we extracted from the text documents the physical noun
 keywords that make up the subject matter. A meronomy relationship is used to link the
 noun entities together to from a hierarchy representing the physical parts of
 the subject. We then segmented \threed models that represent the subject into
@@ -90,11 +104,12 @@ between keywords ontology and the \threed model components.
 
 Second, we defined the semantic relations that we want to visualize, which are
 occurrence and co-occurrence relations of the physical entities. We created a
-mapping function that takes the entity relations as parameters and output a
+mapping function that takes the entity relations as parameters and outputs a
 stylized graphical effect which is applied to the geometric components, this is used to 
 denote the level or severity of the semantic relations. The subject matter can 
 then be reconstructed with the aforementioned hierarchy of parts, creating the 
-main part of our visualization that showcases the entities with highly scored relations.
+main view of our visualization that showcases the entities with highly scored
+relations.
 
 Lastly, to enable exploration of data, we designed a set of widgets to perform
 filter and drill-down operations. The widget are built to take advantage of the
@@ -102,7 +117,7 @@ exposed spatial dimensions, by operating over regions of space as well as over i
 entity elements.
 
 We call our approach \emph{descriptive non-photorealistic rendering}, as we combined
-the summarization of thousands of documents with the message carrying nature of 
+the summarization of thousands of documents with the message-carrying nature of 
 non-photorealistic illustrations.
 
 To demonstrate our application in a realistic context, we applied our methods
@@ -151,10 +166,16 @@ interpret the visualization and how they perform open-ended tasks.
 
 
 \section{Contribution}
-This work describes a novel approach for visualizing text documents with inherent spatial 
-attributes that we called \emph{descriptive non-photorealistic rendering}.
-By combining abstract semantics with non-photorealistic rendering techniques into a 
-single view,  we created an engaging visualization that can be related to the real world.
+This work describes \emph{descriptive non-photorealistic rendering}, a
+novel approach for visualizing text documents with both concrete and abstract
+attributes. By combining the different semantics into a single view and using
+non-photorealistic rendering techniques, we created an engaging visualization
+that can be related to the real world.
+
+% This work describes a novel approach for visualizing text documents with inherent spatial 
+% attributes that we called \emph{descriptive non-photorealistic rendering}.
+% By combining abstract semantics with non-photorealistic rendering techniques into a 
+% single view,  we created an engaging visualization that can be related to the real world.
 
 % This work describes a novel approach for conducting text analytic tasks.
 % Combining together Non-Photorealistic Rendering,\threed rendering and
@@ -164,30 +185,39 @@ single view,  we created an engaging visualization that can be related to the re
 
  
 \section{Organization}
-The remainder of the thesis is organized as follows:
- 
-\noindent Chapter 2 is a literature review that discusses the relevant and
-related works.
- 
-\noindent Chapter 3 discusses the problem and our proposed solution. It also
-introduces a problem scenario which we used to frame our discussions for the remainder of this thesis.
- 
-\noindent Chapter 4 deals with document process, it describes the steps to tag
-and score the document text.
- 
-\noindent Chapter 5 describes our visual and interaction design. 
- 
-\noindent Chapter 6 looks at the visualization system's capabilities to support
-analytical tasks
- 
-\noindent In chapter 7 we describe our system architecture, in additional, we
-detail several non-trivial algorithms used in the implementation.
+Chapter 2 provides a literature review that discusses related works and
+researches that served as our inspirations. Chapter 3 discusses the problem and
+our solution, it also introduces our working dataset for the remainder of this
+work. Chapters 4, 5 and 6 discuss our visualization designs. In chapter 7 we
+describe our system architecture and solutions to usability issues encountered
+during implementation phase. Chapter 8 contains our user study and use case
+scenarios. Finally, in chapter 9 we summarize our contributions and discuss
+avenues for future work.
 
-\noindent Chapter 8 introduces use case scenarios, along with our user
-study evaluation and results.
-
-\noindent Finally, in Chapter 9 we summarize our contributions and discuss
-avenues for future work. 
+% The remainder of the thesis is organized as follows:
+%  
+% \noindent Chapter 2 is a literature review that discusses the relevant and
+% related works.
+%  
+% \noindent Chapter 3 discusses the problem and our proposed solution. It also
+% introduces a problem scenario which we used to frame our discussions for the remainder of this thesis.
+%  
+% \noindent Chapter 4 deals with document process, it describes the steps to tag
+% and score the document text.
+%  
+% \noindent Chapter 5 describes our visual and interaction design. 
+%  
+% \noindent Chapter 6 looks at the visualization system's capabilities to support
+% analytical tasks
+%  
+% \noindent In chapter 7 we describe our system architecture, in additional, we
+% detail several non-trivial algorithms used in the implementation.
+% 
+% \noindent Chapter 8 introduces use case scenarios, along with our user
+% study evaluation and results.
+% 
+% \noindent Finally, in Chapter 9 we summarize our contributions and discuss
+% avenues for future work. 
   
  
   
