@@ -74,7 +74,8 @@
 %% to override the default or draft settings.
 
 %% ***   Add any desired options.   ***
-\documentclass{ut-thesis}
+\documentclass[normalmargins]{ut-thesis}
+%\documentclass[widemargins]{ut-thesis}
 
 %% ***   Add \usepackage declarations here.   ***
 \usepackage{color}
@@ -180,7 +181,13 @@ We applied our method to analyze a collection of vehicle complaint reports from 
 Traffic Safety Administration (NHTSA), and through a qualitative evaluation study, we demonstrate 
 how our system can support tasks such as comparing the reliability of different makes and models, 
 finding interesting facts, and revealing possible causal relations between car parts.
-\end{abstract}
+\\ \\ \\ \\
+\textbf{Keywords:}Illustrative Visualization, Integrating Spatial and
+Non-Spatial Data, Text Visualization, User Interfaces
+ 
+
+\end{abstract} 
+
 
 %% Anything placed between the abstract and table of contents will
 %% appear on a separate page since the abstract ends with \newpage
@@ -198,9 +205,21 @@ finding interesting facts, and revealing possible causal relations between car p
 
 %% This generates an "acknowledgements" section, if needed.
 %% (uncomment to have it appear in the document)
-%\begin{acknowledgements}
-%% ***   Put your Acknowledgements here.   ***
-%\end{acknowledgements}
+\begin{acknowledgements}
+I would like to thank my supervisor Dr. Christopher Collins for his guidance and
+encouragements throughout my graduate studies. I would also like to thank my
+friends in viaLab (Rafael, Brittany, Erik, Zack and Tanvir), who gave valuable
+feedback and opinions about my thesis project.
+
+%  % === Figure ===  
+% 	\begin{figure}
+% 	 \centering  
+% 	 \includegraphics[width=\columnwidth]{paluka.jpg}  
+% 	\end{figure} 
+% 	% ==============
+
+
+\end{acknowledgements}
 
 %% This generates the Table of Contents (on a separate page).
 \tableofcontents
