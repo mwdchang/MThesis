@@ -57,7 +57,7 @@ sample dataset showed that it is not a representative of the entities mentioned
 in the documents. The primary reason for this is due to the use of synonyms
 in the document text. To alleviate this situation, we additionally extract
 the synset relations from WordNet for each keyword. A synset is a set
-relationship that describes words that are semantically equivalent of one
+relationship that describes words that are semantically equivalent to one
 another, for example ``limo'' and ``limousine'' are different words, but both
 describe the same type of object and thus belongs to the same semantic group.
 For each word in our current vocabulary, we replace it with its synset. Figure
@@ -77,7 +77,7 @@ keyword vocabulary, we perform two manual steps:
   \item Removal of nouns that are too generic from the vocabulary.
   \item Preprocess the documents and mine for any missing nouns.
 \end{itemize}
-The first step deals with the removal of keywords that are not considered to be
+The first step dealt with the removal of keywords that are not considered to be
 physical objects under typical usage, for example WordNet hierarchy of a
 vehicle contains ``first'', ``second'', ``third'' and ``fourth'', which
 describes the first, second, third and fourth gears respectively. Including
@@ -88,8 +88,8 @@ ambiguities, for example ``ICE'', which is short for internal-combustion-engine,
 will cause issues if the document is about ice, the solid state of water. They
 are therefore removed from the keyword vocabulary.
 
-The second step deals with any possible missing keywords that are not in WordNet
-at all. We attempted to detect these semi-automatically with natural
+The second step dealt with any possible missing entity words that are not in
+WordNet at all. We attempted to detect these semi-automatically with natural
 language processing techniques. We first perform part-of-speech (POS) tagging on our document 
 corpus. POS taggers look at the grammatical structures of text and break down 
 sentences into lexical categories such as nouns, verbs and adjectives. We use the 
