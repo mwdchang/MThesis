@@ -175,7 +175,8 @@ strict time constraints and participants were allowed to take as much time as
 they wanted on any task. The same tasks were used for all
 participants. Each session was recorded on video, and touch interactions were
 logged by the system. Each participant was compensated with a \$10 gift
-certificate for their effort.
+certificate for their effort. Our user study procedure can be found in Appendix
+A.
  
 
 \subsection{Discussion}
@@ -229,7 +230,7 @@ correctly interpret the visualization, mentioning each vehicle's problems
 and that neither one was desirable. One participant did not directly use the
 comparison function; rather each vehicle was examined one at a time.
 
- 
+
  
 % Usage data chart
 \begin{figure}
@@ -237,30 +238,31 @@ comparison function; rather each vehicle was examined one at a time.
 \begin{axis}[ 
     width=13cm,
     height=8cm,
-    bar width=0.2cm, 
+    bar width=0.2cm,  
     ybar=0,
     ymin=0,
     symbolic x coords={P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11},
     xtick=data, 
-    legend style={at={(1.35, 0.9)}},
+    legend style={at={(1.25, 0.9)}},
+    area legend,
     ylabel=seconds
     ] 
-    \addplot[ybar,fill=blue!50] 
+    \addplot[ybar,fill=blue!75] 
        coordinates { (P1,85) (P2,172)(P3,106) 
                      (P4,5)  (P5,11) (P6,96)
                      (P7,90) (P8,90) (P9,22)
                      (P10,19) (P11,23)
        }; 
-    \addplot[ybar,fill=red!50] 
+    \addplot[ybar,fill=red!25] 
        coordinates { (P1,160) (P2,4)  (P3,169) 
                      (P4,45)  (P5,83) (P6, 45) 
                      (P7,0)   (P8,62) (P9,54)
                      (P10,19) (P11,143)
        };
-    \legend{Lens, 3D Visualization}    
+    \legend{Lens, 3D Scene}    
 \end{axis}
 \end{tikzpicture}
-\caption{Time spent on Lens and 3D Visualization.}
+\caption{Time spent on Lens and 3D Scene.}
 \label{chart:usage}     
 \end{figure}
   
