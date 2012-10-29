@@ -13,9 +13,9 @@ Visualization (InfoVis) deals with the visual representation of these documents
 to amplify human cognition~\cite{Card1999}, in particular, to summarize and
 explore the dataset. While there are a broad range of InfoVis techniques for
 text documents, they often do not integrate the visualizations of abstract and
-concrete attributes. Consider the popular technique of word cloud (\ie, 
+concrete attributes. Consider the popular technique of word cloud (\eg, 
 \cite{VIE2009a}): the size of tags is linked to the word frequency, but the
-rendering of the cloud is out of context with respect to the physical meaning of these words.
+rendering of the cloud does not reflect the physical meaning of these words.
  
  
 % The amount of data available today is staggering. With advanced technologies,
@@ -47,8 +47,8 @@ visualization generally summarizes these documents with an abstract
 presentation. While these visualizations are easy to understand, they are
 typically disconnected from the real world and have no physical resemblance  to
 the subject matter in the text.
-In another words, we don't seem to be taking advantage of existing familiarity of
-the subject matter. Creating this link may have several benefits; first it is
+In another words, we do not seem to be taking advantage of existing familiarity
+of the subject matter. Creating this link may have several benefits; first it is
 immediately obvious upon viewing what the text documents are about; and second, 
 it opens up a wide array of exploration opportunities because the physical/spatial dimension
 becomes available. Many applications already exhibit these properties, though
@@ -96,17 +96,17 @@ define the subject matter, encode the NPR graphics, and finally create
 interactions to navigate and to explore the underlying dataset. 
 
 For the first problem, we extracted from the text documents the physical noun
-keywords that make up the subject matter. A meronomy relationship is used to link the
-noun entities together to from a hierarchy representing the physical parts of
+keywords that make up the subject matter. A meronomy (part-of) relationship is
+used to link the noun entities together to from a hierarchy representing the physical parts of
 the subject. We then segmented \threed models that represent the subject into
 different geometric groups to match our hierarchy, creating a 1-to-1 mapping 
-between keywords ontology and the \threed model components.
+between the keyword ontology and the \threed model components.
 
 Second, we defined the semantic relations that we want to visualize, which are
-occurrence and co-occurrence relations of the physical entities. We created a
-mapping function that takes the entity relations as parameters and outputs a
+occurrence and co-occurrence relations of the physical entities in the text. We
+created a mapping function that takes the entity relations as parameters and outputs a
 stylized graphical effect which is applied to the geometric components, this is used to 
-denote the level or severity of the semantic relations. The subject matter can 
+denote the level or strength of the semantic relations. The subject matter can 
 then be reconstructed with the aforementioned hierarchy of parts, creating the 
 main view of our visualization that showcases the entities with highly scored
 relations.
@@ -183,10 +183,10 @@ that can be related to the real world.
 % of analyzing thousands of text documents pertaining to physical entities.
  
 
- 
+  
 \section{Organization}
-Chapter 2 provides a literature review that discusses related works and
-researches that served as our inspirations. Chapter 3 discusses the problem and
+Chapter 2 provides a literature review that discusses related work and
+research that served as our inspirations. Chapter 3 discusses the problem and
 our solution, it also introduces our working dataset for the remainder of this
 work. Chapters 4, 5 and 6 discuss our visualization designs. In chapter 7 we
 describe our system architecture and solutions to usability issues encountered
