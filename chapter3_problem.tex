@@ -4,8 +4,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Problem Analysis}
-A pure abstract visualization may not have the best data representation if
-the data itself has inherently physical/spatial dimensions. In this chapter, we discuss why
+A purely abstract visualization may not be the best data representation if
+the underlying data has inherently physical/spatial dimensions. In this chapter, we discuss why
 this is the case. Here, we also present our use case dataset of vehicle complaint
 documents, which we will use through out the remainder of this thesis.
  
@@ -35,7 +35,7 @@ documents, which we will use through out the remainder of this thesis.
        } \\
        \end{tabular}
        \end{center}	
- 	   \caption{An example of a complaint summary text}
+ 	   \caption{An example of a complaint summary text.}
 	   \label{figure:complaint}
 	\end{figure}
 	% ==================
@@ -56,12 +56,12 @@ traditional visualization techniques often approach the problem from an abstract
 perspective. These techniques explores the context of words in the sentence of
 the documents, for example Word Tree~\cite{Wattenberg2008} allows people to
 explore the most frequently occurring sentence structures within a document.
-Other types of visualization looks at summarizing the underlying text, popular 
+Other types of visualization look at summarizing the underlying text: popular 
 visualizations on the web today such as tag-clouds and word-cloud emphasize
 the most frequently occurring words or phrases, thus revealing possible themes in
 the text. Still, other techniques looks at the language semantics, for example 
-DocuBurst~\cite{COL2009a} spatially organize words based on the ``IS-A''
-relationship.
+DocuBurst spatially organizes words based on the ``IS-A''
+relationship~\cite{COL2009a}.
 
 Looking at the underlying semantics help us understand the content and 
 themes in the text documents. However, there is another type of word context 
@@ -72,7 +72,7 @@ entities also have relation to each other in terms of their respective
 spatial positions. For example, the sentence ``Automatic door locks when 
 used, will not release from any of the four doors when engine is turned off.'' 
 contains not only a co-occurrence relationship among the entities ``door'' and 
-``engine'', but also relates to where the doors and engine are located on a 
+``engine,'' but also relates to where the doors and engine are located on a 
 real world automobile.
 
 % Revealing these spatial relations of common words in text may enable new types of 
@@ -84,27 +84,27 @@ real world automobile.
 % product reviews, technical manuals, maintenance logs, and our dataset: vehicle 
 % defect reports.
 
-Revealing the spatial dimensions have several benefits. Foremost, the
+Revealing the spatial dimensions has several potential benefits. Foremost, the
 familiarity of the form makes the subject matter immediately recognizable
 to experts and novices alike. Exploration of data can leverage previous 
 experiences with the subject matter, using visual examination of graphics 
 rather than reading textual data. Second, it is possible to conduct a different
 type of data exploration: the spatial dimension allows us to explore
-proximal relations and filtration by spatial volumes, possibly allowing
+proximal relations and filtr by spatial volumes, possibly allowing
 new insights to be formed.
 
-So far, we are not aware of any exploratory visualization which approach text
+So far, we are not aware of any exploratory visualization which approaches text
 analytics by visualizing the real-world spatial context of the words in
 text. Thus, our work looks at revealing these real world relations in a manner
 that is useful for conducting text-analytic activities. By preserving the physical
-attributes in the text documents, and combine them with NPR illustration style 
+attributes in the text documents, and combining them with NPR illustration style 
 rendering, we argue that this approach creates a rich and engaging experience.
 
 Consider product quality reports for a musical instrument such as the trumpet.
-Visualizing these reports allows one to see exact location of the problems on the
-\threed model, for example: which valves are failing. Seeing the instrument
+Visualizing these reports could allow one to see the exact location of the problems on the
+\threed model, such as which valves are failing. Seeing the instrument
 in physical form may promote conjectures that are less apparent
-with text or abstract visualization, for example: perhaps the valves
+with text or abstract visualization, for example, perhaps the valves
 failed because they are encased in a faulty housing. There are many
 applicable datasets which carry this sort of physically mappable vocabulary:
 consumer product reviews, technical manuals, and technical
@@ -130,12 +130,20 @@ concise overviews or dynamic details-on-demand.
 
 
 \subsection{Requirements and Tasks}
+% We start our initial requirement gathering by looking what people say, and
+% how they use vehicle safety related information. Our sources includes websites 
+% dedicated to vehicle owners and potential car buyers, expert columns, 
+% question and answer forums, car-buying tips and product rating websites such 
+% as Consumer Reports\footnote{http://www.consumerreports.org/} and
+% Edmunds\footnote{http://www.Edmunds.com}. 
+
 We start our initial requirement gathering by looking what people say, and
 how they use vehicle safety related information. Our sources includes websites 
 dedicated to vehicle owners and potential car buyers, expert columns, 
 question and answer forums, car-buying tips and product rating websites such 
-as Consumer Reports\footnote{http://www.consumerreports.org/} and
-Edmunds\footnote{http://www.Edmunds.com}. 
+as Consumer Reports~\cite{consumerReports} and
+Edmunds~\cite{edmunds}. 
+
 
 Our findings revealed that safety and reliability is a big concern, next to the
 price of the vehicles. In general, people wanted to know which brand/make 
@@ -158,9 +166,15 @@ our visualization prototype:
   of the visualization.
 \end{itemize}
 
-The types of tasks that we want to support are based on Rohrdanz \etal's seven
-important analytical tasks for dealing with streaming data~\cite{ROH2011a}. 
-Though the vehicle complaint dataset is not real-time it is temporal in nature
+% The types of tasks that we want to support are based on Rohrdanz \etal's seven
+% important analytical tasks for dealing with streaming data~\cite{ROH2011a}. 
+% Though the vehicle complaint dataset is not real-time it is temporal in nature
+% and shares many of the same concerns as real-time applications. Some sample 
+% tasks are:
+
+
+The types of tasks we want to support are based on the seven analytical tasks for streaming 
+data from Rohrdanz \etal.~\cite{ROH2011a}. Though the vehicle complaint dataset is not real-time it is temporal in nature
 and shares many of the same concerns as real-time applications. Some sample 
 tasks are:
 

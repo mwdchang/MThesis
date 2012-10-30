@@ -6,9 +6,9 @@ Data is received in a textual list of records consisting of metadata and the
 text description of the complaint. We apply several processing steps to each
 document to first extract the physical entity keywords, and then to calculate
 the semantic scores. For this dataset, we have chosen the semantics of
-occurrence relations and co-occurrence relations. Finally we segment \threed
-models to match our keyword ontology. Each of the steps are explained in greater
-detail below.
+entity occurrences in the documents and the entities' co-occurrence relations. 
+Finally we segment \threed models to match our keyword ontology. Each of the steps 
+are explained in greater detail below.
 
 
 \section{Entity Vocabulary}
@@ -24,7 +24,7 @@ preliminary analysis, looking at the data text, their format and how they have
 evolved over the life span of the data repository. We performed several
 normalization tasks: One, we used regular expressions to convert the text from
 all capital cases to normal case format. Second, we remove suffix characters that
-appear at the end of the text paragraph that, as far as we know contributes
+appear at the end of each report, as far as we know, contributes
 nothing to the incident context. Although we changed the underlying text, the
 normalization process improves readability, and enables us to receive more
 meaningful outputs from natural language parsers.
@@ -34,12 +34,12 @@ Our entity extraction process leverages the WordNet database, a lexical English
 database that stores nouns, verbs, adjectives and their relations among each
 other \cite{WORDNET}. In order to get a comprehensive list of physical entities, we use the meronym 
 relation in WordNet. A meronym describes a ``part-of'' relationship between two 
-nouns, for example, a brake is a part of a wheel, and a wheel is a part of the 
-automotive vehicle. All together, the meroynomy relationship forms a hierarchical 
+nouns, for example, a key is a part of a keyboard, and a keyboard is a part of a computer. 
+All together, the meroynomy relationship forms a hierarchical 
 structure where the most general part forms the root node, while the most specific 
 parts form the leaf nodes. We use two common words pertaining to the subject
 matter of our dataset to bootstrap the creation of the hierarchy:
-``car'' and ``vehicle''. From this, we recursively extracted children entities
+``car'' and ``vehicle''. From this, we recursively extracted child entities
 using the meronomy relationship until we have two tree structures, which we then
 merged together.
 
@@ -52,15 +52,19 @@ merged together.
 	\end{figure}
 	% ==================
 
-While this process extracts a fair amount of physical entities, an analysis of
-sample dataset showed that it is not a representative of the entities mentioned
-in the documents. The primary reason for this is due to the use of synonyms
+%While this process extracts a fair amount of physical entities, an analysis of
+%sample dataset showed that it is not a representative of the entities mentioned
+%in the documents. 
+
+Relying on the meronomy relations alone did not produce enough keywords to cover 
+our dataset, as revealed through a sample screening of several hundred randomly 
+selected document reports. The primary reason for this is due to the use of synonyms
 in the document text. To alleviate this situation, we additionally extract
 the synset relations from WordNet for each keyword. A synset is a set
 relationship that describes words that are semantically equivalent to one
 another, for example ``limo'' and ``limousine'' are different words, but both
 describe the same type of object and thus belongs to the same semantic group.
-For each word in our current vocabulary, we replace it with its synset. Figure
+For each word in our original vocabulary, we replace it with its synset. Figure
 \ref{figure:meronomy} illustrates what hierarchy structure looks like.
 
 
@@ -68,18 +72,18 @@ For each word in our current vocabulary, we replace it with its synset. Figure
 
 \subsection{Refinement}
 The addition of synsets into the vocabulary gave us a comprehensive number of
-keywords, however it also created undesirable noises. Manual examination of data
-sample reveals that there are still disconnects between the dictionary
-vocabulary and real world vocabulary. As an additional step to augment our
-keyword vocabulary, we perform two manual steps:
+keywords, however it also included words which are not vehicle parts in their most
+common meaning. Another screening against sample data reports reveals that there are 
+still disconnects between our dictionary vocabulary and the real world vocabulary.
+As an additional step to augment our keywords, we perform two manual steps:
 
 \begin{itemize} [noitemsep]
-  \item Removal of nouns that are too generic from the vocabulary.
-  \item Preprocess the documents and mine for any missing nouns.
+  \item Noise Removal: Delete nouns that are too generic from the vocabulary.
+  \item Augmentation: Preprocess the documents and mine for any missing nouns.
 \end{itemize}
 The first step dealt with the removal of keywords that are not considered to be
-physical objects under typical usage, for example WordNet hierarchy of a
-vehicle contains ``first'', ``second'', ``third'' and ``fourth'', which
+physical objects under typical usage, for example the WordNet hierarchy of a
+``vehicle'' contains ``first'', ``second'', ``third'' and ``fourth'', which
 describes the first, second, third and fourth gears respectively. Including
 these words will likely result in over-counting the number of occurrences of
 gears because they are used in every day speech, but not typically with respect
@@ -96,14 +100,14 @@ sentences into lexical categories such as nouns, verbs and adjectives. We use th
 POS output and tie them back to the original text, extracting the nouns and 
 compound-nouns. We perform this step for all the documents in the corpus and 
 count the number of occurrences for the nouns and compound-nouns. We then manually 
-exam the top occurring nouns and add them into the hierarchy where we believe 
+examined the top occurring nouns and added them into the hierarchy where we believe 
 would be appropriate.
 
 \subsection{Limitations}
-While we believe this extraction process is a plausible method for building the
+While we believe this extraction process is a reasonable method for building the
 vocabulary, we acknowledge that WordNet is not the definitive authority for our 
 problem domain, nor would it be for any specific domain. The automatic
-extraction can be used as a starting point. The keywords vocabulary should be
+extraction can be used as a starting point. The keyword vocabulary should be
 extended and further refined by consulting experts that works in the problem field. 
 
 
@@ -120,7 +124,7 @@ relation between engine and radiator.
 
 Semantic relations are defined as document-entity pairs, that is to say, there
 is a one-to-many relation between a document and our keyword ontology. Detection of
-keywords in document is done through a tagging process. In the sections below we
+keywords in documents is done through a tagging process. In the sections below we
 describe this process in detail, as well as formalizing the semantic scoring
 function.
  
@@ -136,9 +140,16 @@ above, we would store
 \emph{(Doc0, engine, 0)} for the engine entity, and \emph{(Doc0, radiator, 3)}
 for the radiator entity.
 
+% In the actual string matching, we use an open source, off the shelf snowball
+% stemmer\footnote{http://snowball.tartarus.org/} to normalize each word token. 
+% Stemming is a process of reducing the words to their root forms. Finding the
+% root is important because it unifies various conjugations without the need to
+% add additional vocabulary to our keywords. We performed stemming on both the
+% word tokens as well as our vocabulary of keywords.
+
 In the actual string matching, we use an open source, off the shelf snowball
-stemmer\footnote{http://snowball.tartarus.org/} to normalize each word token. 
-Stemming is a process of reducing the words to their root forms. Finding the
+stemmer~\cite{snowball} to normalize each word token. 
+Stemming is a process of reducing the words to their root forms (\eg doors to door). Finding the
 root is important because it unifies various conjugations without the need to
 add additional vocabulary to our keywords. We performed stemming on both the
 word tokens as well as our vocabulary of keywords.
@@ -151,12 +162,13 @@ stemming. On the other hand this also introduced false positives, the word
 ``lock'', which refers to the component, is falsely picked up when the text describe components
 ``locking up''.
 
-In addition, we have also looked at tagging explicit casual relations. Using the
-dependency parser extension, the output is a tree-like structure that can be used to infer
-word dependencies. In practice this did not work very well; informal languages,
-spelling mistakes and grammatical errors result in incorrect dependency parse
-trees. We ultimately opted to go for a more general approach, where we tag each
-physical entities as well as co-occurring entities within the same document.
+In addition, we have also looked at tagging explicit casual relations instead of 
+all co-occurrences. Using the dependency parser extension~\cite{Marneffe2006}, 
+the output is a tree-like structure that can be used to infer
+word dependencies. In practice this did not work very well; informal language,
+spelling mistakes and grammatical errors resulted in incorrect dependency parse
+trees. We ultimately opted to use a more general approach, where we tag each
+physical entity as well as all co-occurring entities within the same document.
 
 
 \subsection{Scoring}
@@ -185,8 +197,8 @@ discourage biases coming from longer documents where the entities are
 repetitively mentioned.
 
 Unlike the tagging process, scores are not stored, but rather
-evaluated on a need basis. The numerous combinations that make up the set G
-along makes storage impractical as the number of possibilities is a permutation
+evaluated on a demand basis. The numerous combinations that make up the set G
+alone makes storage impractical as the number of possibilities is a permutation
 of all available entities.
  
 Upon retrieving the entity scores during runtime, each score is normalized
@@ -197,9 +209,10 @@ score as a divisor so the scores are normalized to a range between 0 and 1.
   
 \subsection{Limitations} 
 For this prototype, we gave the same score weighting to each objects. This is a 
-subjective measure because not all parts are created equal. For example: if window 
+subjective measure because not all parts are created equal. For example, if window 
 is mentioned 10 times and the engine mentioned a single time, does that mean we 
-should pay more attention to the window component? A simple extension to this
+should pay more attention to the window component? One could argue that the engine 
+component is more vital than the window component. A simple extension to this
 work would be to devise an appropriate weighting scheme by consulting the domain
 experts. 
 
