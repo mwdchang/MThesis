@@ -11,7 +11,7 @@ design decisions. The system interface, as seen in Figure \ref{figure:overview},
 is composed of four major components:
 
 \begin{itemize} [noitemsep]
-   \item 3D Visualization: The central point of the visualization system
+   \item 3D Visualization: The central view of the visualization system
    is a stylized rendering representing the physical entities in the text documents,
    the visualization can be zoomed and rotated to explore different viewing
    perspectives. Each entity is rendered with respect to a function which denotes
@@ -22,7 +22,7 @@ is composed of four major components:
    \item Lens Widget: The lens widget is a detail-on-demand tool. It is used
    to specify spatial regions on the \threed visualization. Entities under the
    specified space are considered to be in focus, and more information about
-   these entities are shown beside the lens as heatmaps.
+   these entities is shown beside the lens as heatmaps.
 
    \item Heatmap Widget: The heatmap displays time series data at the lowest
    granularity level in order to provide trend and pattern analysis. It is
@@ -31,7 +31,7 @@ is composed of four major components:
    their raw numerical scores.
    
   \item Document Widget: The document widget displays the source text documents.
-  The panel displays documents relating to the current selected objects and
+  The panel displays documents relating to the currently selected objects and
   applies highlights to all relevant keywords.
 \end{itemize}
 
@@ -45,10 +45,10 @@ metadata in the documents, they are:
   with different granularity: year and month. The filter allows viewers to
   adjust the time range for the visualization. Accompanying each range slider is
   a histogram showing the accumulated volume of complains over a time period.
-  The widget itself is place at the top-left of the display space.
+  The widget itself is placed at the top-left of the display space.
   
   \item Hierarchy Filter: The hierarchy filters are placed at the
-  top portion of the display similar to a series of drop-down menus or spinners.
+  top portion of the display as a series of drop-down menus.
   The hierarchy filters allow successive refinement of dataset by means of
   filtering on organizational hierarchies. Going top down, the system supports:
   Vehicle Manufacturer, Vehicle Make, Vehicle Model and Vehicle Year. Hierarchy
@@ -61,7 +61,7 @@ metadata in the documents, they are:
 	\begin{sidewaysfigure}
 	 \includegraphics[width=\columnwidth]{overview_2_annotated.png}
 	 \centering  
-	 \caption[Interface Overview]{System Overview: The 3D visualization (a), lens widget (b), heatmap widget (c), document widget (d), and filters (e). }
+	 \caption[Interface Overview]{System Overview: (a) The 3D visualization, (b) lens widget, (c) heatmap widget, (d) document widget, and (e) filters. }
 	 \label{figure:overview}  
 	\end{sidewaysfigure}
 	% ==============  
@@ -77,7 +77,7 @@ designed and discusses various design trade-offs.
 
 \subsection{Rationale}
 A major part of our design for this thesis is the mapping of abstract semantics
-onto realistic looking, \threed models. But this can also be a source of
+onto realistic looking \threed models. But this can also be a source of
 complication. We have to deal with the additional difficulties of navigating in
 three dimensional space as well as work around perceptual limitations. So why
 use \threed models in the first place? Familiarity with the models and varied
@@ -94,45 +94,46 @@ oriented tasks~\cite{Shneiderman2003}. We enhanced the rendering process with
 NPR techniques, along with interactions to explore the \threed space in an intuitive manner. 
 
 Yet another argument is that the use of a set of \twod images can also convey
-realism, our opinion is that they lack the expressive power and playfulness of a
+realism. Our opinion is that they lack the expressive power and playfulness of a
 fully rendered \threed model. Flat image representation would likely result in
-multiple images, used to cover different viewing perspectives, this can result
-in more cognitive load due to viewers having to switch between images to
+multiple images, used to cover different viewing perspectives. Mentally integrating 
+them could result in more cognitive load due to viewers having to switch between images to
 see different data.
 
 
 \subsection{Visual Mapping}
-Because our visualization environment makes use of 3 dimensional space,
+Because our visualization environment makes use of three dimensional space,
 extra care are taken into account for the selection of visual variables. Not all 
-visual variables are appropriate, shape, position and orientation are inherently
+visual variables are appropriate: shape, position and orientation are inherently
 used to represent the geometries on the virtual model, a double encoding of these
-variables is likely going to lead to confusion, compromising the ability to
+variables, is likely going to lead to confusion, compromising the ability to
 interpret the visualization, or destroy any resemblance of the virtual model to
-its real world counterpart. Thus these are rejected in the early part of our
-design. Size is an interesting one, in theory size can support most of the
+its real world counterpart. Thus were rejected as ways to encode the score. 
+Size is an interesting one, in theory size can support most of the
 characteristics. However it is implied that all the objects of the same value have the equal size, 
-which is certainly not the case for physical objects with sub components. Colour 
+which is certainly not the case for physical objects with sub components. One also needs to have
+a mental image of the original size before encoding takes place. Colour 
 and value variables are not used to represent the virtual model, in the sense that 
 they are not a part of the  basic geometry building blocks of vertices, line-segments 
 and polygons. We found colour and value to be appropriate for our visualization, 
-while they do not provide a sense of quantitative measure, the capability to see order, 
-selective and associative characteristics makes them a logical choice for an
+while they do not provide a sense of quantitative measure, the capability to see ordering, 
+make selections and associate similar colours and values makes them a logical choice for an
 overview visualization.
 
 Lastly, textures present an interesting option, textures can carry additional 
 characteristics, particularly descriptive attributes. It may be possible to use 
 textures to simulate certain effects, for example a rusty surface. Nonetheless,
-textures do not possess order or quantifiable characteristics and was not
+textures do not possess inherent ordering or quantifiable characteristics and thus were not
 included in our design. However it may be interesting to use textures for
-visualizing individual document, we leave this idea as future work.
+visualizing individual document semantics; we leave this idea as future work.
 
 \subsection{Stylized Rendering}
 In order to enhance the message carrying capacity of the visualization, we
 considered several NPR techniques as a medium to create  more expressive
-illustrations. We associate the entity score with either a NPR technique, or use
-the score as a parameter into a NPR function. In accordance with our
+illustrations. We associate the entity score with either an NPR technique, or use
+the score as a parameter into an NPR function. In accordance with our
 requirement, the encoding scheme should be clear and distinguishable by visual
-examination(R1) while maintaining the real world aspects. Our effects include
+examination (R1) while maintaining the real world aspects. Our effects include
 varying stroke, halo/glow, colour variations, and transparency effects.
 
 We chose colour mappings as our primary visual encoding which denotes the
@@ -143,10 +144,9 @@ Designing a colour scheme for the encoding of the virtual component objects
 presented several design trade-offs. We colour each object by mapping its score 
 to a linear diverging yellow-orange-red hue scale, which is further divided into 
 six discrete scoring bins. While this setup has a limited granularity, it is
-easier to perceive a small number of discrete colours than viewing a continuous
-scale. We mitigate any ambiguities that may arise with the discrete scale by
-providing numerical values with the lens and heatmap widget, which we discuss
-further down.
+easier to accurately perceive a small number of discrete colours than viewing a continuous
+scale~\cite{WAR2004b}. We mitigate any ambiguities that may arise with the discrete scale by
+providing numerical values with the lens and heatmap widget, which we discuss later.
 
 
 \threed geometries may not be visible due to occlusion or containment.
@@ -175,7 +175,7 @@ what viewers are looking at, but also the placement and relative position among
 other entity objects. To show that these components are semantically different
 than others, the system renders them with silhouette styled edges in a just
 noticeable colour so they are visible but not overly
-distracting~\cite{BAR2007a}. It is worth noting that 0 scored objects only
+distracting~\cite{BAR2007a}. It is worth noting that zero scored objects only
 provides graphical context, they do not partake in any user interactions.
 
 
@@ -185,7 +185,7 @@ provides graphical context, they do not partake in any user interactions.
 \subsection{Selection}
 Selection of entities is used to refine the visualization scope, for example
 selecting the windows entity tells the system to only visualize documents that
-refer to windows. The system provides several methods for selecting entities,
+refer to windows. The system provides several methods for selecting entities:
 selections can be made by directly interacting with the \threed visualization,
 or through interaction with the heatmap widget.
 
@@ -203,8 +203,8 @@ or through interaction with the heatmap widget.
 
 By default the application has no entities selected, thus the visualization
 reflects the absolute number of occurrences of each entity. As
-selections are made, each entity’s score is recomputed to show co-occurrence
-relations with the selection, note since selected objects
+selections are made, each entity's score is recomputed to show co-occurrence
+relations with the selection. Note since selected objects
 fully co-occurs with themselves, they are promoted to the highest bin.
 In this manner, high correlations are red and highly opaque, while low
 correlations are yellow and highly transparent. For example, if a person selects
@@ -258,7 +258,7 @@ We recognize that blending different hues in \threed space does not necessarily
 produce a result which preserves the original hues, and can potentially lead to
 distracting visual artifacts. Different hue preservation schemes
 exist~\cite{Chuang2009} but were not implemented for this prototype due to the
-added performance complexity (Hue adjustments are done at per pixel level). Subjectively, 
+added performance complexity (hue adjustments are done at per pixel level). Subjectively, 
 we did not find any visual distractors and thus decided that this was not necessary. A 
 single-hue scheme with varying saturation and opacity was tried as well, but we
 found it less eye-pleasing and lacks the \emph{pop-out} effect that is more prominent on multi-hue 
@@ -280,8 +280,8 @@ matches the colour assigned to the score and as seen on the legend.
 However, without any sort of lighting, particularly some type of diffuse lighting, 
 the \threed nature of the model, and the details of various components are not
 sufficiently visible. Adjacent objects that share the same score appear to be glued together 
-as a single component, adding boundary outlines helps but creates undesirable
-visual clutters. When lighting effects are enabled, the objects are easily
+as a single component; adding boundary outlines helps but creates undesirable
+visual clutter. When lighting effects are enabled, the objects are easily
 distinguishable as lighting provides a clear silhouette. However, this type of lighting modifies 
 the colour based on the incidence angle of the light rays, thus it no longer matches 
 the assigned colour. Ultimately, we decided that the benefits of objects recognition and
@@ -304,7 +304,9 @@ Figure \ref{figure:visualEncoding}.
 	   \includegraphics[width=\columnwidth]{visual_encoding.png}
 	   \caption[Trade-offs]{Showing the visual design trade offs. Top left: single
 	   hue with flat shading. Top right: multi-hue with flat shading. Bottom left: single
-	   hue with lighting effects. Bottom right: multi-hue with lighting effects.}
+	   hue with lighting effects. Bottom right: multi-hue with lighting effects. The bottom right
+	   was selected a the final design; parts are not distinguishable in the top row, while the 
+	   bottom left did not have a strong pop-out effect.}
 	   \label{figure:visualEncoding}
 	\end{figure} 
 	% ==================
@@ -337,12 +339,12 @@ about a specific subject, we created an interactive lens widget to extract and
 show detailed information about entities in the text documents. With respect to the information
 seeking process, this approach combines both filter and detail-on-demand phases.
 
-The lens widget operates in a hybrid \twod/\threed space, the lens itself exists
-on a flat \twod plane, it casts a cylindrical querying volume into the scene.
-When the lens is positioned over the visualization, each entity object is tested to see if their
+The lens widget operates in a hybrid \twod and \threed space: the lens itself exists
+on a flat \twod plane and it casts a cylindrical querying volume into the scene.
+When the lens is positioned over the visualization, each entity object is tested to see if its 
 corresponding meshes are in the lens' querying volume. We use the centroid to do the inclusion
 test, though more accurate, albeit slower methods exist using
-image based algorithms~\cite{Ali2005}. Entities that are under the lens' area of
+image-based algorithms~\cite{Ali2005}. Entities that are under the lens' area of
 focus have detailed information, shown as heatmaps on the left and right side of
 the lens widget. Connecting line segments are drawn from entities to their
 heatmaps to show association: first the heatmap is connected back to the lens'
@@ -373,19 +375,19 @@ circumference, then from the circumference back to the entity's projected centro
 	% ==================
 	
 	
-The lens widget utilizes its own rendering pipeline, object geometries
+The lens widget utilizes its own rendering pipeline: object geometries
 are sent into the pipeline as normal, rendering results are 
 then stored in an intermediate buffer and later combined in fragment
 shaders with the default scene. This is an independent
 process, and thus allows us to render the lens’ scene with a different rendering
 style and semantic. To visualize the lens widget itself, we
 draw a semi-transparent border around its circumference so viewers
-are aware of its existence. When interacting with the lens widget, the
+are aware of its extent. When interacting with the lens widget, the
 widget becomes active and the system renders the border blue, otherwise 
-the default grey colour is used. The semantics of the lens is not impacted by
+the default grey colour is used. The semantics of rendering within the lens is not impacted by
 whether the lens is active or inactive.	
 
-
+ 
 
 The lens enables three different actions, seen in Figure
 \ref{figure:lens_interaction}. The position of the lens can be moved by dragging
@@ -401,7 +403,7 @@ their heatmaps hidden to reduce visual clutter. These three interactions
 can be combined together to create a rich, flexible query mechanism.
 
 
-Multiple lens widget are allowed for simultaneous exploration of
+Multiple lens widget allow for simultaneous exploration of
 different parts of the visualization. For example, if the subject matter is of
 an elongated shape, it is possible to use two lens to explore the entities
 positioned at either end. However, no semantics are currently defined for
@@ -411,15 +413,15 @@ has no defined behaviour when it is overlapped with another lens.
 
 \subsection{Spatial Interaction}
 Traditional systems use explicit queries as a mean to
-communicate with the underlying data. While this works well for task analysis,
-it has an implicit assumption that the person knows something about how the
+communicate with the underlying data such as through structured forms and search boxes. 
+While this works well for task analysis, it has an implicit assumption that the person knows something about how the
 system works, and how the data is structured. Thus it can be a limiting factor
 that prevents a wider audience from using applications without prior training.
 
 In this thesis we take a different approach, the lens widget allows people to
 demand and filter detailed information by means of a visual query. Unlike explicit queries,
 visual query is done more passively by moving the lens widget about the 
-visualization, points of interests, if any, are shown as heatmap charts without
+visualization. Points of interest, if any, are shown as heatmap charts without
 explicit requests. Thus a user is free to roam about the visualization without 
 any specific goals or prior knowledge about the data, making the visualization
 more playful and open to unexpected discoveries.
@@ -430,7 +432,7 @@ more playful and open to unexpected discoveries.
 In addition to the freedom of exploration, the lens has an additional 
 benefit of allowing people to specify logical regions. Imagine the case where 
 a person is asked to investigate issues relating to the ``front'' of the 
-vehicle, this query is difficult to formulate, components situated at the front 
+vehicle. This query is difficult to formulate: components situated at the front 
 need to be identified (which inconvenience  a person with novice expertise), 
 and ``front'' itself may be subjective depending on person. By repositioning 
 and resizing the lens, a person can identify the front, back, or any other
