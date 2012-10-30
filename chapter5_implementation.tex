@@ -14,7 +14,7 @@ our solutions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Environment and Architecture}
 The implementation of this prototype is done in the Java programming language.
-Graphics are rendered through Java for OpenGL graphics library. MySQL
+Graphics are rendered through Java for OpenGL graphics library. A MySQL
 database is used to host the raw text and document tags. Our graphics hardware
 is a NVIDIA Quadro FX video card, and we were able to achieve a frame rate
 between 15 to 30 FPS. The prototype is designed to run on 1680x1050 screen
@@ -33,14 +33,14 @@ The application can be decomposed into two subsystems: a parser system for
 generating entity scores and a visualization system. A  high level overview of
 the system architecture is shown in Figure \ref{figure:arch}. The
 entity parser consumes two inputs, the keyword hierarchy and the document texts, it
-will then compute occurrence and co-occurrence scores and write the results to
-the database, the parsing details are covered in Chapter 4. 
+then computes occurrence and co-occurrence scores and writes the results to
+the database. The parsing details are covered in Chapter 4. 
  
 The visualization system implementation uses a standard two-tier design: A
 persistence layer and an interface layer. The persistence layer is in charge of
 database transactions, cached resources and system states. The interface layer
 takes care of the rendering and any user triggered events. The visualization is
-state-driven and the current state is stored in the persistent layer. The
+state-driven and the current state is stored in the persistence layer. The
 reason for a state machine model is to allow us to programmatically  alter the
 visualization, and allow the system to be deployed to different platforms
 without major changes.
@@ -106,7 +106,7 @@ controls transparency effects:
 Geometries are typically not sent to the hardware in sorted order, so they are
 neither front-to-back nor back-to-front. Hardware supported depth buffer
 resolves the out-of-order polygons by selecting the fragment closest
-to the eye position. With transparent effect in place, fragments are blended
+to the eye position. With transparent effect in use, fragments are blended
 together rather than going through the selection process. Where the problem
 arises is that alpha-blending is not commutative, for example: red+green+blue
 is not equivalent to red+blue+green. The effects of out of order blending versus
@@ -118,14 +118,14 @@ judge an object’s depth correctly. In the visualization, this is not only
 distracting, but can mislead viewers to select incorrect entity components.
 
 
-Naively we can use either sort the geometries or use space partitions to force
-geometric objects into depth order, However, these naive solutions tend to have
-very expensive computation, and are view dependent which results in
+Na\"\i vely we can use either sort the geometries or use space partitions to force
+geometric objects into depth order. However, these na\"\i ve solutions tend to have
+very expensive computation, and are view-dependent, which results in
 re-computation whenever the viewing perspective changes. There are also
 pathological cases where polygons intersect each other, which cannot be solved
 with partitioning or sorting alone.
 
-Alternative blending algorithm exist that looks at minimizing the effects of
+There are alternative blending algorithms that look at minimizing the effects of
 order-dependent terms in blending equations, but there is a threshold on the
 amount of transparency that can be applied~\cite{Bavoil2008, Meshkin2007}.
 Other works use hardware features to allocate a buffer to emulate
@@ -135,11 +135,11 @@ the scene itself.
 
 In this prototype, we use an implementation of dual-depth-peeling
 \cite{Bavoil2008}, which ``peels'' the \threed scene apart layer by layer
-into textures, before recomposing these texture into a final texture in depth
+into textures, before recomposing these textures into a final texture in depth
 order. The implication of this peeling effect is that it effectively changes the
 rendering process from single to multiple passes, and that performance depends
-on the depth complexity of the scene. This method yield accurate and
-eye-pleasing results, while more performance friendly methods exists, we decided
+on the depth complexity of the scene. This method yields accurate and
+eye-pleasing results, while more performance-friendly methods exist, we decided
 that this was the most reasonable approach because the required features are
 available on most hardware at the time of implementation.
   
@@ -164,10 +164,10 @@ available on most hardware at the time of implementation.
 \subsection{Cache and Stabilization}
 Because the size of the dataset used to render the visualization can vary
 greatly, database query performance tends to vary as well. To compound the
-problem, most queries in the system are aggregation based queries and create
+problem, most queries in the system are aggregation-based queries and create
 additional performance overhead. Overall database execution time can vary from a
-few milliseconds to several seconds, we found this to be unacceptable because
-it degrades user experiences.
+few milliseconds to several seconds. We found this to be unacceptable because
+people should not have to deal with inconsistent processing times.
 
 Here we introduce an intermediate in-memory cache to store the aggregated scores
 of each entity. The cache is created at system initialization,
@@ -175,27 +175,27 @@ then queries are executed against the cache rather than the database.
 The cache organization is specific to this dataset, however the idea itself is
 generalizable.
 
-Cache is realized as a hierarchy of lookup tables. It is modelled based on
+The cache is realized as a hierarchy of lookup tables. It is modelled based on
 the time and hierarchy filters and how we perceive people use the visualization.
 The cache levels are, from most general to most specific: time period, entity,
 manufacturer, make, model and model year. 
 
-Each node in the cache hierarchy contains three things, a reference to all its
+Each node in the cache hierarchy contains three things: a reference to all its
 direct children nodes, an aggregated score of all its children, and a reference
 to the documents that match the node which are used to calculate co-occurrence. For
 example, a node corresponding to (July 2010, engine) will have the following:
 \begin{itemize}[noitemsep]
-  \item An aggregated score total that indicate the number of occurrence of
+  \item An aggregated score total that indicates the number of occurrences of
   engine in documents relating to incidents during July 2010
   
   \item A listing of unique document IDs that match the above criteria
   
-  \item References to children nodes (manufacturers) that matches the above criteria
+  \item References to children nodes (manufacturers) that match the above criteria
 \end{itemize}
 
 The overview visualization is then constructed by iterating over the desired
 time periods. We then apply the hierarchy filters to find the correct cache
-nodes for each entity parts, and finally sum up the node's entity scores across the
+nodes for each entity part, and finally sum up the node's entity scores across the
 time periods. Because cache table lookup is close to constant time, our queries
 result in a much more stable performance compared against database queries. On
 average we found the cache queries take about 100 to 200 milliseconds to
@@ -240,12 +240,12 @@ execute, which we found to be acceptable.
 
 
 \subsection{Multi-Touch Heuristics}
-Touch sensors have a few drawbacks; there are inherent noises that come from
+Touch sensors have a few drawbacks; there is inherent noise that comes from
 performing gestures, in addition, our inability to hold our hands perfectly
-still accentuate this issue by creating jitters. In our particular use case, the
+still accentuates this issue by creating jitters. In our particular use case, the
 upright display makes certain gestures difficult, for example, in an informal
-evaluation of the display we found that certain curvatures introduced a
-lot of noises because the knuckles of other fingers are sensed as
+evaluation of the display we found that tracing certain curvatures introduced a
+lot of noise because the knuckles of other fingers are sensed as
 false-positives as result of drifting too close to the screen itself.
 
 These noises degrades user experiences, as they trigger unexpected events within
@@ -260,31 +260,32 @@ adopted to other touch sensors.
   \item \textbf{Real Update:} The muscle deformation when pressed against the
   display, paired with inability to keep still postures result in
   sensor registering jittery updates. This is undesirable because it induces a
-  shaking effect, and often time unnecessary because the updates are minute.
-  To compensate, the system only accept an update if it is at least
-  X number of pixels away from the previous updated point.
+  shaking effect, which is usually unnecessary because the updates are minute.
+  To compensate, the system only accepts an update if it is at least
+  P number of pixels away from the previous updated point.
   
   \item \textbf{Coincidental Points:} When a touch is initialized on the touch
   surface, there is a possibility that more than one touch point will be
   registered. This is similar to the case we presented above. To reduce this scenario from
   occurring, we store the XY-coordinate and the time that the touch point is
   created. If a touch point is created too close to any other touch point within a time
-  threshold X, that point is rejected.
+  threshold T, that point is rejected.
   
-  \item \textbf{Movement Buffer:} When a gesture is in transition, there are
+  \item \textbf{Movement Buffer:} When a gesture is in transition (moving), there are
   cases where other parts of the hand will inadvertently cause false-positives.
   We try to neutralize these occurrences by introducing buffer zones around touch
   points that are in motion. New touch points cannot be created 
-  if they fall within X pixels away from a point that is in transition.
+  if they fall within P pixels of a point that is in transition.
   
   \item \textbf{Reinforce Intention:} This heuristic deals with reducing jitters
   on the initial touch. This can be seen as a special case of the Real Update
-  heuristic, but while Real Update toss away extremely small update in general,
+  heuristic, but while Real Update tosses away extremely small updates in general,
   the first update can be quite large, probably due to the act of pressing the
-  finger against the display. We made it such that the first update must be at
-  least X pixels distance in magnitude. This heuristic is not applicable to
+  finger against the display, where the deformation of the finger is registered as the initial 
+  movement of the touch point. We made it such that the first update must be at
+  least P pixels distance in magnitude. This heuristic is not applicable to
   lens widget nor document widget because we want them to be immediately
-  responsive. 
+  responsive to movement. 
   
   \item \textbf{Dead Zones:} In some cases, the act of lifting up
   a finger to disengage a gesture will trigger a new touch point. This makes
