@@ -24,7 +24,7 @@ view designed to draw out outliers.
 	 \centering  
 	 \includegraphics[width=\columnwidth]{heatmap_2.png}
 	 %\includegraphics[scale=1.0]{heatmap_2.png}
-	 \caption[Heatmap Perspectives]{Showing the different heatmap perspectives. Left
+	 \caption[Heatmap Perspectives]{The different heatmap perspectives. Left
 	 displays the monthly perspective, centre displays the component perspective, and right displays the
 	 global perspective}
 	 \label{figure:heatmap}
@@ -38,20 +38,20 @@ each entity of each month is transformed by a divisor, which determines the
 type of semantic we want to show. The available heatmap perspectives are listed below:
 
 \begin{itemize} [noitemsep]
-  \item Component-Max: An entity -level perspective where the score of
+  \item Month-Max: A monthly perspective where the score of each month is 
+  divided by the maximum score for that month amongst all components in the selected time.
+  
+  \item Component-Max: An entity-level perspective where the score of
   each month is divided by the maximum month score of the entity over the
   selected time. This is the default perspective in the system.
-  
-  \item Month-Max: A monthly perspective where the score of each month is 
-  divided by the maximum monthly score over all components in the selected time.
   
   \item Global-Max: A global perspective where the month score is divided by the
   maximum overall monthly score.
 \end{itemize}
  
 Here we illustrate how the perspective scoring works with an example of a time
-over a period of three month: Suppose there are two entities, engine and brakes
-and their occurrences scores over the three month are (1, 10, 100) and (10, 15,
+over a period of three months: Suppose there are two entities, engine and brakes
+and their occurrences scores over the three months are (1, 10, 100) and (10, 15,
 20) respectively. In Table \ref{table:perspective} we show the entities' month
 score under each perspective.
 
@@ -70,9 +70,9 @@ entity in the third month.
 	   % Column Heading
 	   \hline
 	   %& \multicolumn{3}{|c|}{Score} 
-	   & \multicolumn{3}{|c|}{Month} 
-	   & \multicolumn{3}{|c|}{Component} 
-	   & \multicolumn{3}{|c|}{Global} \\
+	   & \multicolumn{3}{|c|}{Month Max} 
+	   & \multicolumn{3}{|c|}{Component Max} 
+	   & \multicolumn{3}{|c|}{Global Max} \\
 	   
 	   % Data 
 	   \hline
@@ -108,7 +108,7 @@ questions that can be answered with these different perspective views:
 \begin{itemize} [noitemsep]
   \item Month-Max: In month X, which vehicle component had the most complaints?
   \item Component-Max: Are there more braking problems in the summer months or
-  the winter month? Are the number of complaints for wheels increasing or
+  the winter months? Are the number of complaints for wheels increasing or
   decreasing?
   \item Global-Max: What are the most unreliable vehicle components?
 \end{itemize}
@@ -117,7 +117,7 @@ Going back to Figure \ref{figure:heatmap} as an example, one can make some
 interesting observations. From the component view in the centre, a person can
 see that there are two distinct outliers in the second and third months of the
 second year, in particular, one can see the scores getting lower, then there is
-a resurgence around July and August in the second year. Switching to the monthly
+a resurgence around July and August in the second year. Switching to the month-maxa
 perspective, one can observe that during the two year period, the most
 significant components seem to alternate between the brake and engine component,
 with the sole exception of accelerator appearing in a single month. Lastly, the
@@ -129,7 +129,7 @@ The heatmap viewing perspective is at a global scope, thus a change in
 perspective will affect all visible heatmaps. This keeps the interface
 consistent and avoids viewers from switching to different modalities when they
 shift their attention from one heatmap to another. The view switching mechanism
-is realized as a drop-down control sitting atop the hierarchy filters and shows
+is realized as a drop-down control sitting atop the hierarchy widgets and shows
 the currently selected viewing mode.
 
 
@@ -145,7 +145,7 @@ Honda Civic (Q1) to Toyota Corolla (Q2), or we can compare Ford
 Focus (Q1) against all other Ford vehicles (Q2), by not fully specifying Q2.
 
 Two separate measures are used to render the comparison view.
-The \emph{contribution sum is} the aggregated component score from the two
+The \emph{contribution sum} is the aggregated component score from the two
 query sets: it reflects the overall importance of the component by emphasizing
 the most frequently occurring components matching Q1 and
 Q2. The \emph{percentage difference} describes the relative frequencies of a
@@ -156,9 +156,11 @@ contribution. Then the percentage difference follows as percentage
 score Q1 minus percentage score Q2, with the sign and magnitude indicating
 which query set has the stronger presence of that component.
 
-We made the decision to use percentage based comparisons because it
-enables the comparison of query results of different sizes.
-These scores are used to render the 3D view. Using the percentage
+We made the decision to use percentage-based comparisons because it
+enables the comparison of query results of different sizes. For example, we can compare
+a large manufacturer against a small manufacturer, even though we would expect the large 
+manufacturer to have a greater number of complaint reports.
+These scores are used to render the \threed view. Using the percentage
 difference, the colour of the outline of a component indicates which
 query set has the higher rate of complaints, and the opacity of the outline
 indicates the strength of the difference. Using the contribution
@@ -194,7 +196,7 @@ infer that B has serious problems with brakes and C has serious problems with
 engine.
  
 By default, comparison mode is turned off. It is activated when the viewer
-switches the second hierarchy filter from the ``None'' position to a valid
+switches the second hierarchy widgets from the ``None'' position to a valid
 selection. Subsequent query modifications are carried out in comparison mode
 until the selection is turned to ``None'' again.
 
@@ -210,7 +212,7 @@ until the selection is turned to ``None'' again.
 By default, the system treats each object individually rather than object
 groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all processedo
 separately, even though they are logically under the group ``seat''. This
-setting allows people to isolate and identify unique problems accurately. There
+setting allows people to isolate and identify low-level problems accurately. There
 are times, however, when this level of information is unnecessarily detailed and
 a higher level of abstraction is desirable.
 
@@ -226,7 +228,7 @@ a higher level of abstraction is desirable.
 	
 Aggregation mode mimics the type of high level rating system found on consumers
 review websites. When aggregation mode is enabled, individual objects, and their
-scores are aggregated up to the first level entities. In our specific case, the 
+scores are aggregated up to the first level entities in the keyword hierarchy. In our specific case, the 
 first level are the major sub-systems in a vehicle. Aggregated components
 responds to interaction events as a single group, thus, selecting the
 ``seatbelt'' will select the entire ``seat'' subsystem.
@@ -240,5 +242,5 @@ subsystem is quite problematic.
  
 Aggregation mode is enabled/disabled by a toggle switch located at the top
 portion of the display interface. Aggregation mode works in
-conjunction with comparison mode, allow people to make comparison of major
+conjunction with comparison mode, allowing people to make comparison of major
 systems.
