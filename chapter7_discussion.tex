@@ -4,12 +4,30 @@
 \chapter{Conclusion and Future Work}
 Visualization systems help us summarize and explore the ever expanding amount of
 information we live with today. In this work we address a particular problem
-domain of trying to make sense of a large quantity of text documents. Unlike
+domain of trying to make sense of a large quantity of similar text documents. Unlike
 traditional InfoVis systems that rely on abstract representations, we explore different ways
-to encoding underlying semantics on forms that are familiar to viewers. 
+to encode underlying semantics on \threed forms that are familiar to viewers. 
 
 In this chapter we summarize our results, the limitations of our
 application, and discuss avenues for future work.
+
+
+\section{Contributions}
+Our main contribution in this work is an integrated approach for doing text
+analytics for documents that contain both spatial and non-spatial data. We extract
+physical entities from text documents and encode the abstract semantics onto 
+\threed models that correspond to these entities as stylistic graphical effects, thus 
+reconstructing the subject matter in a way that is familiar to the viewers. We call
+this approach \emph{descriptive non-photorealistic rendering}.
+
+Our second contribution is an user evaluation of our approach on a real world dataset 
+of vehicle complaint reports. We gauged how well participants can interpret the \threed 
+visualization and if it can be used to facilitate analytical tasks. Study results were favourable, 
+showing that in general participants can accurately interpret the visualization and use it as a
+decision making aid. In addition, we consolidated participants feedback and produced additional 
+design implications that may be useful to other visualization systems that take similar approaches.
+
+
 
 \section{Limitations}
 In this thesis, we have presented a working prototype showcasing descriptive
@@ -22,7 +40,7 @@ From a language perspective, our system of parsing text is quite simplistic as
 we are only taking into account word frequencies. Casual relations are inferred with
 co-occurring entities, however a more precise method would use grammatical
 structures to infer relations. While we have made early attempt at extracting
-dependency relations, it did not yield fruitful result due to many grammatically
+dependency relations, it did not yield fruitful results due to many grammatically
 incorrect sentences in the document text, however a different text
 corpus may benefit from this approach. We also only looked at nouns, it may be
 interesting to look at verbs and adjectives as well.
@@ -32,29 +50,22 @@ especially in densely packed areas. These areas make interactions difficult.
 While the heatmaps provide an easy alternative for entity selection, it does not
 solve perceptual difficulties in trying to uniquely identify an object in the
 visualization. Zooming into the scene, or changing the lens' depth only
-partially solve the problem as both method require very fine adjustments from
-the viewer. Alternative selecting approaches, such as selecting by
-severity levels or other heuristic may help. Alternative graphical techniques
+partially solves the problem as both methods require very fine adjustments from
+the viewer. Alternative selection approaches, such as selecting by
+strength levels or physical sizes, may help. Alternative graphical techniques
 such as exploded views would be able to push objects away from each other, avoiding occlusion in
 the first place but at a possible risk of distorting the overall context.
 
 
-\section{Conclusion}
-Our main contribution in this work is an integrated approach for doing text
-analytics for documents that contain both spatial and non-spatial data. We extract
-physical entities from text documents and encode the abstract semantics onto 
-\threed models that correspond to these entities as stylistic graphical effects, thus 
-reconstructing the subject matter in a way that is familiar to the viewers. We call
-our approach \emph{descriptive non-photorealistic rendering}.
 
-In order to gauge the effects of our approach, a user study was conducted with
-12 participants where they were asked to analyze NHTSA's repository of vehicle
-complaint reports. Each participant were asked to perform objective and
-open-ended tasks in order to give us a sense of whether the visualization can be
-accurately interpreted, and whether participants can perform complex tasks using our system.
-Study results showed that people were able to perform analytical tasks
-within our system, and that the visualization itself was well received based on
-aesthetic factors and the interactive options we provided. 
+%In order to gauge the effects of our approach, a user study was conducted with
+%12 participants where they were asked to analyze NHTSA's repository of vehicle
+%complaint reports. Each participant were asked to perform objective and
+%open-ended tasks in order to give us a sense of whether the visualization can be
+%accurately interpreted, and whether participants can perform complex tasks using our system.
+%Study results showed that people were able to perform analytical tasks
+%within our system, and that the visualization itself was well received based on
+%aesthetic factors and the interactive options we provided. 
 
 
 % In this thesis, we applied our methods to analyze a large collection of vehicle
@@ -82,10 +93,15 @@ How one would go about annotating, sharing and searching for other people's
 findings are tasks that go beyond individual analysis that can help help the
 entire community.
 
+
 As hinted in limitations section, more robust language processing would be very
 desirable. In particular, it would be interesting to look at sentiment analysis.
 The capability to quantify positive or negative connotations would be beneficial
-in understanding how people perceive certain physical objects.
+in understanding how people perceive certain physical objects. 
+
+Different graphic techniques such as exploded views and using textures may be interesting
+to explore. We also want to look into applying our approach to \twod images of physical 
+objects instead of full \threed scenes.
 
     % === Figure === 
 	\begin{figure}
@@ -97,9 +113,9 @@ in understanding how people perceive certain physical objects.
 	\end{figure}
 	% ============== 
 
-Ambient settings is another possible area for future work, one can imaging using
-camera planning algorithms to conduct a virtual tour of the entities while not
-receiving input interactions. The said tour can be used to raise awareness of
+Ambient settings is another possible area for future work, one can imagine using
+camera-planning algorithms to conduct a virtual tour of the entities while not
+receiving input interactions. This tour could be used to raise awareness of
 particular features and highlight trends. The tour could be interrupted when a
 person starts interacting with the display.
 
@@ -111,3 +127,4 @@ to look at quality control reports of a product such as a musical instrument,
 and building maintenance records.
 
 
+%\section{Conclusion} 
