@@ -109,7 +109,7 @@ failed because they are encased in a faulty housing. There are many
 applicable datasets which carry this sort of physically mappable vocabulary:
 consumer product reviews, technical manuals, and technical
 support logs are examples.
-
+ 
 
 
 \section{Use Case: Vehicle Complaint Reports}
@@ -124,9 +124,19 @@ text description, which we use to drive our visualization, can be seen in Figure
 \ref{figure:complaint}.  All together the metadata and free
 text offer a wealth of information on safety and reliability issues of
 vehicles. Consumers can access this data online to support car-buying
-decisions. The current interface uses a conventional search form, returning
-long lists of textual results; there are no mechanisms to support
+decisions. The current interface (see Figure \ref{figure:nhtsa}) uses a
+conventional search form, returning long lists of textual results; there are no mechanisms to support
 concise overviews or dynamic details-on-demand. 
+
+    % ===== Figure =====
+	\begin{figure}
+	   \centering  
+	   \includegraphics[width=\columnwidth]{nhtsa_website.png}
+	   \caption{Complaint search interface~\cite{nhtsa}.}
+	   \label{figure:nhtsa}
+	\end{figure}
+	% ==================
+
 
 
 \subsection{Requirements and Tasks}
@@ -141,8 +151,10 @@ We start our initial requirement gathering by looking what people say, and
 how they use vehicle safety related information. Our sources includes websites 
 dedicated to vehicle owners and potential car buyers, expert columns, 
 question and answer forums, car-buying tips and product rating websites such 
-as Consumer Reports~\cite{consumerReports} and
-Edmunds~\cite{edmunds}. 
+as Consumer Reports~\cite{consumerReports} and Edmunds~\cite{edmunds}. Data
+collection was done manually by browsing forum posts and annotating the types of
+questions being asked; for the product rating sites we noted what type of things
+they gave a grade to and how they were rated.
 
 
 Our findings revealed that safety and reliability is a big concern, next to the

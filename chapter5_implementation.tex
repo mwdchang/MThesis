@@ -92,6 +92,16 @@ controls transparency effects:
   depth and overlaps.
 \end{itemize}
 
+
+Geometries are typically not sent to the hardware in sorted order, so they are
+neither front-to-back nor back-to-front. Hardware supported depth buffer
+resolves the out-of-order polygons by selecting the fragment closest
+to the eye position. With transparent effect in use, fragments are blended
+together rather than going through the selection process. Where the problem
+arises is that alpha-blending is not commutative, for example: red+green+blue
+is not equivalent to red+blue+green. The effects of out of order blending versus
+in order blending is seen in Figure \ref{figure:oit}.
+
     % === Figure === 
 	\begin{figure}
 	 \centering  
@@ -103,14 +113,6 @@ controls transparency effects:
 	\end{figure}
     % =============
 
-Geometries are typically not sent to the hardware in sorted order, so they are
-neither front-to-back nor back-to-front. Hardware supported depth buffer
-resolves the out-of-order polygons by selecting the fragment closest
-to the eye position. With transparent effect in use, fragments are blended
-together rather than going through the selection process. Where the problem
-arises is that alpha-blending is not commutative, for example: red+green+blue
-is not equivalent to red+blue+green. The effects of out of order blending versus
-in order blending is seen in Figure \ref{figure:oit}.
 
 The major problem of out-of-order blending is that objects that are supposed to
 be behind can appear to be in front, making it difficult for the viewers to

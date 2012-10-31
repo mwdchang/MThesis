@@ -112,7 +112,7 @@ extended and further refined by consulting experts that works in the problem fie
 
 
 
-\section{Semantic Relations}
+\section{Semantic Relations} 
 We chose to look at two semantic relations in our dataset: occurrence and
 co-occurrence relations. The occurrence relation is a measure of how frequently
 a particular entity was mentioned throughout the corpus, and is an
@@ -127,7 +127,7 @@ is a one-to-many relation between a document and our keyword ontology. Detection
 keywords in documents is done through a tagging process. In the sections below we
 describe this process in detail, as well as formalizing the semantic scoring
 function.
- 
+   
 
 \subsection{Tagging}
 %We use straight forward string matching to tag each document. 
@@ -183,13 +183,16 @@ contains an empty set). When G is non-empty the score reflects the co-occurrence
 strength among a set of components. For clarity we illustrate this with a few examples:
 \begin{itemize} [noitemsep]
   \item $S(engine, \{\})$: The number of documents that mentions the entity
-  engine.
+  ``engine''.
   
-  \item $S(engine, \{engine\}$): The number of documents that mentions the
-  entity engine and engine, thus this is the same as above. 
+  %\item $S(engine, \{engine\}$): The number of documents that mentions the
+  %entity engine and engine, thus this is the same as above. 
   
   \item $S(engine, \{brake\})$: The number documents that mention both
-  ``engine'' and ``brakes''. 
+  ``engine'' and ``brake''. 
+  
+  \item $S(engine, \{brake, window\})$: The number documents that mention both
+  ``engine,'' ``brake'' and ``window''. 
 \end{itemize}
 
 Each document is only counted once per physical entity, this was done to
