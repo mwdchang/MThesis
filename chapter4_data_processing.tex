@@ -14,8 +14,8 @@ are explained in greater detail below.
 \section{Entity Vocabulary}
 The first issue was to devise a method for extracting physical entities; a
 document can contain multiple entities, but not all of which are related to the 
-subject matter. On top of that, many entities can have implicit hierarchical 
-relations, such as relation between component and its subcomponents. This 
+subject matter. In addition, many entities can have implicit hierarchical 
+relations, such as the relation between component and its subcomponents. This 
 relation is important because it enables logical groupings which are useful for
 high level overviews.
 
@@ -24,7 +24,7 @@ preliminary analysis, looking at the data text, their format and how they have
 evolved over the life span of the data repository. We performed several
 normalization tasks: One, we used regular expressions to convert the text from
 all capital cases to normal case format. Second, we remove suffix characters that
-appear at the end of each report, as far as we know, contributes
+appear at the end of each report, which as far as we know, contribute
 nothing to the incident context. Although we changed the underlying text, the
 normalization process improves readability, and enables us to receive more
 meaningful outputs from natural language parsers.
@@ -47,7 +47,7 @@ merged together.
 	\begin{figure}
 	   \centering  
 	   \includegraphics[width=\columnwidth]{meronomy.png}
-	   \caption{An example of the meronomy plus synset structure}
+	   \caption{An example of the meronomy with synset structure.}
 	   \label{figure:meronomy}
 	\end{figure}
 	% ==================
@@ -59,7 +59,7 @@ merged together.
 Relying on the meronomy relations alone did not produce enough keywords to cover 
 our dataset, as revealed through a sample screening of several hundred randomly 
 selected document reports. The primary reason for this is due to the use of synonyms
-in the document text. To alleviate this situation, we additionally extract
+in the document text. To alleviate this situation, we additionally extracted
 the synset relations from WordNet for each keyword. A synset is a set
 relationship that describes words that are semantically equivalent to one
 another, for example ``limo'' and ``limousine'' are different words, but both
@@ -96,7 +96,7 @@ The second step dealt with any possible missing entity words that are not in
 WordNet at all. We attempted to detect these semi-automatically with natural
 language processing techniques. We first perform part-of-speech (POS) tagging on our document 
 corpus. POS taggers look at the grammatical structures of text and break down 
-sentences into lexical categories such as nouns, verbs and adjectives. We use the 
+sentences into lexical categories such as nouns, verbs, and adjectives. We use the 
 POS output and tie them back to the original text, extracting the nouns and 
 compound-nouns. We perform this step for all the documents in the corpus and 
 count the number of occurrences for the nouns and compound-nouns. We then manually 
@@ -116,7 +116,7 @@ extended and further refined by consulting experts that works in the problem fie
 We chose to look at two semantic relations in our dataset: occurrence and
 co-occurrence relations. The occurrence relation is a measure of how frequently
 a particular entity was mentioned throughout the corpus, and is an
-indication how important the entity is overall. The co-occurrence relation is
+indication of how important the entity is overall. The co-occurrence relation is
 also a frequency measure; it measures how frequently an entity is mentioned along
 with other entities in the same document, indicating possible causal relations.
 For example: ``Engine failed because radiator overheated'' has a co-occurrence
@@ -131,7 +131,7 @@ function.
 
 \subsection{Tagging}
 %We use straight forward string matching to tag each document. 
-Straight forward string matching is used for tagging of each document.
+Straight-forward string matching is used for tagging of each document.
 First, document text is segmented into word tokens, then for each token we
 search for a string match against the entity keywords. When a match is found, we
 store a triple that describes the document identifier, the keyword and the

@@ -17,7 +17,7 @@ The implementation of this prototype is done in the Java programming language.
 Graphics are rendered through Java for OpenGL graphics library. A MySQL
 database is used to host the raw text and document tags. Our graphics hardware
 is a NVIDIA Quadro FX video card, and we were able to achieve a frame rate
-between 15 to 30 FPS. The prototype is designed to run on 1680x1050 screen
+between 15 to 30 FPS. The prototype is designed to run on 1680$\times$1050 screen
 resolution.
 
     % === Figure === 
@@ -48,7 +48,7 @@ without major changes.
 The major modules of our system, as well as their functionalities are listed below: 
 \begin{itemize}[noitemsep]
   \item Render Task: Each rendering task is responsible for rendering a
-  functional part of the interface. We have 4 primary rendering tasks: \threed
+  functional part of the interface. We have four primary rendering tasks: \threed
   visualization, filters, lens, and visual feedback. All rendering tasks poll
   the persistence layer at the beginning of their draw-loop to check if there
   are any updates.
@@ -58,7 +58,7 @@ The major modules of our system, as well as their functionalities are listed bel
   
   \item Model Manager: The model manager stores the \threed model geometries, it
   allows access to \threed information at various levels: models, components,
-  polygons and finally vertices.
+  polygons, and finally vertices.
   
   \item Cache Manager: Cache Manager is responsible for handling all actions
   that impact the occurrence and co-occurrence scores, as well as any database
@@ -94,13 +94,13 @@ controls transparency effects:
 
 
 Geometries are typically not sent to the hardware in sorted order, so they are
-neither front-to-back nor back-to-front. Hardware supported depth buffer
+neither front-to-back nor back-to-front. A hardware supported depth buffer
 resolves the out-of-order polygons by selecting the fragment closest
 to the eye position. With transparent effect in use, fragments are blended
 together rather than going through the selection process. Where the problem
 arises is that alpha-blending is not commutative, for example: red+green+blue
 is not equivalent to red+blue+green. The effects of out of order blending versus
-in order blending is seen in Figure \ref{figure:oit}.
+in order blending is shown in Figure \ref{figure:oit}.
 
     % === Figure === 
 	\begin{figure}
@@ -120,7 +120,7 @@ judge an object’s depth correctly. In the visualization, this is not only
 distracting, but can mislead viewers to select incorrect entity components.
 
 
-Na\"\i vely we can use either sort the geometries or use space partitions to force
+Na\"\i vely, we can either sort the geometries or use space partitions to force
 geometric objects into depth order. However, these na\"\i ve solutions tend to have
 very expensive computation, and are view-dependent, which results in
 re-computation whenever the viewing perspective changes. There are also
@@ -286,12 +286,12 @@ adopted to other touch sensors.
   finger against the display, where the deformation of the finger is registered as the initial 
   movement of the touch point. We made it such that the first update must be at
   least P pixels distance in magnitude. This heuristic is not applicable to
-  lens widget nor document widget because we want them to be immediately
+  lens widget or document widget because we want them to be immediately
   responsive to movement. 
   
   \item \textbf{Dead Zones:} In some cases, the act of lifting up
   a finger to disengage a gesture will trigger a new touch point. This makes
-  selection problematic, as selected entities will be deselected right away. To
+  selection problematic, as selected entities will be deselected immediately. To
   resolve this issue the system impose dead zones. When a touch is removed, the
   area around it will become unavailable for a small amount of time, during
   which all new touch points are ignored.

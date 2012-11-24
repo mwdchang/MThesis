@@ -6,7 +6,7 @@
 %   in the 3D visualization section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Designing Descriptive Non-photorealistic Rendering}
-This chapter covers our visual design process and our rationales of our
+This chapter covers our visual design process and the rationales of our
 design decisions. The system interface, as seen in Figure \ref{figure:overview},
 is composed of four major components:
 
@@ -33,7 +33,7 @@ is composed of four major components:
    
   \item [Document Widget:] The document widget displays the source text documents.
   The panel displays documents relating to the currently selected objects and
-  applies highlights to all relevant keywords.
+  highlights all relevant keywords.
 \end{description}
 
  
@@ -52,7 +52,7 @@ metadata in the documents, they are:
   top portion of the display as a series of drop-down menus.
   The hierarchy widgets allow successive refinement of dataset by means of
   filtering on organizational hierarchies. Going top down, the system supports:
-  Vehicle Manufacturer, Vehicle Make, Vehicle Model and Vehicle Year. Hierarchy
+  Vehicle Manufacturer, Vehicle Make, Vehicle Model and Vehicle Year. The hierarchy
   widget is also used to select two different vehicle types when making
   comparisons.
 \end{description}
@@ -74,7 +74,7 @@ offs.
 
 \section{3D Visualization}
 This section describes how to perceive the \threed visualization, how it was
-designed and discusses various design trade-offs.
+designed, and discusses various design trade-offs.
 
 \subsection{Rationale}
 A major part of our design for this thesis is the mapping of abstract semantics
@@ -104,20 +104,20 @@ see different data.
 
 \subsection{Visual Mapping}
 Because our visualization environment makes use of three dimensional space,
-extra care are taken into account for the selection of visual variables. Not all 
-visual variables are appropriate: shape, position and orientation are inherently
+extra care is taken into account for the selection of visual variables. Not all 
+visual variables are appropriate: shape, position, and orientation are inherently
 used to represent the geometries on the virtual model, a double encoding of these
 variables, is likely going to lead to confusion, compromising the ability to
 interpret the visualization, or destroy any resemblance of the virtual model to
-its real world counterpart. Thus were rejected as ways to encode the score. 
-Size is an interesting one, in theory size can support most of the
-characteristics. However it is implied that all the objects of the same value have the equal size, 
+its real world counterpart. Therefore such variables were rejected as ways to encode the score. 
+Size is an interesting variable since in theory size can support most of the
+characteristics. However, it is implied that all the objects of the same value have the equal size, 
 which is certainly not the case for physical objects with sub components. One also needs to have
 a mental image of the original size before encoding takes place. Colour 
-and value variables are not used to represent the virtual model, in the sense that 
-they are not a part of the  basic geometry building blocks of vertices, line-segments 
+and value variables are not used to represent the virtual model, since
+they are not a part of the  basic geometry building blocks of vertices, line-segments, 
 and polygons. We found colour and value to be appropriate for our visualization, 
-while they do not provide a sense of quantitative measure, the capability to see ordering, 
+although they do not provide a sense of quantitative measure, the capability to see ordering, 
 make selections and associate similar colours and values makes them a logical choice for an
 overview visualization.
 
@@ -177,7 +177,7 @@ other entity objects. To show that these components are semantically different
 than others, the system renders them with silhouette styled edges in a just
 noticeable colour so they are visible but not overly
 distracting~\cite{BAR2007a}. It is worth noting that zero scored objects only
-provides graphical context, they do not partake in any user interactions.
+provide graphical context, they do not partake in any user interactions.
 
 
 
@@ -202,7 +202,7 @@ or through interaction with the heatmap widget.
  	\end{figure}
  	% ==============
 
-By default the application has no entities selected, thus the visualization
+By default, the application has no entities selected, thus the visualization
 reflects the absolute number of occurrences of each entity. As
 selections are made, each entity's score is recomputed to show co-occurrence
 relations with the selection. Note since selected objects
@@ -259,7 +259,7 @@ We recognize that blending different hues in \threed space does not necessarily
 produce a result which preserves the original hues, and can potentially lead to
 distracting visual artifacts. Different hue preservation schemes
 exist~\cite{Chuang2009} but were not implemented for this prototype due to the
-added performance complexity (hue adjustments are done at per pixel level). Subjectively, 
+added performance complexity (hue adjustments are performed at per pixel level). Subjectively, 
 we did not find any visual distractors and thus decided that this was not necessary. A 
 single-hue scheme with varying saturation and opacity was tried as well, but we
 found it less eye-pleasing and lacks the \emph{pop-out} effect that is more prominent on multi-hue 
@@ -278,7 +278,7 @@ effects such as specular lighting can create distractions because it can create
 highlights in places of little or no significance. Without any realistic
 or simulated lighting effects, the visible colour of the components exactly
 matches the colour assigned to the score and as seen on the legend.
-However, without any sort of lighting, particularly some type of diffuse lighting, 
+However, without any type of lighting, particularly some type of diffuse lighting, 
 the \threed nature of the model, and the details of various components are not
 sufficiently visible. Adjacent objects that share the same score appear to be glued together 
 as a single component; adding boundary outlines helps but creates undesirable
@@ -406,9 +406,9 @@ can be combined together to create a rich, flexible query mechanism.
 
 Multiple lens widget allow for simultaneous exploration of
 different parts of the visualization. For example, if the subject matter is of
-an elongated shape, it is possible to use two lens to explore the entities
+an elongated shape, it is possible to use two lenses to explore the entities
 positioned at either end. However, no semantics are currently defined for
-multiple lens to co-exist in the same spatial location, that is, the lens widget
+multiple lenses to co-exist in the same spatial location, that is, the lens widget
 has no defined behaviour when it is overlapped with another lens.
 
 
@@ -419,9 +419,9 @@ While this works well for task analysis, it has an implicit assumption that the 
 system works, and how the data is structured. Thus it can be a limiting factor
 that prevents a wider audience from using applications without prior training.
 
-In this thesis we take a different approach, the lens widget allows people to
+In this thesis we take a different approach. More specifically, the lens widget allows people to
 demand and filter detailed information by means of a visual query. Unlike explicit queries,
-visual query is done more passively by moving the lens widget about the 
+visual query is performed more passively by moving the lens widget about the 
 visualization. Points of interest, if any, are shown as heatmap charts without
 explicit requests. Thus a user is free to roam about the visualization without 
 any specific goals or prior knowledge about the data, making the visualization
@@ -435,7 +435,7 @@ benefit of allowing people to specify spatial regions. Imagine the case where
 a person is asked to investigate issues relating to the ``front'' of the 
 vehicle. This query is difficult to formulate: components situated at the front 
 need to be identified (which inconvenience  a person with novice expertise), 
-and ``front'' itself may be subjective depending on person. By repositioning 
+and ``front'' itself may be subjective depending on the person. By repositioning 
 and resizing the lens, a person can identify the front, back, or any other
 spatial region quite easily.
 
@@ -486,12 +486,12 @@ ease. Two types of interactions are supported by the heatmap widget. Selecting t
 heatmap is equivalent to a selection on the \threed visualization. Performing a hold
 over an individual cell toggles a tooltip that displays the numerical score for that
 cell, a blue border is drawn around the cell, the same border is linked over all cells
-of the same month across visible heatmaps, allowing for quick comparison.
+of the same month across visible heatmaps, allowing for a quick comparison.
 
 
 \subsection{Layout}
 With respect to heatmap placement, we have considered two
-types of layout around the lens widget: A flush-left/flush-right layout
+types of layouts around the lens widget: A flush-left/flush-right layout
 that places the heatmaps on either left or right side of the lens, and a radial
 layout where each heatmap is placed around the lens’ circumference. 
 
@@ -517,17 +517,17 @@ left/right side based on the heuristics below:
   \item If the heatmaps are off the screen space, pull them back to the edge of the display so they are visible.
 \end{itemize} 
 Since there is no reliance on the centre of the lens for placement, movement of the lens widget will not cause
-drastic changes to and thus is more stable when moving the lens over the visualization.
+drastic changes and thus is more stable when moving the lens over the visualization.
 
 Due to limited display space, not all heatmaps are shown at once. A scrolling mechanism, shown
 as up and down arrows on the lens, are used to scroll through unseen entity objects; numerical
 indicators on each arrow provide a summary of how many entities are hidden in either direction.
-We set the maximum visible heatmaps to 8 in this system.
+We set the maximum visible heatmaps to eight in this system.
  
 
 \section{Document Widget}
 The document widget is the final stage of our drill-down process by providing links 
-to the raw text(R4). Each document is divided into two sections:
+to the raw text (R4). Each document is divided into two sections:
 the header section shows each document's meta attributes and the content
 section shows the raw text descriptions. We denote the selected entity words and
 co-occurring entity words using blue and grey highlights respectively to create
@@ -607,7 +607,7 @@ height of the histogram bars.
     
 \subsection{Hierarchy Widget}
 The hierarchy widget is designed to model inclusive relationship, in particular,
-it is specifically designed to address the need to for comparison (R2) and trend
+it is specifically designed to address the need for comparison (R2) and trend
 finding (R3). For our problem domain, this relationship is represented as the
 organizational hierarchy. Our data contains four such fields: manufacturer,
 make, model and model year. For example: Honda (Manufacturer) owns Civic (Make). 
@@ -619,7 +619,7 @@ the number of documents as a horizontal histogram in similar style as the scente
 widget approach~\cite{Willett2007}. The bar for each item in the widget is shaded
 in light grey, and turns blue when the item is selected. 
 
-Each level of the hierarchy is shown in individual widget. We position the
+Each level of the hierarchy is shown in an individual widget. We position the
 widgets left-to-right across the display space, from the most general to most
 specific classification. Each widget's content is 
 dependent on the selection made on its parent. For example, the ``make''
@@ -675,7 +675,7 @@ identify the touch point with a specific zone, the coupling will remain until
 the touch point is removed. The reason for this approach is to allow higher error tolerance, we
 want to avoid sudden changes of semantics which would defy user expectations.
 This approach allows a subset of our dragging gestures (lens handle, slider
-makers and scrolling) to continue to execute even if the actual touch point is
+makers, and scrolling) to continue to execute even if the actual touch point is
 moved off the predefined areas.
 
 In the list below, we summarize the different zones in the system:
@@ -687,7 +687,7 @@ In the list below, we summarize the different zones in the system:
   \item Lens Zone: Handles semantics for change the physical attributes of a
   lens widget
   \item Document Zone: Covers the document widget
-  \item Empty Zone: An empty zone is specially designated zone that is none of
+  \item Empty Zone: An empty zone is a specially designated zone that is none of
   the above. Empty zone handles gestures related to camera and miscellaneous
   functions.
 \end{itemize}
@@ -739,13 +739,13 @@ constructed a more complex gesture set:
 \end{itemize}
 
 Gestures are designed to be discrete and cannot be transitioned from one to 
-another, for example, a dragging gesture to change the selected months cannot 
+another. For example, a dragging gesture to change the selected months cannot 
 be transitioned to making a selection on the \threed visualization without lifting the hand.
 
 Below we summarize the system's interactions:
 \begin{itemize} [noitemsep]
-  \item Perspective Manipulation: Perspective manipulation consists of rotation
-  of \threed model and camera zoom. Rotation is achieved with a
+  \item Perspective Manipulation: Perspective manipulation consists of the rotation
+  of a \threed model and camera zoom. Rotation is achieved with a
   single point horizontal or vertical drag gesture, which corresponds to
   rotation of the XZ and XY planes. Zooming events are triggered by bringing
   together two touch points closer together or further apart. Zooming gestures are similar 
@@ -795,15 +795,15 @@ Below we summarize the system's interactions:
  
 
 \subsection{Visual Feedback}
-When using the keyboard, mouse and other hardware peripherals, actions are
+When using the keyboard, the mouse and other hardware peripherals, actions are
 rewarded with some type of haptic feedback, for example we know when a key on a 
 keyboard is pressed of depressed. This behaviour allows people to be more keenly 
 aware of the system's current state. This is not true with touch interfaces,
 with touch and sensing technology, it is possible for touch points to become lost during a gesture. 
 This is due to the users unconsciously lifting their fingers. When this happens people 
 can get confused because they may be not be aware that their touch points are lost 
-since their fingers are still contacting the surface, there are no feedback
-system to alert the actual touch point had disappeared. To accommodate the lack of
+since their fingers are still contacting the surface, there is no feedback
+system to alert the user that the actual touch point had disappeared. To accommodate the lack of
 physical responses, we implemented our own visual feedback. We created
 four different types of visual cues, which we summarize below and can be seen in
 Figure \ref{figure:feedback}. 
@@ -814,13 +814,13 @@ Figure \ref{figure:feedback}.
   radius of the circle is slightly larger than the average fingertip such that
   is is always visible (about 15 pixels on our display). The position of
   the circle is updated to synchronize with sensor updates, and is removed
-  when the touch point is rescinded. This visual cue gives viewers immediate
+  when the touch point is rescinded. This visual cue provides viewers immediate
   feedback of the active touch points.
 
   \item Long Touch Point: A long touch point has the same basic visual cue as a short touch point.
   A long touch starts off as a short touch point, a ticking timer running in the
   background determines when the short touch transitions into a long touch. We
-  visualize this timing sequence as an arc outside of the circle, the arc grows
+  visualize this timing sequence as an arc outside of the circle, which expands
   with an increasing central angle and opacity that are mapped to the amount of
   time elapsed. A long touch gesture is achieved once the arc has travelled
   the entire circumference, becomes a ring and locks down. Any interruption
@@ -829,15 +829,15 @@ Figure \ref{figure:feedback}.
 
   \item Trails: The system keeps track of previous updates for all points.
   We visualize up to the last 10 most recent updates as breadcrumb trails. 
-  The trails serve as a reminder of what type of high level gesture is being
-  performed, furthermore it serves as additional visual cue to identify the
+  The trails serve as a reminder of the type of high level gesture that is being
+  performed. Furthermore it serves as an additional visual cue to identify the
   current touch point location. The trail points are rendered as smaller
   versions of touch points.
    
   \item Unrecognized Points: These visual cues are used to denote points that were 
   rejected by our evaluating heuristics. This
   cue gives the viewers some sense of the hardware capabilities and
-  deficiencies. We think this is useful as a learning device, viewers are able
+  deficiencies. We think this is useful as a learning device since viewers are able
   to see where they may inadvertently cause unwanted touch points and use this
   experience to adjust how they operate their gestures next time they interact
   with the display. We visualize this as unfilled circles that decrease in

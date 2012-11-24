@@ -13,9 +13,9 @@ making comparisons and high level overview.
 The heatmap widget has generic support for visualizing a time series data. It 
 allows different time series to be interchanged within the heatmap itself, showing 
 different perspectives. This was done to support the different types of
-analytical tasks as we discussed in Chapter 3. These tasks, such as
+analytical tasks discussed in Chapter 3. These tasks, such as
 finding seasonal trends of a component and finding the worst performing
-component, are quite different, one requires a localized view showing how a
+component, are quite different, requiring a localized view showing how a
 single component performed over time, and the other requires a very high level
 view designed to draw out outliers.
 
@@ -32,7 +32,7 @@ view designed to draw out outliers.
 	% ==============
 
 
-Our visualization provides several different perspective views as seen in
+Our visualization provides several different perspective views as shown in
 Figure \ref{figure:heatmap}, all based on the occurrence score. The score of
 each entity of each month is transformed by a divisor, which determines the
 type of semantic we want to show. The available heatmap perspectives are listed below:
@@ -121,8 +121,8 @@ a resurgence around July and August in the second year. Switching to the month-m
 perspective, one can observe that during the two year period, the most
 significant components seem to alternate between the brake and engine component,
 with the sole exception of accelerator appearing in a single month. Lastly, the
-global perspective yields 3 outliers, February and March from the brake entity
-and February from accelerator entity, however note the rest of the cells are
+global perspective yields three outliers, February and March from the brake entity
+and February from accelerator entity. However, note the rest of the cells are
 pushed into the lower brackets and not possible to detect any other trends.
  
 The heatmap viewing perspective is at a global scope, thus a change in
@@ -211,8 +211,8 @@ until the selection is turned to ``None'' again.
  
 \section{Aggregation}
 By default, the system treats each object individually rather than object
-groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all processedo
-separately, even though they are logically under the group ``seat''. This
+groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all processed
+separately, even though they are logically under the group ``seat.'' This
 setting allows people to isolate and identify low-level problems accurately. There
 are times, however, when this level of information is unnecessarily detailed and
 a higher level of abstraction is desirable.

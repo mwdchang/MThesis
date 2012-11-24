@@ -22,7 +22,7 @@ concepts graphically such that they are visible to the human eye. Visualization,
 in theory,  takes advantage of the human perceptual system to rapidly understand
 what the data is communicating to the readers. 
 
-Foremost we want to recognize that human visual system is limited, we
+Foremost we want to recognize that human visual system is limited; we
 can only perceive a small fraction of the entire spectrum of light, and of our
 field of vision, only a small area is truly in focus. However, there is a small
 set of visual properties that can be detected extremely rapidly (comparatively
@@ -41,7 +41,7 @@ the initial work came from the field of cartography, particularly with the ideas
 of marks and visual variables from Bertin~\cite{BER1983a}. Bertin defined seven
 variables, including position, size, shape, value, colour, orientation and
 texture. Each visual variable can have certain characteristics that can be used
-to determine which of the seven visual variables is most appropriate visual
+to determine which of the seven visual variables is the most appropriate visual
 representation. These characteristics include properties such as selective,
 associative, quantitative, and ordered. A summary table below outlines the
 relationship between each variable and its attributes.
@@ -69,8 +69,8 @@ their characteristics}\label{table:VisualVariable}
 
 
 With the building blocks in place, the next step is a formal process for
-building a visualization system, there are several key
-contributions in this area. The visualization pipeline from Card \etal
+building a visualization system. There are several key
+contributions in this area. More specifically, the visualization pipeline from Card \etal
 ~\cite{Card1999} describes a step-by-step process of data manipulation and
 mapping as follows:
 \begin{itemize}[noitemsep]
@@ -116,14 +116,15 @@ Descriptive illustration can be considered to be a sub-field of computer
 graphics, which focuses on static illustrations or an animated sequence of
 images based on text input. It can be considered as a text-analytic tool because
 it renders the text in a literal sense or through some kind of interpretive
-representation. Systems that attempts to do literal renderings are concerned
+representation. Systems that attempt to do literal renderings are concerned
 with understanding of natural languages, whereas interpreted rendering systems
 tend to involve user intentions. Here we look at several examples. 
 
 Though strictly speaking not a text-to-scene application, the IBIS application
 from Seligmann and Feiner renders a \threed scene based on a set of
-user-provided rules~\cite{Seligmann1991}. These rules specify which object and locations in the \threed scene have higher degrees of interest. The application itself evaluates these rules and determines the optimal viewing perspective, as well
-the application adjust the lighting conditions as a way to draw attention to
+user-provided rules~\cite{Seligmann1991}. These rules specify which object and locations in the \threed scene have higher degrees of interest. 
+The application itself evaluates these rules and determines the optimal viewing perspective, andd
+the application adjusts the lighting conditions as a way to draw attention to
 specific details in the scene. To our knowledge this is one of the first systems
 where a preconstructed scene can be modified by text input.
  
@@ -156,8 +157,8 @@ which uses a similar logical processing and rendering process, but is
 specifically designed to deal with the recreation of car accidents by parsing
 traffic accident reports. Where CarSim differs is that it tries to generate an
 animated sequence by inferring the speed and direction of vehicles from the text
-content, it is less concerned with the literal representation of the car, but
-with the situation surrounding the incident.
+content. However, it is less concerned with the literal representation of the car, but
+rather it concentrates on the situation surrounding the incident.
 
     % === Figure === 
 	\begin{figure}
@@ -229,7 +230,7 @@ undesirable to preserve a high degree of realism, reflections, shadows
 and other natural lighting phenomena may obstruct or create
 false-positive surface details. NPR can choose to ignore the natural laws of physics, and instead
 choose to focus on different abstractions such that the illustration can be
-meaningful to people from different fields. Because there are multitudes of
+meaningful to people from different fields. Since there are multitudes of
 possibilities in NPR, this section solely focuses on prior works that related
 to our work here, or served as our inspirations.
 
@@ -241,7 +242,7 @@ instructional manuals are quite different than those found in photo scrapbooks. 
 stated above, is that communication is valued above realism. Early works by
 Gooch \etal~uncovered common themes in technical illustrations and ways to
 automate some of these properties~\cite{Gooch1998}. Gooch \etal~modified the
-conventional shading algorithm to use a two-tone approach that shift from
+conventional shading algorithm to use a two-tone approach that shifts from
 warm-colours to cool-colours, in addition, they added edge lines and removed
 shadows. Illustrations created in this fashion have major benefits over
 photography. One, strong lighting effects under conventional shading model are
@@ -290,11 +291,11 @@ be rendered in a multitude of ways. However, because the extrusions are
 performed on all sides of the polygon, the algorithm introduces extraneous
 faces, which are hidden by existing geometries through back-face culling.
 Hermosilla~\cite{Hermosilla2009} took this idea further by moving the extrusion
-process to modern graphic pipeline's geometry shader, removing the need to do
-the computations on the CPU. It should be noted that in interactive environment,
+process to modern graphic pipeline's geometry shader, removing the need to perform 
+the computations on the CPU. It should be noted that in an interactive environment,
 geometric features are generally view dependent in both \threed and \twod
-scenarios, this usually means that feature extraction operation need to run on a
-per frame basis.
+scenarios, and this usually means that feature extraction operations need to 
+run on a per frame basis.
  
 
 When it comes to expressiveness, NPR rendering styles can be used to convey a
@@ -302,7 +303,7 @@ variety of semantics. Of particular interest to us is the idea of uncertainty:
 graphics that are visible to the viewer, but also convey a sense of error
 and inaccuracy. Research in ancient architectural
 reconstructions found that straight, solid
-strokes convey higher degree of certainty than strokes that are drawn faded and
+strokes convey a higher degree of certainty than strokes that are drawn faded and
 curved~\cite{Masuch1998, Strothotte1999}. The relevance here to our work is
 that we use this type of technique to convey objects that are not in the focused
 context.
@@ -329,7 +330,7 @@ of objects in the scene. For example illustrations found in science and
 medical literature where specific parts are accentuated using different colours.
 This is done in order to differentiate focus and non-focus regions in the final
 illustration. These types of NPR techniques are particularly prominent in the 
-Scientific Visualization community, they deal with visibility issues to
+Scientific Visualization community, where they deal with visibility issues to
 ensure that semantically important objects are easily visible and to provide
 features to deal with occlusion. For example, Viola \etal~used an
 importance-driven function to determine the visibility of
@@ -339,7 +340,7 @@ rendered more opaque than objects of lesser importance (See Figure
 \ref{figure:viola}). A screen door transparency technique is introduced to
 ensure overall visibility by rendering holes into the outermost volumetric
 layers. The idea of segmentation and context is taken further by Tietjen \etal,
-they described a segmentation scheme that partitions different volumes into
+who describe a segmentation scheme that partitions different volumes into
 focus, near focus and context categories~\cite{Tietjen2005}, with the following semantics:
 \begin{itemize}[noitemsep]
   \item Focus object: Current focus and is emphasized.
@@ -357,8 +358,8 @@ still providing enough background context to understand the subject matter.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \section{Integrated Visualization}
-Traditionally Information Visualization deals with abstract data,
-Scientific Visualization, on the other hand, deals with visualization of
+Traditionally, Information Visualization deals with abstract data, while
+Scientific Visualization deals with visualization of
 concrete subjects such as physical or anatomical objects. However, while these
 are two distinct communities, the division is not always obvious. Many
 applications combine elements and techniques from both fields, though the two
@@ -367,9 +368,9 @@ approaches for data visualization make the case of whether the boundary should
 exist or not, as illustrated by recent attention to discuss the similarities and
 differences between the two groups~\cite{Hauser2005, Weiskopf2004}. The SciVis
 community in particular has adopted techniques and practices that are
-traditionally in the InfoVis community, a well-known example is the volumetric
-visualization from Doleisch \etal, which uses multiple coordinated views, and
-linking and brushing techniques are used to further help the exploration
+traditionally in the InfoVis community. A well-known example is the volumetric
+visualization from Doleisch \etal, which uses multiple coordinated views in addition to 
+linking and brushing techniques to further help the exploration
 process~\cite{Doleisch2003}.
 
     % === Figure === 
@@ -392,7 +393,7 @@ operations such as viewing, slicing and picking of objects. Changes are linked
 and propagated across relevant nodes and volume renderings.
 
 
-In the InfoVis space, research by Sedlmair \etal~looked at enriching
+In the InfoVis space, research by Sedlmair \etal~examined enriching
 InfoVis visualizations with \threed models~\cite{Sedlmair2009}.
 In this work, they presented two applications, CarComVis, which allows users to
 explore intercommunication among vehicle components, and LibVis, which explores
@@ -419,9 +420,9 @@ than through multiple coordinated views.
 \section{Focus+Context Techniques}
 Focus+Context is a well-known and practiced technique in InfoVis; it is used to
 draw attention to particular areas of interest while maintaining a certain degree of contextual 
-information. There are various ways to discriminate these areas, for example 
+information. There are various ways to discriminate these areas. For example 
 Hauser reviewed the general approaches and demonstrated the usage of colour,
-spatial-location, opacity and other resource~\cite{Hauser2006}.
+spatial-location, opacity, and other resource~\cite{Hauser2006}.
 One interesting use of the focus+context technique is the idea of using lenses; the
 lens traces back to a real world metaphor of a magnification lens, where the
 area directly under the lens are distorted and enlarged by the optics. In
@@ -436,8 +437,8 @@ diagrams~\cite{Sarkar1992}. Much like its real world counterpart, a fisheye lens
 creates a distortion displacement under the lens. The amount of displacement 
 is controlled via a drop-off function that determines the degree of enlargement 
 and shrinkage, typically with the central part of the lens enlarged while area
-regions near the circumferences shrinks to compensate. There are a
-few usability issues with fisheye lens, and likely the same issue applies to all
+regions near the circumferences shrink to compensate. There are a
+few usability issues with a fisheye lens, and likely the same issue applies to all
 lenses that undergo geometric distortion: distorted graphics are more
 difficult to read, and it is harder to tell where the focus is, because the
 lens itself may occlude nearby objects which the viewer use as navigational cues.
@@ -468,7 +469,7 @@ stretching, shrinking or changing the stroke styles of each primitive unit.
 
 
 \threed MagicLens~\cite{Viega1996} is likely the first foray of the lens idea
-taken into three dimensional space, unlike the previously mentioned works,
+taken into three dimensional space, and unlike the previously mentioned works,
 MagicLens works with viewing volumes rather than \twod image maps. The lens in this scenario slices
 the scene into different frustum volumes, each volume is then rendered separately 
 and then recomposed together to create the final scene. This technique allows 
@@ -480,7 +481,7 @@ technique that we use in our work.
 
 
 Other than stylization and distortion techniques, the same lens metaphor can
-also be used as a way to augment information seeking, in this context the lens 
+also be used as a way to augment information seeking. In this context the lens 
 is an exploration device that exposes hidden data points, or data points that 
 cannot be feasibly displayed in a readable manner. Generally these cases arise
 because of overlapping points, or when there are too many points on the screen,
@@ -518,7 +519,7 @@ crossings which can cause additional visual complexity.
 %are some researches with that takes the same ideas into environments that are
 %composed of \threed objects. 
 
-While the techniques above are largely applied to \twod applications, there are
+While the techniques described above are largely applied to \twod applications, there are
 applicable \threed focus+context techniques. Sonnet \etal~created a medical volume rendering system where the lens takes the form of a
 \threed cursor~\cite{Sonnet2004}, although viewers cannot see into the cursor
 itself, the cursor creates a spherical volume that pushes other volumetric objects away from the center, thus
@@ -544,7 +545,7 @@ geometric rather than volumetric data.
 \section{Design for Touch Interface}
 As the cost of touch surface computing becomes cheaper, we are gradually seeing 
 interactive surfaces introduced into public areas, office work environments and 
-personal spaces. Interactive interfaces brings new possibilities of exchanging 
+personal spaces. Interactive interfaces bring new possibilities of exchanging 
 information in a walk-by scenario~\cite{Vogel2004}, allowing people to
 interact with data without the need of peripheral hardware devices such as the
 mouse or keyboard. Instead, people utilize their hands and fingers as
