@@ -17,7 +17,9 @@ is composed of four major components:
    the visualization can be zoomed and rotated to explore different viewing
    perspectives. Each entity is rendered with respect to a function which denotes
    its importance. We explore different rendering styles to take advantage of
-   viewers' preattentive perception, allowing them to quickly uncover the
+   preattentive perception: a set of visual properties that can be detected rapidly before actual focused attention.
+   
+   allowing them to quickly uncover the
    important information.
 
    \item [Lens Widget:] The lens widget is a detail-on-demand tool. It is used
@@ -80,7 +82,7 @@ designed, and discusses various design trade-offs.
 A major part of our design for this thesis is the mapping of abstract semantics
 onto realistic looking \threed models. But this can also be a source of
 complication. We have to deal with the additional difficulties of navigating in
-three dimensional space as well as work around perceptual limitations. So why
+three dimensional space as well as work around limitations such as occlusion. So why
 use \threed models in the first place? Familiarity with the models and varied
 exploration methods were key motivations. The familiarity with how the physical
 entities look in real life means people do not have to learn additional visual
@@ -341,7 +343,7 @@ show detailed information about entities in the text documents. With respect to 
 seeking process, this approach combines both filter and detail-on-demand phases.
 
 The lens widget operates in a hybrid \twod and \threed space: the lens itself exists
-on a flat \twod plane and it casts a cylindrical querying volume into the scene.
+on the \twod image plane and it casts a cylindrical querying volume into the scene.
 When the lens is positioned over the visualization, each entity object is tested to see if its 
 corresponding meshes are in the lens' querying volume. We use the centroid to do the inclusion
 test, though more accurate, albeit slower methods exist using
@@ -508,9 +510,14 @@ difficult and thus was rejected.
 %single anchor point in the centre, and it is harder to compare across heatmaps
 %because they are not spatially aligned, thus it was deemed unsuitable. 
 
-For the flush layout, we first sort the object centroids by their 
-Y-coordinates in screen space, then we place the heatmaps on
-left/right side based on the heuristics below: 
+%For the flush layout, we first sort the object centroids by their 
+%Y-coordinates in screen space, then we place the heatmaps on
+%left/right side based on the heuristics below: 
+
+For the flush layout, we take the objects contained by the lens, calculate their
+centroids in screen space, then sort these objects with respect to the centroids' Y-coordinates.
+Once sorted, we place the object heatmaps, in order, on the left/right side based on the 
+heuristics below:
 \begin{itemize}[noitemsep]
   \item Heatmap placement should always be outside of the axis-aligned bounding box of the entire \threed model.
   \item If the entity centroid is closer to the right edge of the bounding box above, it will be placed on the right, else left.
@@ -715,9 +722,7 @@ proximity to the sensor. In this case, it is difficult to tell which points
 are intentional without additional information such as camera or depth image. 
 As the sensor provides only the XY coordinates, we cannot infer hand orientations. Thus, we decided
 to abandon any complex, explicitly-singled-handed, multi-fingered gestures in
-favour of a simpler, less error prone-approach.
-
-The final gesture set is  an accumulation of several design iterations.
+favour of a simpler, less error prone-approach. The final gesture set is  an accumulation of several design iterations.
 At each iteration, fellow lab members were asked to pilot-test the new gesture
 recognitions and heuristics, their reactions and feedback were then incorporated 
 into the next design iteration. 
@@ -726,9 +731,7 @@ Within the current iteration, there are two types of basic touch gesture semanti
 a short-touch and a long-touch. A short-touch consists of any gesture
 where the initial position is held for less than a threshold of 450 milliseconds, 
 while a long-touch is held for longer. The threshold is derived from the pilots
-studies.
-
-Using the short-touches and long-touches as building blocks, we
+studies. Using the short-touches and long-touches as building blocks, we
 constructed a more complex gesture set: 
 \begin{itemize}[noitemsep]
   \item Touch/Tap: A short-touch followed by disengaging the gesture.

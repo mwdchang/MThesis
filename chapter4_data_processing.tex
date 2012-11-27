@@ -23,9 +23,9 @@ Before any semantic processing can take place, we performed
 preliminary analysis, looking at the data text, their format and how they have
 evolved over the life span of the data repository. We performed several
 normalization tasks: One, we used regular expressions to convert the text from
-all capital cases to normal case format. Second, we remove suffix characters that
-appear at the end of each report, which as far as we know, contribute
-nothing to the incident context. Although we changed the underlying text, the
+all capital cases to normal case format. Two, we remove suffix characters that
+car appear at the end of a report, these characters are not any English words and thus
+we do not believe they contribute to the event described by the report. Although we changed the underlying text, the
 normalization process improves readability, and enables us to receive more
 meaningful outputs from natural language parsers.
 
