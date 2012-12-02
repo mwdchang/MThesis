@@ -168,7 +168,7 @@ After a brief tutorial on how to interpret the visualization and how to use the
 interface, participants were asked to perform three sets of tasks. The first set
 consists of warm-up exercises aimed to help participants become familiar with the 
 interactions (these are excluded from our analysis). Next came a set of
-objective tasks with specific answers, they are intended to indicate whether the
+focused tasks with specific answers, they are intended to indicate whether the
 \threed visualisation can be accurately perceived. For example, one question may
 be ``Select the most complained about component in the year 1999.'' Finally,
 the third set of questions is subjective in nature and has open-ended answers.
@@ -200,25 +200,36 @@ their usage duration. The logs are used to reveal if there are any preferences a
 patterns.
  
 
+% Consider rewriting this to be more specific at showing how rather than
+% completion rates
 \subsection{Discussion}
 12 participants took part in the study, however one study session was excluded
 from data analysis. The reason for the elimination was due to insufficient language skills; 
 this participant had severe difficulty understanding the instructions of the tasks, 
 and provided confusing and contradictory statements during the interview portion.
 
-Interpretation of the \threed visualization seemed to be fairly accurate for
-simple scenarios, while more complicated target acquisition tasks that required
-multiple steps yielded mixed results. The first two tasks asked
-participants to directly identify the mostly significant outliers, to accomplish
-these tasks, participants were to visually identify the outlier \threed
-component and select it. There were no restrictions on their method of
-selection. In total, 8/11 and 10/11 answered correctly, however, one participant
-who selected the incorrect entity later stated that the selection was based on
-personal opinion rather than a direct interpretation of the visualization.
 
-The third interpretation task, which asked participants to identify which of the four
-manufacturers used in the study had the highest engine complaints, received
-mixed results. To complete the task, participants had to look at each
+%Interpretation of the \threed visualization seemed to be fairly accurate for
+%simple scenarios, while more complicated target acquisition tasks that required
+%multiple steps yielded mixed results. The first two tasks asked
+%participants to directly identify the mostly significant outliers, to accomplish
+%these tasks, participants were to visually identify the outlier \threed
+%component and select it. There were no restrictions on their method of
+%selection. In total, 8/11 and 10/11 answered correctly, however, one participant
+%who selected the incorrect entity later stated that the selection was based on
+%personal opinion rather than a direct interpretation of the visualization.
+
+In general, feedback of our visualization was favourable and most tasks were
+completed reasonably well, in the sense that the conclusions drawn by the
+participants were derived based on findings from using our system. There are a
+few exceptions: some participants did not correctly respond to the focus
+questions that asked them to identify outliers (3/11 and 1/11). This may partly
+be attributed to initial unfamiliarity with what the visualization is trying to
+show, as one participant (P5) revealed later that at first the answers were not
+based on the visualization, but rather on personal opinion about automotive
+vehicles. The other exception was the third task, which asked participants to identify
+which of the four manufacturers used in the study had the highest engine
+complaints. To complete the task, participants had to look at each
 manufacturer one-by-one, or carry out a series pairwise comparisons to find the
 max. We believe the complexity of having to memorize multiple states likely
 contributed to the incorrect answers, in total five participants chose the correct
@@ -228,10 +239,12 @@ The interpretations of co-occurrence relationships were also mixed. In these
 tasks, we asked the participants to identify the components that failed when
 component X failed. We expected the participants to select X and then identify
 the remaining entities in the visualization. However, we found that three participants
-had difficulties understanding the co-occurrence concept. Unexpectedly, two 
-participants noted that document widget also shows co-occurrences in textual
-form, and read the documents directly instead of using the \threed
-visualization.
+had difficulties understanding the co-occurrence concept. We are unsure whether
+this is due to insufficient explanations at the start of the study, or the fact
+that the same colouring scheme is used for both occurrence co-occurrence caused
+the confusions. Somewhat unexpectedly, two participants noted that document
+widget also shows co-occurrences in textual form, and read the documents
+directly instead of using the \threed visualization.
 
 Analysis of subjective tasks showed that participants generally had no problems
 in accomplishing what was asked. For the task regarding trend analysis, most
@@ -254,73 +267,130 @@ comparison function; rather each vehicle was examined one at a time.
 
  
 % Usage data chart
-\begin{figure}
-\begin{tikzpicture}
-\begin{axis}[ 
-    width=13cm,
-    height=8cm,
-    bar width=0.2cm,  
-    ybar=0,
-    ymin=0,
-    symbolic x coords={P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11},
-    xtick=data, 
-    legend style={at={(1.25, 0.9)}},
-    area legend,
-    ylabel=seconds
-    ] 
-    \addplot[ybar,fill=blue!75] 
-       coordinates { (P1,85) (P2,172)(P3,106) 
-                     (P4,5)  (P5,11) (P6,96)
-                     (P7,90) (P8,90) (P9,22)
-                     (P10,19) (P11,23)
-       }; 
-    \addplot[ybar,fill=red!25] 
-       coordinates { (P1,160) (P2,4)  (P3,169) 
-                     (P4,45)  (P5,83) (P6, 45) 
-                     (P7,0)   (P8,62) (P9,54)
-                     (P10,19) (P11,143)
-       };
-    \legend{Lens, 3D Scene}    
-\end{axis}
-\end{tikzpicture}
-\caption{Time spent on Lens and 3D Scene.}
-\label{chart:usage}     
-\end{figure}
-  
-   
-In terms of interaction with the system, we observed three different
-interaction styles. One group (P2, P7) used the lens almost exclusively
-as their primary navigational tool. The second group (P4, P5, P11) were the
-opposite and used direct manipulations to rotate and zoom the \threed model to
-access different components. The last group used a combination of both lens
-widget and direct manipulation. A chart showing the distributions of time spent
-on each widget can be see in Figure \ref{chart:usage}.
+% \begin{figure}
+% \begin{tikzpicture}
+% \begin{axis}[ 
+%     width=13cm,
+%     height=8cm,
+%     bar width=0.2cm,  
+%     ybar=0,
+%     ymin=0,
+%     symbolic x coords={P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11},
+%     xtick=data, 
+%     legend style={at={(1.25, 0.9)}},
+%     area legend,
+%     ylabel=seconds
+%     ] 
+%     \addplot[ybar,fill=blue!75] 
+%        coordinates { (P1,85) (P2,172)(P3,106) 
+%                      (P4,5)  (P5,11) (P6,96)
+%                      (P7,90) (P8,90) (P9,22)
+%                      (P10,19) (P11,23)
+%        }; 
+%     \addplot[ybar,fill=red!25] 
+%        coordinates { (P1,160) (P2,4)  (P3,169) 
+%                      (P4,45)  (P5,83) (P6, 45) 
+%                      (P7,0)   (P8,62) (P9,54)
+%                      (P10,19) (P11,143)
+%        };
+%     \legend{Lens, 3D Scene}    
+% \end{axis}
+% \end{tikzpicture}
+% \caption{Time spent on Lens and 3D Scene.}
+% \label{chart:usage}     
+% \end{figure}
+%   
+%    
+% In terms of interaction with the system, we observed three different
+% interaction styles. One group (P2, P7) used the lens almost exclusively
+% as their primary navigational tool. The second group (P4, P5, P11) were the
+% opposite and used direct manipulations to rotate and zoom the \threed model to
+% access different components. The last group used a combination of both lens
+% widget and direct manipulation. A chart showing the distributions of time spent
+% on each widget can be see in Figure \ref{chart:usage}.
+
+    % === Figure === 
+	\begin{figure}
+	 \centering  
+	 \includegraphics[width=\columnwidth]{timechart4.png}  
+	 \caption{Widget usage for the task of comparing two vehicles.}
+	 \label{figure:timechart}
+	\end{figure}
+	% ==============
+
+In Figure \ref{figure:timechart}, we present a summary of the interaction logs
+for the task of comparing two different types of vehicles. In this task
+participants were free to use any widget they want to investigate which of the
+two vehicles is more reliable. From the figure, we see that participants first
+remove irrelevant data using the filters, then they either interact with through
+the lens widget or directly with the \threed scene to explore the visualization.
+The navigation actions were mostly executed in short bursts, followed by an idle
+period. This behaviour appears to correspond to finding interesting data and
+then spending time to asses his/her findings. We thought for most participants
+the lens widget would be used only after the \threed model is moved into a
+desired orientation, however this is not supported by the logs. The participant
+strategies seem to group in to three types: use of both the \threed scene and
+the lens widget for exploration (P3, 6, 8, 9, 10), only the lens widget (P2, 7),
+and only the \threed scene (P1, 4, 5, 11). Surprisingly, participants did not
+make use of the document during this tasks. Further investigation of the role of
+full-text details can play in decision-making using d-NPR is warranted.
 
 
-%We also observed different behaviours, some
-%participants (P1, P2, P3, P11) spent a lot more time exploring the
-%visualization, while others (P4, P7 and P10) were more efficient in getting the
-%visualization to their desired orientation. A chart showing widget usage can be
-%seen in Figure \ref{chart:usage}.
-
+ 
 \subsection{Participant Feedback}
-The \threed visualization and lens mechanism received the most positive
-feedback. Participants liked how the \threed model can be used to provide 
-an overview showing all the entities. They also found it fun and enjoyed using
-the lens to focus in on specific regions, particularly for revealing objects
-that were unknown to them before.
+Participants enjoyed using the \threed visualization along with the lens widget.
+Several participants made explicit comments with regards to the usage of
+familiar form factor through the \threed model. \emph{``Nicer to look at a
+picture than a bunch of numbers.''} (P1), \emph{``everything is in detail, very
+interactive.[\ldots] The visual, is self-explanatory''} (P8), \emph{``I can see
+clearly each part in the car, so I know what to choose''} (P6), and \emph{it is
+relatable, I've been in cars and I've had the opportunity to see some of the
+components.''} (P2). Using the lens widget for dynamic focusing of interesting
+data was voiced by several participants: \emph{``kind of cool, being able to
+dissect with it.''} (P1) and \emph{``You can zoom in to the parts that you
+cannot really understand, for example the transmission.''} (P7).
 
-Interaction with the heatmap widget had the most negative reactions. Four
-participants thought the heatmap widget provided too much detail, they argued
-that an ordinary consumer would not care for trend details, they would only care
-about the overall verdict of whether a component is reliable or not. Three other
-participants had concerns about the readability of the heatmap itself, they
-mentioned that the lack of labelling made it difficult to identify individual
-months. Also the additional colour encoding that is applied to the border of each
-cell in comparison mode made it more difficult to distinguish the different
-severity levels. Several participants tried to use the lens' depth function to access
-occluded objects, however we observed that there were difficulties making fine
-adjustments, especially if the objects are close to each other. 
+Interaction with the heatmap had the most negative reactions. Four participants
+thought the heatmap provided too much detail, they argued that an ordinary
+consumer would not care for trend details, they would only care about the
+overall verdict of whether a component is reliable or not. In particular, P11
+suggested using a pie-chart or a bar-chart for each component in comparison view
+rather than using a heatmap.  The design implication here may be to provide
+different levels of granularity that can be dynamically adjusted. The lack of
+labelling on the heatmap was raised by three others, as it made it more
+difficult to identify individual months. Also the additional colour encoding
+that is applied to the border of each cell in comparison mode made it more
+difficult to distinguish the different severity levels. 
+
+Overall, we obsevered several interaction issues. A few participants tried to
+use the lens' depth function to access occluded objects, however we noted that
+there were difficulties making fine adjustments, especially if the objects are
+close to each other. Problems interacting with the touch surface was a general
+concern voiced during the study, in particular we observed problems with
+selection/deselection and manipulation of the filter widgets. The touch issues 
+are exemplified in Figure \ref{figure:timechart}, note the time duration spent
+on the filters, also note the rapid succession of selection actions which may
+indicate problems with our multitouch heuristics. Despite these problems,
+participants seem to enjoy using the visualization: \emph{``even though there
+are some interaction problems, it just looks really good~``} (P10).
+
+%The \threed visualization and lens mechanism received the most positive
+%feedback. Participants liked how the \threed model can be used to provide 
+%an overview showing all the entities. They also found it fun and enjoyed using
+%the lens to focus in on specific regions, particularly for revealing objects
+%that were unknown to them before.
+
+%Interaction with the heatmap widget had the most negative reactions. Four
+%participants thought the heatmap widget provided too much detail, they argued
+%that an ordinary consumer would not care for trend details, they would only care
+%about the overall verdict of whether a component is reliable or not. Three other
+%participants had concerns about the readability of the heatmap itself, they
+%mentioned that the lack of labelling made it difficult to identify individual
+%months. Also the additional colour encoding that is applied to the border of each
+%cell in comparison mode made it more difficult to distinguish the different
+%severity levels. Several participants tried to use the lens' depth function to access
+%occluded objects, however we observed that there were difficulties making fine
+%adjustments, especially if the objects are close to each other. 
   
 During the interview session, we asked the participants what they would do to
 improve the system, there are four ideas relating to visualizations that emerged
@@ -347,9 +417,10 @@ from the study sessions:
 \subsection{Summary}
 Our study sessions showed that in general people were able to interpret the
 visualization correctly. However for complicated situations where the analysis
-require multiple steps, results tend to vary. In the open-ended tasks, we
-observed that participants were able to use the visualization and various
-interaction widget to help guide their analysis.
+require multiple steps, results tend to vary. In cases like this, a different
+design approach such as supporting history or breadcrumb trails may be useful.
+In the open-ended tasks, we observed that participants were able to use the
+visualization and various interaction widget to help guide their analysis.
 
 The visualization itself was intuitive. There are times where we did not
 sufficiently explain the interface but participants were able to correctly infer
@@ -359,10 +430,19 @@ The semantic relations of occurrence and co-occurrence were harder to understand
 came as a surprise as we did not encounter comprehension issues in our pilot studies, 
 perhaps a more hands-on tutorial would have helped.
 
-Overall, the receptions of using the visualization system were positive;
-comments such as ``cool,'' ``relatable,'' and ``that was really neat'' were heard
-through out the study sessions. Other comments, such as ``seeing all the different angles is
-nice'' and ``even though there are some interaction problems, it just looks
-really good!'' suggested the aesthetic value in showing a non-photorealistic \threed
-representation.  
+%Performance???
+Overall, the receptions of using the visualization were positive; other than the
+comments above, \emph{``cool''}, \emph{``relatable''}, and \emph{``that
+was really neat''} were heard through out the study sessions. However, as our
+study is by large exploratory and qualitative in nature, a more thorough study
+that involves more complex scenarios and performance metrics may further
+validate the strength of our visualization approach.
+
+
+%Overall, the receptions of using the visualization system were positive;
+%comments such as ``cool,'' ``relatable,'' and ``that was really neat'' were heard
+%through out the study sessions. Other comments, such as ``seeing all the different angles is
+%nice'' and ``even though there are some interaction problems, it just looks
+%really good!'' suggested the aesthetic value in showing a non-photorealistic \threed
+%representation.  
   

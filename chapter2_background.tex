@@ -273,12 +273,13 @@ and isolation of shapes and primitives, can be used to achieve this goal.
 Feature extraction can be done in either \twod or \threed spaces. The \twod
 algorithm is image based, and based upon calculating the a discontinuity value
 of a pixel against its neighbouring pixels~\cite{Gonzalez2002}. The
-discontinuity can take on several types, for example colour, normal and depth. A square matrix,
-called a kernel, is used to evaluate the discontinuity measure and is run
-against every pixel in the image. Any pixels that fall below a specified
-threshold are discarded, the remaining pixels are collected and aggregated
-into higher level geometric primitives. In \threed space, features can be
-classified under the broad categories of ridges, valleys and  silhouettes.
+discontinuity can take on several types, for example colour, normal and depth. A
+square matrix, called a kernel, is used as a convolution operator to evaluate a
+measure of discontinuity of each pixel in the image. Any pixels with a
+discontinuity measure that fall below a specified threshold are discarded, the
+remaining pixels are collected and aggregated into higher level geometric
+primitives. In \threed space, features can be classified under the broad
+categories of ridges, valleys and  silhouettes.
 Ridges are formed by two front facing polygons with dihedral angle between 0 to
 180, similarly, valleys are front facing polygons with dihedral angle between
 180 to 360, both of these are exclusive, as an angle of 0 or 180 results in a
