@@ -126,9 +126,17 @@ overview visualization.
 Lastly, textures present an interesting option, textures can carry additional 
 characteristics, particularly descriptive attributes. It may be possible to use 
 textures to simulate certain effects, for example a rusty surface. Nonetheless,
-textures do not possess inherent ordering or quantifiable characteristics and thus were not
-included in our design. However it may be interesting to use textures for
-visualizing individual document semantics; we leave this idea as future work.
+texture does not possess inherent order or quantifiable characteristics in the
+generic sense of using varying texture patterns. While we can may make a case of
+perceiving order through varying density using the same type of pattern through
+out, we opted to not include it in our design. However, it may be interesting to
+use textures for visualizing individual document semantics; we leave this idea as future work.
+
+
+%Nonetheless,
+%textures do not possess inherent ordering or quantifiable characteristics and thus were not
+%included in our design. However it may be interesting to use textures for
+%visualizing individual document semantics; we leave this idea as future work.
 
 \subsection{Stylized Rendering}
 In order to enhance the message carrying capacity of the visualization, we
@@ -256,7 +264,7 @@ facilitated by an animated transition that interpolates the graphical effects.
  
 %\daniel{Stopping here\ldots}
 
-\subsection{Trade-offs}
+\subsection{Design Trade-offs}
 We recognize that blending different hues in \threed space does not necessarily
 produce a result which preserves the original hues, and can potentially lead to
 distracting visual artifacts. Different hue preservation schemes
@@ -609,8 +617,9 @@ people to focus and filter based on seasons and other sectional based divisions.
 
 Interactions with the sliders are done through dragging their markers as mentioned above, or directly
 on the histogram bars. A double tap action on the year slider's bar provides a shortcut
-to select the entire year. An animated transition is used to interpolate the
-height of the histogram bars.    
+to select the entire year. A blue fill colour is used to indicate selected
+years and months. An animated transition is used to interpolate the height of
+the histogram bars.
     
 \subsection{Hierarchy Widget}
 The hierarchy widget is designed to model inclusive relationship, in particular,
