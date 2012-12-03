@@ -215,14 +215,18 @@ groups. For example ``seatbelt'', ``backrest'' and ``seat'' are all processed
 separately, even though they are logically under the group ``seat.'' This
 setting allows people to isolate and identify low-level problems accurately. There
 are times, however, when this level of information is unnecessarily detailed and
-a higher level of abstraction is desirable.
+a higher level of abstraction is desirable. For example, a consumer may only
+want to know about general problem areas rather than specific details about each
+component.
 
     % === Figure === 
 	\begin{figure}
 	 \centering  
-	 \includegraphics[width=\columnwidth]{aggregation2.png}
+	 %\includegraphics[width=\columnwidth]{aggregation2.png}
+	 \includegraphics[width=\columnwidth]{aggregation3.png}
 	 \caption[Aggregation View]{Top: Aggregation mode disabled. Bottom: Aggregation
-	 mode enabled, note that the seat now appears more prominent in the visualization.}
+	 mode enabled, note that the seat now appears more prominent in the
+	 visualization. Accompanying tree diagram shows how entities are organized.}
 	 \label{figure:aggregation}
 	\end{figure}
 	% ==============
@@ -234,12 +238,14 @@ first level are the major sub-systems in a vehicle. Aggregated components
 responds to interaction events as a single group, thus, selecting the
 ``seatbelt'' will select the entire ``seat'' subsystem.
 
- 
+
 Figure \ref{figure:aggregation} shows a before and after illustration of using
 aggregation mode. A default rendering is shown in the top portion, one can
 only observe that brakes is the most severe out of all components. The bottom
 shows the aggregated view, one can observe that on a higher level, the seat
-subsystem is quite problematic.
+subsystem is quite problematic. Example schematic diagrams show how the entities
+are organized; at the top each entity is treated as unique individuals, at the
+bottom entities are grouped together to create subsystems.
  
 Aggregation mode is enabled/disabled by a toggle switch located at the top
 portion of the display interface. Aggregation mode is not exclusive, both aggregation
