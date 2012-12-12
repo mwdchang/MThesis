@@ -211,9 +211,9 @@ score as a divisor so the scores are normalized to a range between 0 and 1.
 
   
 \subsection{Limitations} 
-For this prototype, we gave the same score weighting to each objects. This is a 
-subjective measure because not all parts are created equal. For example, if window 
-is mentioned 10 times and the engine mentioned a single time, does that mean we 
+For this prototype, we gave the same score weighting to each object. This is a 
+subjective measure because not all parts are of equal importance when it comes
+to vehicle safety. For example, if window is mentioned 10 times and the engine mentioned a single time, does that mean we 
 should pay more attention to the window component? One could argue that the engine 
 component is more vital than the window component. A simple extension to this
 work would be to devise an appropriate weighting scheme by consulting the domain
@@ -221,8 +221,8 @@ experts.
 
 Another limitation is the vocabulary set itself, while we are only storing nouns
 it would be interesting to look at verbs as well. For example, ``stalled'',
-``stalling'' are typically associated with engine object. Adding verbs into our
-dictionary would give more flexibility and accurate results.
+``stalling'' are typically associated with the engine object. Adding verbs into
+our dictionary would give more flexibility and accurate results.
 
 
 \section{Model Segmentation}

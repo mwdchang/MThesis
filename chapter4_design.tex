@@ -126,11 +126,16 @@ overview visualization.
 Lastly, textures present an interesting option, textures can carry additional 
 characteristics, particularly descriptive attributes. It may be possible to use 
 textures to simulate certain effects, for example a rusty surface. Nonetheless,
-texture does not possess inherent order or quantifiable characteristics in the
-generic sense of using varying texture patterns. While we can may make a case of
-perceiving order through varying density using the same type of pattern through
-out, we opted to not include it in our design. However, it may be interesting to
-use textures for visualizing individual document semantics; we leave this idea as future work.
+texture does not possess inherent ordered or quantifiable characteristics in the
+generic sense of using varying texture patterns to encode component scores.
+While we can may make a case of perceiving order through varying density using the same type of pattern through
+out, we opted to not include it in our design, as overlapping textures would be
+difficult to read. However, it may be interesting to use textures for
+visualizing a document in order to simulate the conditions described
+within the text, the limitation of a single document is due to possible
+disagreement that may arise with multiple documents; we leave this idea as
+future work.
+
 
 
 %Nonetheless,
@@ -474,7 +479,7 @@ allows year-to-year and month-to-month comparisons.
     % ===== Figure =====
 	\begin{figure}
 	 \centering  
-	 \includegraphics[width=\columnwidth]{heatmap2.png}
+	 \includegraphics[width=\columnwidth]{heatmap3.png}
 	 \caption[Heatmap schematic]{Heatmap schematics}
 	 \label{figure:heatmapSchematic}
 	\end{figure}
@@ -700,11 +705,11 @@ In the list below, we summarize the different zones in the system:
 \begin{itemize}[noitemsep]
   \item Visualization Zone: The main visualization, handles selection
   and deselection semantics of \threed objects, as well as heatmap selection.
-  \item Time Zone: Covers the year and month time sliders 
-  \item Filter Zone: Covers the organizational hierarchy widgets 
+  \item Time Zone: Covers the year and month time sliders. 
+  \item Filter Zone: Covers the organizational hierarchy widgets. 
   \item Lens Zone: Handles semantics for change the physical attributes of a
   lens widget
-  \item Document Zone: Covers the document widget
+  \item Document Zone: Covers the document widget.
   \item Empty Zone: An empty zone is a specially designated zone that is none of
   the above. Empty zone handles gestures related to camera and miscellaneous
   functions.
@@ -757,21 +762,22 @@ another. For example, a dragging gesture to change the selected months cannot
 be transitioned to making a selection on the \threed visualization without lifting the hand.
 
 Below we summarize the system's interactions:
-\begin{itemize} [noitemsep]
-  \item Perspective Manipulation: Perspective manipulation consists of the rotation
-  of a \threed model and camera zoom. Rotation is achieved with a
+\begin{description} [noitemsep]
+  \item [Perspective Manipulation:] Perspective manipulation consists of the
+  rotation of a \threed model and camera zoom. Rotation is achieved with a
   single point horizontal or vertical drag gesture, which corresponds to
   rotation of the XZ and XY planes. Zooming events are triggered by bringing
   together two touch points closer together or further apart. Zooming gestures are similar 
   to ``pinch'' and ``spread'', however the points are much further apart than normal to avoid the problems of
   singled-handed multi-finger gestures. All perspective manipulations must start in the empty zone.
 
-  \item Entity Selection: Entity selection is triggered with a single tap on the mesh
-  representing the entity or on the entity's heatmap.
+  \item [Entity Selection:] Entity selection is triggered with a single tap on
+  the mesh representing the entity or on the entity's heatmap.
   
-  \item Tooltip: A hold gesture, or drag-hold gesture over the heatmap's cells will toggle the tooltip. 
+  \item [Tooltip:] A hold gesture, or drag-hold gesture over the heatmap's cells
+  will toggle the tooltip.
   
-  \item Lens Manipulation: A lens widget is created by specifying its diameter
+  \item [Lens Manipulation:] A lens widget is created by specifying its diameter
   with two hold points, for example using index fingers on left and right hand
   to create the diameter. We impose a minimum and maximum diameter length to
   keep the physical size of the lens within reason, with our display hardware,
@@ -785,17 +791,17 @@ Below we summarize the system's interactions:
   modelled this behaviour after the zooming mechanism on the barrels of camera
   lenses.
   
-  \item Text Browsing: The document widget is toggled with a hold gesture over 
+  \item [Text Browsing:] The document widget is toggled with a hold gesture over 
   the  empty zone. An active document widget has two zones, the left-most 80 percent
   of the document panel is used for reposition, while the right-most 20 percent for scrolling.
   Both  reposition and scroll actions use the drag gesture.
 
-  \item Hierarchical Widget: A single touch gesture is used to open, close and to
-  make selections. Scrolling is achieved by performing a vertical drag gesture on the item list.
+  \item [Hierarchical Widget:] A single touch gesture is used to open, close and
+  to make selections. Scrolling is achieved by performing a vertical drag gesture on the item list.
   
-  \item Time Widget: Single touch gesture is used to send select events to
+  \item [Time Widget:] Single touch gesture is used to send select events to
   individual time sliders. Dragging gesture is used to move the slider markers.
-\end{itemize}
+\end{description}
 
     % === Figure ===
 	\begin{figure}
@@ -822,16 +828,17 @@ physical responses, we implemented our own visual feedback. We created
 four different types of visual cues, which we summarize below and can be seen in
 Figure \ref{figure:feedback}. 
 
-\begin{itemize}[noitemsep]
-  \item Short Touch Point: Whenever a touch point is registered, we render a gradient
-  circle at the XY screen coordinate as detected by the sensor. The
+\begin{description}[noitemsep]
+  \item [Short Touch Point:] Whenever a touch point is registered, we render a
+  gradient circle at the XY screen coordinate as detected by the sensor. The
   radius of the circle is slightly larger than the average fingertip such that
   is is always visible (about 15 pixels on our display). The position of
   the circle is updated to synchronize with sensor updates, and is removed
   when the touch point is rescinded. This visual cue provides viewers immediate
   feedback of the active touch points.
 
-  \item Long Touch Point: A long touch point has the same basic visual cue as a short touch point.
+  \item [Long Touch Point:] A long touch point has the same basic visual cue as
+  a short touch point.
   A long touch starts off as a short touch point, a ticking timer running in the
   background determines when the short touch transitions into a long touch. We
   visualize this timing sequence as an arc outside of the circle, which expands
@@ -841,15 +848,15 @@ Figure \ref{figure:feedback}.
   during the transition phase will remove the animation, the gesture will return
   back to a normal touch point.
 
-  \item Trails: The system keeps track of previous updates for all points.
+  \item [Trails:] The system keeps track of previous updates for all points.
   We visualize up to the last 10 most recent updates as breadcrumb trails. 
   The trails serve as a reminder of the type of high level gesture that is being
   performed. Furthermore it serves as an additional visual cue to identify the
   current touch point location. The trail points are rendered as smaller
   versions of touch points.
    
-  \item Unrecognized Points: These visual cues are used to denote points that were 
-  rejected by our evaluating heuristics. This
+  \item [Unrecognized Points:] These visual cues are used to denote points that
+  were rejected by our evaluating heuristics. This
   cue gives the viewers some sense of the hardware capabilities and
   deficiencies. We think this is useful as a learning device since viewers are able
   to see where they may inadvertently cause unwanted touch points and use this
@@ -857,7 +864,7 @@ Figure \ref{figure:feedback}.
   with the display. We visualize this as unfilled circles that decrease in
   opacity and radius with time, they are removed from the system when the radius
   reaches zero.
-\end{itemize}
+\end{description}
  
 An additional visual feedback was created to visualize processing time. Due the 
 size of dataset, the system may incur a slight delay between re-evaluation of the

@@ -4,21 +4,64 @@
 % - Some kind of graphics would be nice? showing taking text to final image?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
-Many types of text data are generated and archived on a daily basis, such
-as diaries, blogs and incident reports. These documents can be broadly
-categorized to have two types of attributes: abstract attributes that deal with
-word semantics that are intangible in nature; and concrete attributes where the
-words or relations among the words have physical manifestations. The field of Information
-Visualization (InfoVis) deals with the visual representation of these documents
-to amplify human cognition~\cite{Card1999}, in particular, to summarize and
-explore the dataset. While there are a broad range of InfoVis techniques for
-text documents, they often do not integrate the visualization of abstract and
-concrete attributes, and when they do, the visualization is presented in
-an abstract manner. Consider the popular technique of word cloud (\eg,
-\cite{VIE2009a}): the words contain concrete attributes such as physical
-objects, the size of the tags is linked to the word frequency (abstract
-attributes), but the rendering of the cloud visualization itself does not
-reflect the physical meaning of these words.
+
+Many types of text data are generated and archived on a daily basis, such as
+diaries, blogs and incidents reports. These documents contain a wealth of
+information that can be extracted and analyzed, for example, various statistical
+measures, the structures of the documents and word semantics. The field of
+Information Visualization (InfoVis) deals  with the visual representation of
+these documents to amplify human cognition~\cite{Card1999}, in particular, to
+summarise and explore the dataset. While there are a broad range of InfoVis
+techniques for text documents, there are few visualizations that leverages
+real-world dimensions that may exist in text documents, in the sense that these
+are presented in an abstract manner, rather than in-line with real-world
+expectations. 
+
+Consider a review article of a bicycle, it contains words
+referring to bicycle parts that have real-world manifestations, there are also
+inherent spatial relation among different bicycle parts. Now, consider the
+popular technique of word-clouds (\eg, ~\cite{VIE2009a}): the visualization
+arranges words with respect to frequency, including the physical words which
+describe the bicycle components. However, the rendering is rather arbitrary, the
+final product does not resemble a bicycle and the placement of the words do not
+suggest any spatial relationships.
+
+In this work, we introduce descriptive non-photorealistic rendering, a hybrid
+approach for text analytics that leverages the real-world dimensions in text
+document. This process creates information rich visuals such that the
+significant parts appear to ``popout'' to the viewers, while retaining shapes
+and forms that are easily recognizable and in context with real-world
+expectations.
+
+%In this work, we introduce descriptive non-photorealistic rendering, a hybrid
+%approach for text analytics which reveals both abstract and spatial semantics in
+%a single visualization. This process creates information rich visuals such that
+%significant parts of the model appear to “popout” to the viewers, while
+%retaining their easily recognizable shapes and forms. 
+
+%Consider the popular technique of word-clouds (\eg,
+%~\cite{VIE2009a}) and using it to visualize a bicycle review: the document
+%contains words referring to bicycle parts that have real-world manifestations,
+%as well in inherent spatial relation among different parts. 
+
+
+%Many types of text data are generated and archived on a daily basis, such
+%as diaries, blogs and incident reports. These documents can be broadly
+%categorized to have two types of attributes: abstract attributes that deal with
+%word semantics that are intangible in nature; and concrete attributes where the
+%words or relations among the words have physical manifestations. The field of Information
+%Visualization (InfoVis) deals with the visual representation of these documents
+%to amplify human cognition~\cite{Card1999}, in particular, to summarize and
+%explore the dataset. While there are a broad range of InfoVis techniques for
+%text documents, they often do not integrate the visualization of abstract and
+%concrete attributes, and when they do, the visualization is presented in
+%an abstract manner. Consider the popular technique of word cloud (\eg,
+%\cite{VIE2009a}): the words contain concrete attributes such as physical
+%objects, the size of the tags is linked to the word frequency (abstract
+%attributes), but the rendering of the cloud visualization itself does not
+%reflect the physical meaning of these words.
+
+
 
 
 %While there are a broad range of InfoVis techniques for
@@ -43,11 +86,11 @@ reflect the physical meaning of these words.
 % and space relations that do not naturally lend themselves to be mapped against
 % abstract representations.
  
-In this work, we introduce descriptive non-photorealistic rendering, a hybrid
-approach for text analytics which reveals both abstract and spatial semantics in
-a single visualization. This process creates information rich visuals such that
-significant parts of the model appear to “popout” to the viewers, while
-retaining their easily recognizable shapes and forms. 
+%In this work, we introduce descriptive non-photorealistic rendering, a hybrid
+%approach for text analytics which reveals both abstract and spatial semantics in
+%a single visualization. This process creates information rich visuals such that
+%significant parts of the model appear to “popout” to the viewers, while
+%retaining their easily recognizable shapes and forms. 
 
   
    
@@ -205,10 +248,10 @@ that can be related to the real world.
 Chapter 2 provides a literature review that discusses related work and
 research that served as our inspirations. Chapter 3 discusses the problem and
 our solution, it also introduces our working dataset for the remainder of this
-work. Chapters 4, 5 and 6 discuss our visualization designs. In chapter 7 we
+work. Chapters 4, 5 and 6 discuss our visualization designs. In Chapter 7 we
 describe our system architecture and solutions to usability issues encountered
 during implementation phase. Chapter 8 contains our evaluation and use case
-scenarios. Finally, in chapter 9 we summarize our contributions and discuss
+scenarios. Finally, in Chapter 9 we summarize our contributions and discuss
 avenues for future work.
 
 % The remainder of the thesis is organized as follows: 
