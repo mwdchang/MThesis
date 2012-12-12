@@ -349,8 +349,8 @@ compare the degree of distortion among objects.
 %we may use distortion to visually paint the action words, testing this will be 
 %part of our future work.
 
-
-
+ 
+ 
 \section{Lens Widget} 
 Using a metaphor of looking through a magnifying glass to reveal better details
 about a specific subject, we created an interactive lens widget to extract and
@@ -359,10 +359,9 @@ seeking process, this approach combines both filter and detail-on-demand phases.
 
 The lens widget operates in a hybrid \twod and \threed space: the lens itself exists
 on the \twod image plane and it casts a cylindrical querying volume into the scene.
-When the lens is positioned over the visualization, each entity object is tested to see if its 
-corresponding meshes are in the lens' querying volume.  We use the centroid to
-do the inclusion test. Entities that are under the lens' area of
-focus have detailed information, shown as heatmaps on the left and right side of
+When the lens is positioned over the visualization, the centroid of each entity
+object is tested to see if it belongs to the lens' querying
+volume. Entities that are under the lens' area of focus have detailed information, shown as heatmaps on the left and right side of
 the lens widget. Connecting line segments are drawn from entities to their
 heatmaps to show association: first the heatmap is connected back to the lens'
 circumference, then from the circumference back to the entity's projected
