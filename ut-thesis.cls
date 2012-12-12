@@ -611,7 +611,18 @@
       \section*{Acknowledgements}
    \end{center}
    \begingroup}%
-  {\par\endgroup}
+  {\par\endgroup\newpage}
+  
+  
+\newenvironment{listofpublications}%
+  {\begin{center}
+      \section*{List of Publications}
+   \end{center}
+   \begingroup}%
+  {\par\endgroup\newpage}
+  
+  
+  
 %
 %% ...\renewcommand{\tableofcontents}...
 %% ...\renewcommand{\listoftables}...

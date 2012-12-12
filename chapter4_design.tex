@@ -360,13 +360,21 @@ seeking process, this approach combines both filter and detail-on-demand phases.
 The lens widget operates in a hybrid \twod and \threed space: the lens itself exists
 on the \twod image plane and it casts a cylindrical querying volume into the scene.
 When the lens is positioned over the visualization, each entity object is tested to see if its 
-corresponding meshes are in the lens' querying volume. We use the centroid to do the inclusion
-test, though more accurate, albeit slower methods exist using
-image-based algorithms~\cite{Ali2005}. Entities that are under the lens' area of
+corresponding meshes are in the lens' querying volume.  We use the centroid to
+do the inclusion test. Entities that are under the lens' area of
 focus have detailed information, shown as heatmaps on the left and right side of
 the lens widget. Connecting line segments are drawn from entities to their
 heatmaps to show association: first the heatmap is connected back to the lens'
-circumference, then from the circumference back to the entity's projected centroid.
+circumference, then from the circumference back to the entity's projected
+centroid. Our labelling approach is similar to the technique presented
+in~\cite{Fekete1999}. More advanced labelling algorithms exist and may produce
+eye-pleasing layouts~\cite{Ali2005, Fink2012}, though they are not implemented
+in our system and are considered future work.
+
+%W use the centroid to do the inclusion
+%test, though more accurate, albeit slower methods exist using
+%image-based algorithms~\cite{Ali2005}. 
+
 
 
     % ===== Figure =====
